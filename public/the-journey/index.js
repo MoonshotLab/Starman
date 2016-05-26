@@ -3,7 +3,7 @@ var config = {
   height : 400
 };
 
-
+var socket = io();
 var game = new Game(config);
 
 
