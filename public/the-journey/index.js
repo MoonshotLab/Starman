@@ -7,6 +7,11 @@ var socket = io();
 var game = new Game(config);
 
 
+socket.on('stage-left', function(volume){
+  console.log(volume);
+});
+
+
 window.speed = 0;
 document.onkeydown = function(e){
   if(e.keyCode == 39){
