@@ -1,0 +1,23 @@
+{
+  "name": "Scream5",
+  "homepage": "https://github.com/MoonshotLab/Scream5",
+  "authors": [
+    "Joe Longstreet <joelongstreet@gmail.com>"
+  ],
+  "description": "The 5th and final installment of the popular Scream movie franchise",
+  "main": "",
+  "keywords": [
+    "scream"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "eventEmitter": "^5.0.0"
+  }
+}
