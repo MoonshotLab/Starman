@@ -12,11 +12,8 @@ Scream.SC = class SoundCapture {
     this.audioContext = new AudioContext();
     this.processor = this.audioContext.createScriptProcessor(512, 2, 2);
 
-    // diff objects
-    this.volume = {
-      last    : 0,
-      current : 0
-    };
+    // class properties
+    this.volume = 0;
 
     this.startEmission();
   }
@@ -68,7 +65,7 @@ Scream.SC = class SoundCapture {
         }
 
         var rms = Math.sqrt(sumBuffer / buffer.length);
-        self.volume.current = Math.floor(rms*1000);
+        self.volume = Math.floor(rms*1000);
       };
     }
 
@@ -84,10 +81,7 @@ Scream.SC = class SoundCapture {
     var self = this;
 
     setInterval(function(){
-      if(self.volume.last != self.volume.current){
-        self.emitter.emitEvent('volume', [self.volume.current]);
-        self.volume.last = self.volume.current;
-      }
+      self.emitter.emitEvent('volume', [self.volume]);
     }, this.emissionRate);
   }
 };

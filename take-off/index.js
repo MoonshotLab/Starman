@@ -9,9 +9,12 @@ var config = {
 // reference some dom elements
 var $ = {
   volume : document.getElementById('volume'),
-  power  : document.getElementById('power')
+  power : document.getElementById('power'),
+  targetHi : document.getElementById('target-hi'),
+  targetLo : document.getElementById('target-lo')
 };
-
+$.targetHi.style.top = (100 - config.hiThreshold) + '%';
+$.targetLo.style.top = (100 - config.loThreshold) + '%';
 
 // create a sound capture instance
 var soundCapture = new Scream.SC({
@@ -20,7 +23,7 @@ var soundCapture = new Scream.SC({
 
 
 // startup the device
-Scream.SC.getDevice('Default', function(device){
+Scream.SC.getDevice('AudioBox USB', function(device){
   soundCapture.listen(device);
 });
 
@@ -28,7 +31,8 @@ Scream.SC.getDevice('Default', function(device){
 // listen for volume changes and react
 var powerLevel = 0;
 soundCapture.emitter.addListener('volume', function(volume){
-  var volumeLevel = volume/config.maxVolume;
+  var volumeLevel = (volume/config.maxVolume)*100;
+  if(volumeLevel >= 100) volumeLevel = 100;
 
   if(volumeLevel < config.hiThreshold && volumeLevel > config.loThreshold){
     powerLevel++;
