@@ -9,9 +9,12 @@ app.use(express.static('public'));
 server.listen(port);
 console.log('server running on port', port);
 
-// handle socket data
+// handle socket data, act as a pass through
 io.on('connection', function(socket){
   socket.on('stage-left', function(data){
     io.sockets.emit('stage-left', data);
+  });
+  socket.on('stage-right', function(data){
+    io.sockets.emit('stage-right', data);
   });
 });
