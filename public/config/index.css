@@ -1,0 +1,37 @@
+html, body{
+  font-family: Helvetica;
+  margin: 0;
+  padding-top: 10px;
+}
+
+h1{
+  font-size: 120%;
+  margin: 0;
+  padding: 0;
+  padding-left: 5%;
+  margin-bottom: 25px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(0,0,0,.25);
+}
+
+.fieldset{
+  margin-bottom: 30px;
+  border-bottom: 1px solid rgba(0,0,0,.25);
+}
+
+label{
+  display: block;
+  margin-bottom: 15px;
+  margin-left: 5%;
+}
+label span{
+  font-weight: bold;
+  float: right;
+  margin-right: 5%;
+}
+input{
+  display: block;
+  width: 90%;
+  margin: auto;
+  margin-bottom: 30px;
+}

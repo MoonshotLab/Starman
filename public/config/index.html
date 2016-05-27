@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Config</title>
+    <meta name='viewport', content='width=device-width, user-scalable=no' />
+    <link rel='stylesheet' href='./index.css' />
+  </head>
+  <body>
+    <h1>Scream5 - Configuration</h1>
+    <div class='fieldset'>
+      <label>Max Volume:<span id='maxVolume-val'>0</span></label>
+      <input id='maxVolume' type='range' />
+    </div>
+
+    <div class='fieldset'>
+      <label>Lo Threshold:<span id='loThreshold-val'>0</span></label>
+      <input id='loThreshold' type='range' />
+    </div>
+
+    <div class='fieldset'>
+      <label>Hi Threshold:<span id='hiThreshold-val'>0</span></label>
+      <input id='hiThreshold' type='range' />
+    </div>
+
+    <script src='/socket.io/socket.io.js'></script>
+    <script src='./index.js'></script>
+  </body>
+</html>
