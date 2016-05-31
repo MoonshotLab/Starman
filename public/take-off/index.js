@@ -3,6 +3,8 @@
   // retain
   var socket = io();
   var powerLevel = 0;
+  var numberOfFrames = 57;
+
   var volume = {
     left : 0,
     right : 0
@@ -15,11 +17,19 @@
     volume : document.getElementById('volume'),
     power : document.getElementById('power'),
     targetHi : document.getElementById('target-hi'),
-    targetLo : document.getElementById('target-lo')
+    targetLo : document.getElementById('target-lo'),
+    video : document.getElementById('video')
   };
   $.targetHi.style.top = (100 - Utils.config.hiThreshold) + '%';
   $.targetLo.style.top = (100 - Utils.config.loThreshold) + '%';
 
+
+  // preload all the images
+  var images = [];
+  for(var i = 1; i < numberOfFrames; i++) {
+    images[i] = new Image();
+    images[i].src = './img/frame_' + i + '.png';
+  }
 
 
   // listen for volume changes and react
@@ -45,24 +55,30 @@
   });
 
 
-
   function calculatePower(){
     var averageVolume = (volume.left + volume.right)/2;
     var volumeLevel = Math.round(averageVolume/Utils.config.sensitivity);
     if(volumeLevel >= 100) volumeLevel = 100;
 
     if(volumeLevel < Utils.config.hiThreshold && volumeLevel > Utils.config.loThreshold){
-      powerLevel++;
+      powerLevel += 0.025;
     } else {
-      powerLevel--;
+      powerLevel -= 0.025;
       if(powerLevel <= 0) powerLevel = 0;
     }
 
     $.volume.style.height = volumeLevel + '%';
     $.power.style.height = powerLevel + '%';
 
+    var videoFrame = Math.round((powerLevel/100) * numberOfFrames);
+    if(videoFrame <= 0) videoFrame = 1;
+    if(videoFrame >= numberOfFrames) videoFrame = numberOfFrames;
+
+    $.video.src = './img/frame_' + videoFrame + '.png';
+
     if(powerLevel >= 100){
-      alert('BLAST OFF!');
+      // alert('BLAST OFF!');
+      powerLevel = 100;
     }
   }
 
