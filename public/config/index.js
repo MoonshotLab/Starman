@@ -41,16 +41,25 @@
         $frequencies.append(div);
       }
 
-      // assign
-      $el.channels.left.frequencies  = $('#channel-left').find('.frequency-wrapper');
-      $el.channels.right.frequencies = $('#channel-right').find('.frequency-wrapper');
+      // assigne frequency dom elements to static container
+      $('#channel-left').find('.frequency-wrapper').forEach(function(el){
+        $(el).width((1/data.frequencyNodeCount)*100 + '%');
 
-      // give a width to each one
-      $el.channels.left.frequencies.forEach(function(el){
-        $(el).width((1/data.frequencyNodeCount)*100 + '%');
+        $el.channels.left.frequencies.push({
+          el    : $(el),
+          val   : $(el).find('.frequency-val'),
+          meter : $(el).find('.frequency')
+        });
       });
-      $el.channels.right.frequencies.forEach(function(el){
+
+      $('#channel-right').find('.frequency-wrapper').forEach(function(el){
         $(el).width((1/data.frequencyNodeCount)*100 + '%');
+
+        $el.channels.right.frequencies.push({
+          el    : $(el),
+          val   : $(el).find('.frequency-val'),
+          meter : $(el).find('.frequency')
+        });
       });
     }
   });
@@ -75,13 +84,13 @@
     if(volumeHeight > 100) volumeHeight = 100;
     $el.channels[side].volume[0].style.height = volumeHeight + '%';
 
-    // update the frequency bars
+    // update the frequency bars and values
     data.frequency.forEach(function(frequency, i){
-      $($el.channels[side].frequencies[i]).find('.frequency-val').html(frequency);
+      $el.channels[side].frequencies[i].val.html(frequency);
 
       var height = Math.round(frequency/Utils.config.sensitivity);
       if(height > 100) height = 100;
-      $($el.channels[side].frequencies[i]).find('.frequency')[0].style.height = height + '%';
+      $el.channels[side].frequencies[i].meter[0].style.height = height + '%';
     });
   };
 
