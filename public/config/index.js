@@ -29,18 +29,18 @@
 
 
   // update the stage left and right meters
-  Scream.socket.on('stage-left', function(volume){
-    $.volume.leftVal.innerHTML = Math.round(volume/Utils.config.sensitivity);
+  Scream.socket.on('stage-left', function(data){
+    $.volume.leftVal.innerHTML = Math.round(data.volume/Utils.config.sensitivity);
 
-    var height = volume/Utils.config.sensitivity;
+    var height = data.volume/Utils.config.sensitivity;
     if(height > 100) height = 100;
     $.volume.left.style.height = height + '%';
   });
 
-  Scream.socket.on('stage-right', function(volume){
-    $.volume.rightVal.innerHTML = Math.round(volume/Utils.config.sensitivity);
+  Scream.socket.on('stage-right', function(data){
+    $.volume.rightVal.innerHTML = Math.round(data.volume/Utils.config.sensitivity);
 
-    var height = volume/Utils.config.sensitivity;
+    var height = data.volume/Utils.config.sensitivity;
     if(height > 100) height = 100;
     $.volume.right.style.height = height + '%';
   });

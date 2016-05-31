@@ -29,8 +29,11 @@
     });
 
     // emit the stage left or right sound to the server
-    soundCapture.emitter.addListener('volume', function(volume){
-      socket.emit('stage-' + stage, volume);
+    soundCapture.emitter.addListener('sound', function(volume, frequency){
+      socket.emit('stage-' + stage, {
+        volume : volume,
+        frequency : frequency
+      });
     });
   }
 })();

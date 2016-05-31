@@ -23,12 +23,12 @@
 
 
   // listen for volume changes and react
-  socket.on('stage-left', function(vol){
-    volume.left = vol;
+  socket.on('stage-left', function(data){
+    volume.left = data.volume;
   });
 
-  socket.on('stage-right', function(vol){
-    volume.right = vol;
+  socket.on('stage-right', function(data){
+    volume.right = data.volume;
   });
 
 
