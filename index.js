@@ -7,10 +7,10 @@ var port = process.env.PORT || 3000;
 
 // set up a config
 var config = {
-  maxVolume     : 10,
+  sensitivity   : 10,
   loThreshold   : 60,
   hiThreshold   : 80,
-  emissionRate  : 50
+  emissionRate  : 20
 };
 
 
@@ -40,6 +40,6 @@ io.on('connection', function(socket){
       config[key] = data[key];
     }
 
-    socket.broadcast.emit('config-update', data);
+    io.sockets.emit('config-update', data);
   });
 });

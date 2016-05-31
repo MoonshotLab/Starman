@@ -8,8 +8,8 @@
   <body>
     <h1>Scream5 - Configuration</h1>
     <div class='fieldset'>
-      <label>Max Volume:<span id='maxVolume-val'>0</span></label>
-      <input id='maxVolume' type='range' />
+      <label>Sensitivity:<span id='sensitivity-val'>0</span></label>
+      <input id='sensitivity' min='1' max='100' type='range' />
     </div>
 
     <div class='fieldset'>
@@ -22,7 +22,31 @@
       <input id='hiThreshold' type='range' />
     </div>
 
+    <div class='fieldset'>
+      <label>Emission Rate:<span id='emissionRate-val'>0</span></label>
+      <input id='emissionRate' type='range' />
+    </div>
+
+    <div class='channels'>
+
+      <div class='channel'>
+        <h2 id='stageLeft-val'>0</h2>
+        <div class='volume-container'>
+          <div class='volume' id='stageLeft'></div>
+        </div>
+      </div>
+
+      <div class='channel'>
+        <h2 id='stageRight-val'>0</h2>
+        <div class='volume-container'>
+          <div class='volume' id='stageRight'></div>
+        </div>
+      </div>
+
+    </div>
+
     <script src='/socket.io/socket.io.js'></script>
+    <script src='/lib/init.js'></script>
     <script src='./index.js'></script>
   </body>
 </html>

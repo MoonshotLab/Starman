@@ -35,3 +35,39 @@ input{
   margin: auto;
   margin-bottom: 30px;
 }
+
+.channels{
+  width: 100%;
+}
+.channel h2{
+  font-size: 100%;
+  padding: 0;
+  margin: 0;
+  margin-bottom: 10px;
+}
+.channel{
+  width: 50%;
+  float: left;
+}
+.channel:first-child h2{
+  padding-left: 10%;
+}
+.channel:last-child h2{
+  text-align: right;
+  padding-right: 10%;
+}
+.channel .volume-container{
+  height: 200px;
+  background-color: black;
+  position: relative;
+}
+.channel:first-child .volume-container{
+  border-right: 2px solid white;
+}
+.channel .volume{
+  background-color: red;
+  width: 100%;
+  height: 0%;
+  position: absolute;
+  bottom: 0;
+}

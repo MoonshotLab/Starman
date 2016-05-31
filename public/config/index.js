@@ -1,25 +1,48 @@
 (function(){
 
-  var socket = io();
-
   // create dom selectors
   var $ = {
     rangeSelectors : {
-      maxVolume   : document.getElementById('maxVolume'),
+      sensitivity : document.getElementById('sensitivity'),
       loThreshold : document.getElementById('loThreshold'),
-      hiThreshold : document.getElementById('hiThreshold')
+      hiThreshold : document.getElementById('hiThreshold'),
+      emissionRate : document.getElementById('emissionRate')
+    },
+    volume :{
+      left : document.getElementById('stageLeft'),
+      leftVal : document.getElementById('stageLeft-val'),
+      right : document.getElementById('stageRight'),
+      rightVal : document.getElementById('stageRight-val'),
     }
   };
 
 
   // listen for configuration updates
-  socket.on('config-update', function(data){
+  Scream.socket.on('config-update', function(data){
     for(var key in data){
       if(document.getElementById(key)){
         document.getElementById(key).value = data[key];
         document.getElementById(key + '-val').innerHTML = data[key];
       }
     }
+  });
+
+
+  // update the stage left and right meters
+  Scream.socket.on('stage-left', function(volume){
+    $.volume.leftVal.innerHTML = Math.round(volume/Utils.config.sensitivity);
+
+    var height = volume/Utils.config.sensitivity;
+    if(height > 100) height = 100;
+    $.volume.left.style.height = height + '%';
+  });
+
+  Scream.socket.on('stage-right', function(volume){
+    $.volume.rightVal.innerHTML = Math.round(volume/Utils.config.sensitivity);
+
+    var height = volume/Utils.config.sensitivity;
+    if(height > 100) height = 100;
+    $.volume.right.style.height = height + '%';
   });
 
 
@@ -31,10 +54,9 @@
       var val  = e.target.value;
       var data = {};
       data[type] = val;
-      socket.emit('config-update', data);
-
-      document.getElementById(type + '-val').innerHTML = val;
+      Scream.socket.emit('config-update', data);
     };
   }
+
 
 })();

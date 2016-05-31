@@ -38,7 +38,7 @@
 
   function calculatePower(){
     var averageVolume = volume.left + volume.right/2;
-    var volumeLevel = (averageVolume/Utils.config.maxVolume)*100;
+    var volumeLevel = (averageVolume/Utils.config.sensitivity)*100;
     if(volumeLevel >= 100) volumeLevel = 100;
 
     if(volumeLevel < Utils.config.hiThreshold && volumeLevel > Utils.config.loThreshold){
