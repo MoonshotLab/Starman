@@ -5,10 +5,7 @@ Scream.SC = class SoundCapture {
   constructor(opts){
     // configuration
     if(!opts) opts = {};
-    this.emissionRate = opts.emissionRate || 100;
     this.frequencyNodeCount = opts.frequencyNodeCount || 4;
-
-    console.log(opts);
 
     // retain
     this.emitter = new EventEmitter();

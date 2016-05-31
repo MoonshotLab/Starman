@@ -25,20 +25,30 @@
   // listen for volume changes and react
   socket.on('stage-left', function(data){
     volume.left = data.volume;
+    calculatePower();
   });
 
   socket.on('stage-right', function(data){
     volume.right = data.volume;
+    calculatePower();
+  });
+
+  socket.on('config-update', function(data){
+    $.targetHi.style.top = (100 - Utils.config.hiThreshold) + '%';
+    $.targetLo.style.top = (100 - Utils.config.loThreshold) + '%';
+
+    if(data.loThreshold){
+      $.targetLo.style.top = (100 - data.loThreshold) + '%';
+    } else if(data.hiThreshold){
+      $.targetHi.style.top = (100 - data.hiThreshold) + '%';
+    }
   });
 
 
 
-  // calculate the power every so often
-  setInterval(calculatePower, 50);
-
   function calculatePower(){
-    var averageVolume = volume.left + volume.right/2;
-    var volumeLevel = (averageVolume/Utils.config.sensitivity)*100;
+    var averageVolume = (volume.left + volume.right)/2;
+    var volumeLevel = Math.round(averageVolume/Utils.config.sensitivity);
     if(volumeLevel >= 100) volumeLevel = 100;
 
     if(volumeLevel < Utils.config.hiThreshold && volumeLevel > Utils.config.loThreshold){
