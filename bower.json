@@ -19,6 +19,7 @@
   ],
   "dependencies": {
     "eventEmitter": "^5.0.0",
-    "phaser": "^2.4.8"
+    "phaser": "^2.4.8",
+    "zepto": "^1.1.6"
   }
 }

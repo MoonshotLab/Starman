@@ -6,7 +6,9 @@ Scream.SC = class SoundCapture {
     // configuration
     if(!opts) opts = {};
     this.emissionRate = opts.emissionRate || 100;
-    this.nodeCount = opts.nodeCount || 4;
+    this.frequencyNodeCount = opts.frequencyNodeCount || 4;
+
+    console.log(opts);
 
     // retain
     this.emitter = new EventEmitter();
@@ -70,7 +72,7 @@ Scream.SC = class SoundCapture {
     var roundedData = [];
 
     // create placeholders for the rounded data
-    for(var j=0; j<self.nodeCount; j++){
+    for(var j=0; j<self.frequencyNodeCount; j++){
       roundedData.push(0);
     }
 
@@ -78,14 +80,14 @@ Scream.SC = class SoundCapture {
     for(var i=0; i<data.length; i++){
       volume += data[i];
 
-      var index = Math.floor(i/(data.length/self.nodeCount));
+      var index = Math.floor(i/(data.length/self.frequencyNodeCount));
       roundedData[index] += data[i];
     }
 
     // average out the frequency data
     for(var a=0; a<roundedData.length; a++){
       roundedData[a] = Math.round(
-        roundedData[a]/(data.length/self.nodeCount)
+        roundedData[a]/(data.length/self.frequencyNodeCount)
       );
     }
 

@@ -11,12 +11,13 @@
     queryParams[splitz[0]] = splitz[1];
   });
 
-  if(queryParams.stage){
+  // wait for the config to load
+  Scream.socket.on('config-update', function(data){
     var stage = queryParams.stage;
 
     // create a sound capture instance
     var soundCapture = new Scream.SC({
-      emissionRate : Utils.config.emissionRate
+      frequencyNodeCount : Utils.config.frequencyNodeCount
     });
 
     var deviceName = 'Default';
@@ -35,5 +36,5 @@
         frequency : frequency
       });
     });
-  }
+  });
 })();

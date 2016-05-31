@@ -7,6 +7,10 @@
   </head>
   <body>
     <h1>Scream5 - Configuration</h1>
+
+
+
+    <!-- Configuration Options -->
     <div class='fieldset'>
       <label>Sensitivity:<span id='sensitivity-val'>0</span></label>
       <input id='sensitivity' min='1' max='100' type='range' />
@@ -22,29 +26,33 @@
       <input id='hiThreshold' type='range' />
     </div>
 
-    <div class='fieldset'>
-      <label>Emission Rate:<span id='emissionRate-val'>0</span></label>
-      <input id='emissionRate' type='range' />
-    </div>
 
+
+    <!-- Observations -->
     <div class='channels'>
 
-      <div class='channel'>
-        <h2 id='stageLeft-val'>0</h2>
+      <div class='channel' id='channel-left'>
+        <h2 class='volume-val'>0</h2>
         <div class='volume-container'>
-          <div class='volume' id='stageLeft'></div>
+          <div class='volume'></div>
         </div>
+
+        <div class='frequencies'></div>
       </div>
 
-      <div class='channel'>
-        <h2 id='stageRight-val'>0</h2>
+      <div class='channel' id='channel-right'>
+        <h2 class='volume-val'>0</h2>
         <div class='volume-container'>
-          <div class='volume' id='stageRight'></div>
+          <div class='volume'></div>
         </div>
-      </div>
 
+        <div class='frequencies'></div>
+      </div>
     </div>
 
+
+
+    <script src='/bower_components/zepto/zepto.min.js'></script>
     <script src='/socket.io/socket.io.js'></script>
     <script src='/lib/init.js'></script>
     <script src='./index.js'></script>
