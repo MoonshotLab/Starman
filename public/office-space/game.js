@@ -34,7 +34,7 @@ class Game {
 
 
   preload(self){
-    self.game.load.image('stars', './img/starfield.jpg');
+    self.game.load.image('paper', './img/paper.png');
     self.game.load.spritesheet('rocket', './img/rocket-sprite.png', 215, 479);
 
     // preload all the obstacle images
@@ -47,7 +47,7 @@ class Game {
 
   create(self, opts){
     // setup world bounds and physics system
-    self.game.add.tileSprite(0, 0, opts.width, opts.height*5, 'stars');
+    self.game.add.tileSprite(0, 0, opts.width, opts.height*5, 'paper');
     self.game.world.setBounds(0, 0, opts.width, opts.height*5);
     self.game.physics.startSystem(Phaser.Physics.P2JS);
     self.game.physics.p2.restitution = 0.5;

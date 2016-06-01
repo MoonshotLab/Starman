@@ -1,6 +1,6 @@
 (function(){
 
-  var obstacles = ['post-its', 'scissors', 'sharpie'];
+  var obstacles = ['paperclip', 'ice-cream', 'sharpie', 'post-it', 'scissors'];
 
   var socket = io();
   var game = new Game({
