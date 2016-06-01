@@ -1,18 +1,22 @@
 (function(){
 
+  var obstacles = ['post-its', 'scissors', 'sharpie'];
+
   var socket = io();
-  window.game = new Game({
-    width : 900,
-    height : 850
+  var game = new Game({
+    width : window.innerWidth,
+    height : window.innerHeight,
+    obstacleConfig : obstacles,
+    obstacleCount: 20
   });
 
 
   socket.on('stage-left', function(volume){
-    // game.leftVolume = volume;
+    game.leftVolume = volume;
   });
 
   socket.on('stage-right', function(volume){
-    // game.rightVolume = volume;
+    game.rightVolume = volume;
   });
 
 

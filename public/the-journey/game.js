@@ -4,6 +4,7 @@ class Game {
     var self = this;
 
     // class properties
+    this.obstacleConfig = opts.obstacleConfig;
     this.score = 0;
     this.obstacles = null;
     this.player = null;
@@ -19,13 +20,13 @@ class Game {
       opts.width, opts.height, Phaser.CANVAS, 'game',
       {
         preload: function() {
-          self.preload(self, opts);
+          self.preload(self);
         },
         create: function() {
           self.create(self, opts);
         },
         update: function() {
-          self.update(self, opts);
+          self.update(self);
         }
       }
     );
@@ -33,63 +34,50 @@ class Game {
 
 
   preload(self){
-    self.game.load.image('obstacle', './img/obstacle.png', 20, 20);
+    self.game.load.image('stars', './img/starfield.jpg');
     self.game.load.spritesheet('rocket', './img/rocket-sprite.png', 215, 479);
+
+    // preload all the obstacle images
+    self.obstacleConfig.forEach(function(config){
+      var path = './img/' + config + '.png';
+      self.game.load.image(config, path, config.width, config.height);
+    });
   }
 
 
-  create(self){
-    self.game.stage.backgroundColor = '#eaeaea';
-    self.game.physics.startSystem(Phaser.Physics.ARCADE);
-
-    // setup player sprite
-    self.player = new Player({ game : self.game });
+  create(self, opts){
+    // setup world bounds and physics system
+    self.game.add.tileSprite(0, 0, opts.width, opts.height*5, 'stars');
+    self.game.world.setBounds(0, 0, opts.width, opts.height*5);
+    self.game.physics.startSystem(Phaser.Physics.P2JS);
+    self.game.physics.p2.restitution = 0.5;
 
     // create an obstacle container and setup hit detection
     self.obstacles = self.game.add.group();
     self.obstacles.enableBody = true;
-    self.game.physics.enable(self.obstacles);
+    self.obstacles.physicsBodyType = Phaser.Physics.P2JS;
 
-    // recursively generate obstacles
-    self.generateObstacle(self);
+    // place some random obstacles
+    for (var i = 0; i < opts.obstacleCount; i++)
+    {
+      var index = Utils.random(0, self.obstacleConfig.length - 1);
+      var config = self.obstacleConfig[index];
+
+      var obstacle = new Obstacle({
+        context : self,
+        config : config
+      });
+    }
+
+    // setup player sprite
+    self.player = new Player({ game : self.game });
+    self.game.camera.follow(self.player.sprite);
   }
 
 
   update(self){
     self.player.update(self.volume);
-
-    // do hit detections
-    self.game.physics.arcade.collide(self.obstacles);
-    self.game.physics.arcade.collide(self.player.sprite, self.obstacles, function(){
-      console.log('collision');
-    });
-
-    // clean up obstacles if they're off stage
-    self.obstacles.children.forEach(function(obstacle) {
-      obstacle.controller.checkDone();
-    });
   }
-
-
-
-  generateObstacle(context, timeout){
-    if (!timeout) timeout = 2000;
-
-    var speed = (2000 - timeout * 0.95) + 10;
-
-    timeout -= 20;
-    if (timeout < 100) timeout = 100;
-
-    var obstacle = new Obstacle({
-      context : context,
-      speed : -1 * speed
-    });
-
-    setTimeout(function() {
-      context.generateObstacle(context, timeout);
-    }, timeout);
-  }
-
 
 
   addScore(){
