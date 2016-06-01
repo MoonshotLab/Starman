@@ -18,15 +18,15 @@
 
   document.onkeydown = function(e){
     if(e.keyCode == 39){
-      game.leftVolume += 5;
+      game.volume.left += 5;
     } else if(e.keyCode == 37){
-      game.leftVolume -= 5;
-      if(game.leftVolume <= 0 ) game.leftVolume = 0;
+      game.volume.left -= 5;
+      if(game.volume.left <= 0 ) game.volume.left = 0;
     } else if(e.keyCode == 65){
-      game.rightVolume += 5;
+      game.volume.right += 5;
     } else if(e.keyCode == 83){
-      game.rightVolume -= 5;
-      if(game.rightVolume <= 0) game.rightVolume = 0;
+      game.volume.right -= 5;
+      if(game.volume.right <= 0) game.volume.right = 0;
     }
   };
 

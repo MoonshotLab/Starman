@@ -7,8 +7,7 @@ class Game {
     this.score = 0;
     this.obstacles = null;
     this.player = null;
-    this.leftVolume = 0;
-    this.rightVolume = 0;
+    this.volume = { left : 0, right : 0 };
 
     // dom storage
     this.$ = {
@@ -44,17 +43,7 @@ class Game {
     self.game.physics.startSystem(Phaser.Physics.ARCADE);
 
     // setup player sprite
-    self.player = self.game.add.sprite(self.game.width/2, self.game.height, 'rocket');
-    self.player.scale.setTo(0.4, 0.4);
-    self.player.animations.add('no-boosters', [0], 1, false);
-    self.player.animations.add('left-booster', [2], 1, false);
-    self.player.animations.add('right-booster', [1], 1, false);
-    self.player.animations.add('both-boosters', [3], 1, false);
-
-    // setup player collisions
-    self.game.physics.enable(self.player, Phaser.Physics.ARCADE);
-    self.player.body.collideWorldBounds = true;
-    self.player.body.bounce.setTo(0.75, 0.25);
+    self.player = new Player({ game : self.game });
 
     // create an obstacle container and setup hit detection
     self.obstacles = self.game.add.group();
@@ -67,27 +56,11 @@ class Game {
 
 
   update(self){
-    // determine the horizontal speed of the rocket
-    var speed = self.rightVolume - self.leftVolume;
-    self.player.body.acceleration.x = speed;
-
-    // play the proper sprite
-    if(self.rightVolume && self.leftVolume){
-      self.player.animations.play('both-boosters');
-    } else if(self.rightVolume){
-      self.player.animations.play('left-booster');
-    } else if(self.leftVolume){
-      self.player.animations.play('right-booster');
-    } else{
-      self.player.animations.play('no-boosters');
-    }
-
-    // represent with angle
-    self.player.angle = speed/4;
+    self.player.update(self.volume);
 
     // do hit detections
     self.game.physics.arcade.collide(self.obstacles);
-    self.game.physics.arcade.collide(self.player, self.obstacles, function(){
+    self.game.physics.arcade.collide(self.player.sprite, self.obstacles, function(){
       console.log('collision');
     });
 
