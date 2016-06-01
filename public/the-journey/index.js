@@ -1,30 +1,32 @@
 (function(){
-  var config = {
-    width : 800,
-    height : 400
-  };
 
   var socket = io();
-  var game = new Game(config);
+  window.game = new Game({
+    width : 900,
+    height : 850
+  });
 
 
   socket.on('stage-left', function(volume){
-    console.log(volume);
+    // game.leftVolume = volume;
   });
 
   socket.on('stage-right', function(volume){
-    console.log(volume);
+    // game.rightVolume = volume;
   });
 
 
-  window.speed = 0;
   document.onkeydown = function(e){
     if(e.keyCode == 39){
-      window.speed = 150;
+      game.leftVolume += 5;
     } else if(e.keyCode == 37){
-      window.speed = -150;
-    } else{
-      window.speed = 0;
+      game.leftVolume -= 5;
+      if(game.leftVolume <= 0 ) game.leftVolume = 0;
+    } else if(e.keyCode == 65){
+      game.rightVolume += 5;
+    } else if(e.keyCode == 83){
+      game.rightVolume -= 5;
+      if(game.rightVolume <= 0) game.rightVolume = 0;
     }
   };
 

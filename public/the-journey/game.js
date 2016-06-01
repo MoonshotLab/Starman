@@ -7,12 +7,12 @@ class Game {
     this.score = 0;
     this.obstacles = null;
     this.player = null;
-    this.volume = 0;
+    this.leftVolume = 0;
+    this.rightVolume = 0;
 
     // dom storage
     this.$ = {
-      points : document.getElementById('points'),
-      speed : document.getElementById('speed')
+      score : document.getElementById('score')
     };
 
     // create a new instance of a phaser game
@@ -35,43 +35,61 @@ class Game {
 
   preload(self){
     self.game.load.image('obstacle', './img/obstacle.png', 20, 20);
-    self.game.load.image('player', './img/player.png', 100, 40);
+    self.game.load.spritesheet('rocket', './img/rocket-sprite.png', 215, 479);
   }
 
 
   create(self){
+    self.game.stage.backgroundColor = '#eaeaea';
     self.game.physics.startSystem(Phaser.Physics.ARCADE);
 
+    // setup player sprite
+    self.player = self.game.add.sprite(self.game.width/2, self.game.height, 'rocket');
+    self.player.scale.setTo(0.4, 0.4);
+    self.player.animations.add('no-boosters', [0], 1, false);
+    self.player.animations.add('left-booster', [2], 1, false);
+    self.player.animations.add('right-booster', [1], 1, false);
+    self.player.animations.add('both-boosters', [3], 1, false);
+
     // setup player collisions
-    self.player = self.game.add.sprite(100, 40, 'player');
     self.game.physics.enable(self.player, Phaser.Physics.ARCADE);
     self.player.body.collideWorldBounds = true;
-    self.player.body.bounce.setTo(1, 1);
-    self.player.body.gravity.y = 0;
+    self.player.body.bounce.setTo(0.75, 0.25);
 
     // create an obstacle container and setup hit detection
     self.obstacles = self.game.add.group();
     self.obstacles.enableBody = true;
     self.game.physics.enable(self.obstacles);
 
-    // ground
-    self.ground = self.game.add.sprite(0, 380, 'obstacle');
-    self.game.physics.enable(self.ground);
-    self.ground.body.immovable = true;
-    self.ground.width = 800;
-
+    // recursively generate obstacles
     self.generateObstacle(self);
   }
 
 
   update(self){
-    self.player.body.acceleration.x = window.speed;
+    // determine the horizontal speed of the rocket
+    var speed = self.rightVolume - self.leftVolume;
+    self.player.body.acceleration.x = speed;
+
+    // play the proper sprite
+    if(self.rightVolume && self.leftVolume){
+      self.player.animations.play('both-boosters');
+    } else if(self.rightVolume){
+      self.player.animations.play('left-booster');
+    } else if(self.leftVolume){
+      self.player.animations.play('right-booster');
+    } else{
+      self.player.animations.play('no-boosters');
+    }
+
+    // represent with angle
+    self.player.angle = speed/4;
 
     // do hit detections
-    self.game.physics.arcade.overlap(self.player, self.obstacles, self.obstacleCollision,
-      null, self);
-    self.game.physics.arcade.overlap(self.player, self.ground, self.groundCollision,
-      null, self);
+    self.game.physics.arcade.collide(self.obstacles);
+    self.game.physics.arcade.collide(self.player, self.obstacles, function(){
+      console.log('collision');
+    });
 
     // clean up obstacles if they're off stage
     self.obstacles.children.forEach(function(obstacle) {
@@ -80,11 +98,11 @@ class Game {
   }
 
 
+
   generateObstacle(context, timeout){
     if (!timeout) timeout = 2000;
 
-    var speed = (2000 - timeout * 0.9) + 50;
-    this.$.speed.textContent = speed + ' px/sec';
+    var speed = (2000 - timeout * 0.95) + 10;
 
     timeout -= 20;
     if (timeout < 100) timeout = 100;
@@ -100,22 +118,9 @@ class Game {
   }
 
 
-  obstacleCollision(player, obstacle){
-    var xImpact = obstacle.body.velocity.x * -(obstacle.body.bounce.x);
-    xImpact += player.body.velocity.x*2;
-    obstacle.body.velocity.x = xImpact;
-
-    window.speed -= obstacle.body.velocity.x/4;
-  }
-
-
-  groundCollision(){
-    console.log('ground collision');
-  }
-
 
   addScore(){
     this.score += 1;
-    this.$.points.textContent = this.score;
+    this.$.score.textContent = this.score;
   }
 }
