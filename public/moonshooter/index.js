@@ -3,7 +3,7 @@
   // retain
   var socket = io();
   var powerLevel = 0;
-  var numberOfFrames = 57;
+  var numberOfFrames = 123;
 
   var volume = {
     left : 0,
