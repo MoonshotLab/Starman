@@ -2,7 +2,6 @@
 
   var obstacles = ['paperclip', 'ice-cream', 'sharpie', 'post-it', 'scissors'];
 
-  var socket = io();
   var game = new Game({
     width : window.innerWidth,
     height : window.innerHeight,
@@ -11,12 +10,12 @@
   });
 
 
-  socket.on('stage-left', function(volume){
-    game.leftVolume = volume;
+  Scream.socket.on('stage-left', function(data){
+    game.leftVolume = data.volume;
   });
 
-  socket.on('stage-right', function(volume){
-    game.rightVolume = volume;
+  Scream.socket.on('stage-right', function(data){
+    game.rightVolume = data.volume;
   });
 
 

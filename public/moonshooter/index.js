@@ -1,7 +1,6 @@
 (function(){
 
   // retain
-  var socket = io();
   var powerLevel = 0;
   var numberOfFrames = 123;
 
@@ -33,12 +32,12 @@
 
 
   // listen for volume changes and react
-  socket.on('stage-left', function(data){
+  Scream.socket.on('stage-left', function(data){
     volume.left = data.volume;
     calculatePower();
   });
 
-  socket.on('stage-right', function(data){
+  Scream.socket.on('stage-right', function(data){
     volume.right = data.volume;
     calculatePower();
   });
