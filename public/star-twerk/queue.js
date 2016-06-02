@@ -11,7 +11,7 @@ class Queue{
   }
 
 
-  addMove(){
+  addMove(tone){
 
     // generate a random color
     var color = [
@@ -24,7 +24,7 @@ class Queue{
 
     // generate some random positional attributes
     var height = Utils.random(5, 50);
-    var left = Utils.random(0, 3);
+    var left = Utils.random(0, 2);
     var position = 100;
 
     // create the move element
@@ -33,7 +33,7 @@ class Queue{
         bottom : position + '%',
         height : height + '%',
         backgroundColor : color,
-        left : left*25 + '%'
+        left : left*33.3 + '%',
       }
     });
 
@@ -43,7 +43,8 @@ class Queue{
       $el     : $move,
       height  : height,
       pos     : position,
-      active  : false
+      active  : false,
+      tone    : tone
     });
   }
 
@@ -75,5 +76,10 @@ class Queue{
         self.items.splice(i, 1);
       }
     });
+  }
+
+
+  compareTone(tones){
+
   }
 }
