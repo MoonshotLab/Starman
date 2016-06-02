@@ -24,7 +24,7 @@ class Queue{
 
     // generate some random positional attributes
     var height = Utils.random(5, 50);
-    var left = Utils.random(0, 75);
+    var left = Utils.random(0, 3);
     var position = 100;
 
     // create the move element
@@ -33,7 +33,7 @@ class Queue{
         bottom : position + '%',
         height : height + '%',
         backgroundColor : color,
-        left : left + '%'
+        left : left*25 + '%'
       }
     });
 

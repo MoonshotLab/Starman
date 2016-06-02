@@ -1,5 +1,5 @@
 (function(){
-  var speed = 0.1;
+  var speed = 0.5;
 
 
   // create the queue and add a move
@@ -12,9 +12,9 @@
   setInterval(function(){
     queue.addMove();
 
-    speed += 0.1;
+    speed += 0.01;
     if(speed >= 2.5) speed = 2.5;
-  }, 500);
+  }, 2000);
 
 
   // request the animation frame
