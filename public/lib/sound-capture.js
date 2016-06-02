@@ -47,10 +47,23 @@ Scream.SC = class SoundCapture {
     }, startStream, handleError);
 
     function startStream(stream){
+      // setup the media stream source and connect
       var mediaStreamSource = self.audioContext.createMediaStreamSource(stream);
       var frequencyData = new Uint8Array(self.analyser.frequencyBinCount);
       mediaStreamSource.connect(self.analyser);
 
+      // discover the potential relevant frequency bands
+      // a human voice can produce between 329.6hz and 1047hz
+      self.desiredFrequencyBandIndices = [];
+      var multiplier = self.audioContext.sampleRate/self.analyser.fftSize;
+      for(var i=0; i<frequencyData.length; i++){
+        var val = i*multiplier;
+        if(val > 329.6 && val < 1047){
+          self.desiredFrequencyBandIndices.push(i);
+        }
+      }
+
+      // calculate the byte data every so often
       setInterval(function(){
         self.analyser.getByteFrequencyData(frequencyData);
         self.processFrequencyData(frequencyData);
@@ -64,28 +77,33 @@ Scream.SC = class SoundCapture {
 
   processFrequencyData(data){
     var self = this;
-
     var volume = 0;
-    var roundedData = [];
-
-    // create placeholders for the rounded data
-    for(var j=0; j<self.frequencyNodeCount; j++){
-      roundedData.push(0);
-    }
+    var frequencies = [];
 
     // calculate the volume and frequency data
     for(var i=0; i<data.length; i++){
       volume += data[i];
 
-      var index = Math.floor(i/(data.length/self.frequencyNodeCount));
-      roundedData[index] += data[i];
+      // only add if it's in the range of human vocal capacity
+      if(self.desiredFrequencyBandIndices.indexOf(i) != -1){
+        frequencies.push(data[i]);
+      }
     }
 
     // average out the frequency data
-    for(var a=0; a<roundedData.length; a++){
-      roundedData[a] = Math.round(
-        roundedData[a]/(data.length/self.frequencyNodeCount)
-      );
+    var roundedData = [];
+    var itemsPerArray = Math.floor(frequencies.length / self.frequencyNodeCount);
+    for(var j=0; j<self.frequencyNodeCount; j++){
+
+      var average = 0;
+      for(var k=0; k<itemsPerArray; k++){
+        var index = itemsPerArray*j + k;
+        if(frequencies[index]){
+          average += frequencies[index];
+        }
+      }
+
+      roundedData.push(average/itemsPerArray);
     }
 
     self.frequencyData = roundedData;
