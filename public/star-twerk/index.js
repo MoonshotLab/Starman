@@ -1,42 +1,27 @@
-// (function(){
+(function(){
+  var speed = 0.1;
 
-  var $el = {
-    queue : $('#queue')
-  };
 
-  var queue = [];
+  // create the queue and add a move
+  var queue = new Queue();
+  queue.addMove();
 
-  var speed = 0;
 
-  var addMoveToQueue = function(){
-    var position = -10;
-    var $move = $('<div />', {
-      class : 'move', css : { top : position + '%' }
-    });
+  // add a new move every so often
+  // and increment the speed
+  setInterval(function(){
+    queue.addMove();
 
-    $el.queue.append($move);
-    queue.push({
-      $el : $move,
-      pos : position
-    });
-  };
+    speed += 0.1;
+    if(speed >= 2.5) speed = 2.5;
+  }, 500);
 
+
+  // request the animation frame
   var frame = function(){
-    queue.forEach(function(item, i){
-
-      // set the position
-      item.pos += speed;
-      item.$el.css('top', item.pos + '%');
-
-      // remove the element if it's off screen
-      if(item.pos >= 100) {
-        item.$el.remove();
-        queue.splice(i, 1);
-      }
-    });
-
+    queue.animate(speed);
     requestAnimationFrame(frame);
   };
-
   requestAnimationFrame(frame);
-// })();
+
+})();
