@@ -1,0 +1,36 @@
+html, body{
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: black;
+  margin: 0;
+}
+
+#queue-container{
+  background-color: rgba(255,255,255,.25);
+  width: 35%;
+  height: 100%;
+  position: relative;
+}
+
+#now{
+  background-color: rgba(255,255,255,.25);
+  position: absolute;
+  width: 100%;
+  height: 10%;
+  bottom: 15%;
+}
+
+#queue{
+  width: 100%;
+  height: 100%;
+}
+
+.move{
+  position: absolute;
+  width: 25%;
+  margin-left: 25%;
+  background-color: red;
+  height: 8%;
+  top: 15%;
+}
