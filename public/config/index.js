@@ -24,12 +24,19 @@
 
   // listen for configuration updates
   Scream.socket.on('config-update', function(data){
+    // set the range inputs
     for(var key in data){
       if(document.getElementById(key)){
         document.getElementById(key).value = data[key];
         document.getElementById(key + '-val').innerHTML = data[key];
       }
     }
+
+    // set the thresholds
+    if(data.loThreshold)
+      $('.lo-threshold').css('bottom', data.loThreshold + '%');
+    if(data.hiThreshold)
+      $('.hi-threshold').css('bottom', data.hiThreshold + '%');
 
     // append empty frequency templates
     if(data.frequencyNodeCount){
@@ -86,8 +93,6 @@
 
     // update the frequency bars and values
     data.frequency.forEach(function(frequency, i){
-      $el.channels[side].frequencies[i].val.html(frequency);
-
       var height = Math.round(frequency/Utils.config.sensitivity);
       if(height > 100) height = 100;
       $el.channels[side].frequencies[i].meter[0].style.height = height + '%';
@@ -112,7 +117,6 @@
   var createFrequencyTemplate = function(){
     return [
       '<div class="frequency-wrapper">',
-        '<h3 class="frequency-val"></h3>',
         '<div class="frequency-container">',
           '<div class="frequency"></div>',
         '</div>',
