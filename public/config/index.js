@@ -10,12 +10,10 @@
     channels : {
       left : {
         volume : $('#channel-left').find('.volume'),
-        volumeVal : $('#channel-left').find('.volume-val'),
         frequencies : []
       },
       right : {
         volume : $('#channel-right').find('.volume'),
-        volumeVal : $('#channel-right').find('.volume-val'),
         frequencies : []
       }
     }
@@ -83,9 +81,6 @@
 
 
   var updateDom = function(side, data){
-    // update the volume val
-    $el.channels[side].volumeVal[0].innerHTML = Math.round(data.volume/Utils.config.sensitivity);
-
     // update the volume bar
     var volumeHeight = Math.round(data.volume/Utils.config.sensitivity);
     if(volumeHeight > 100) volumeHeight = 100;

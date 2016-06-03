@@ -39,12 +39,6 @@ input{
 .channels{
   width: 100%;
 }
-.channel h2{
-  font-size: 100%;
-  padding: 0;
-  margin: 0;
-  margin-bottom: 10px;
-}
 .channel{
   width: 50%;
   float: left;
@@ -76,6 +70,7 @@ input{
   height: 1px;
   background-color: yellow;
   position: absolute;
+  z-index: 2;
 }
 
 
