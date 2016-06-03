@@ -2,14 +2,29 @@
 <html>
   <head>
     <title>Office Space</title>
-    <style>
-      html, body{ background-color: black; margin: 0; overflow: hidden; }
-    </style>
+    <link rel='stylesheet' href='./index.css' />
   </head>
   <body>
     <div id='game'></div>
+
+
+    <!-- volume indicators -->
+    <div id='stage-left'>
+      <div class='top'></div>
+      <div class='volume'></div>
+      <div class='bottom'></div>
+    </div>
+    <div id='stage-right'>
+      <div class='top'></div>
+      <div class='volume'></div>
+      <div class='bottom'></div>
+    </div>
+
+
     <h1 id='score'></h1>
 
+
+    <script src='/bower_components/zepto/zepto.min.js'></script>
     <script src='/bower_components/phaser/build/phaser.min.js'></script>
     <script src='/socket.io/socket.io.js'></script>
 

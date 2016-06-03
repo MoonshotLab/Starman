@@ -1,6 +1,10 @@
 (function(){
 
   var obstacles = ['paperclip', 'ice-cream', 'sharpie', 'post-it', 'scissors'];
+  var $el = {
+    volumeLeft : $('#stage-left').find('.volume'),
+    volumeRight : $('#stage-right').find('.volume')
+  };
 
   var game = new Game({
     width : window.innerWidth,
@@ -11,11 +15,17 @@
 
 
   Scream.socket.on('stage-left', function(data){
-    game.leftVolume = data.volume;
+    var volume = Math.round(data.volume/Utils.config.sensitivity);
+    if(volume >= 100) volume = 100;
+    $el.volumeLeft.css('height', volume + '%');
+    game.leftVolume = volume;
   });
 
   Scream.socket.on('stage-right', function(data){
-    game.rightVolume = data.volume;
+    var volume = Math.round(data.volume/Utils.config.sensitivity);
+    if(volume >= 100) volume = 100;
+    $el.volumeRight.css('height', volume + '%');
+    game.rightVolume = volume;
   });
 
 
