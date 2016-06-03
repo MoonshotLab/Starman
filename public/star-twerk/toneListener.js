@@ -5,11 +5,11 @@ class ToneListener{
     // make the tone set available to external classes
     this.toneSet = ['lo', 'hi', 'clap'];
 
-    // the current tone being produced
-    this.tone = null;
-
     // only process tone if wait has been turned off
     this.wait = false;
+
+    // emiter
+    this.emitter = new EventEmitter();
 
     // retain left and right channel data
     this.left  = { volume : 0, frequency : []};
@@ -57,15 +57,22 @@ class ToneListener{
       average = Math.round(average/mixed.length);
 
       // determine tone based on highest and lowest frequency buckets
+      var tone;
       var upperThird = Utils.config.frequencyNodeCount*0.666;
       var lowerThird = Utils.config.frequencyNodeCount*0.333;
       if(maxIndex > upperThird && minIndex < lowerThird){
-        this.tone = this.toneSet[1];
+        // hi
+        tone = this.toneSet[1];
       } else if(maxIndex < lowerThird && minIndex > upperThird){
-        this.tone = this.toneSet[0];
+        // lo
+        tone = this.toneSet[0];
       } else{
-        this.tone = this.toneSet[2];
+        // clap?
+        tone = this.toneSet[2];
       }
+
+      // emit a tone event
+      this.emitter.emitEvent('new-tone', [tone]);
 
       // log
       console.log('min        :', min);
@@ -74,11 +81,9 @@ class ToneListener{
       console.log('average    :', average);
       console.log('min-index  :', minIndex);
       console.log('max-index  :', maxIndex);
-      console.log('tone       :', this.tone);
+      console.log('tone       :', tone);
       console.log('--------------');
     }
-
-    return this.tone;
   }
 
 

@@ -37,14 +37,17 @@ class Queue{
       }
     });
 
-    // append to dom and remember in queue array
+    // append to dom
     this.$el.append($move);
+
+    // remember in queue array
     this.items.push({
-      $el     : $move,
-      height  : height,
-      pos     : position,
-      active  : false,
-      tone    : tone
+      $el     : $move,    // the dom element
+      height  : height,   // the height of the dome element
+      pos     : position, // the y position from bottom
+      active  : false,    // is within the active zone
+      tone    : tone,     // the tone this item represents
+      passed  : false     // has passed the tone test
     });
   }
 
@@ -57,6 +60,11 @@ class Queue{
       // set the position of each item
       item.pos -= speed;
       item.$el.css('bottom', item.pos + '%');
+
+      // if the item has passed the tone test
+      if(item.passed){
+        item.$el.addClass('passed');
+      }
 
       // check for collision
       var a = item.pos - self.threshold.top;
@@ -79,7 +87,18 @@ class Queue{
   }
 
 
-  compareTone(tones){
+  compareTone(tone){
+    var passed = false;
 
+    this.items.forEach(function(item){
+      if(item.active === true &&
+         item.passed === false &&
+         item.tone   ==  tone){
+        item.passed = true;
+        passed = true;
+      }
+    });
+
+    return passed;
   }
 }
