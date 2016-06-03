@@ -42,7 +42,7 @@
     calculatePower();
   });
 
-  socket.on('config-update', function(data){
+  Scream.socket.on('config-update', function(data){
     $.targetHi.style.top = (100 - Utils.config.hiThreshold) + '%';
     $.targetLo.style.top = (100 - Utils.config.loThreshold) + '%';
 
