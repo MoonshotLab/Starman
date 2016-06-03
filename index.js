@@ -10,7 +10,7 @@ var config = {
   sensitivity : 10,
   loThreshold : 60,
   hiThreshold : 80,
-  frequencyNodeCount : 8
+  frequencyNodeCount : 32
 };
 
 
