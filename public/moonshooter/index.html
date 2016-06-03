@@ -9,19 +9,20 @@
     <img id='video' src='./img/frame_1.png' />
 
     <div id='volume-container'>
-      <h2>Volume</h2>
-      <div class='border'>
-        <div id='target-hi'></div>
-        <div id='target-lo'></div>
-        <div id='volume'></div>
-      </div>
+      <h2 id='target-hi-text'>Too Loud</h2>
+      <h2 id='target-lo-text'>Not Loud Enough</h2>
+      <h2 id='target-text'>Just Right</h2>
+      <div id='target-hi'></div>
+      <div id='target-lo'></div>
+      <div id='volume'></div>
     </div>
 
     <div id='power-container'>
-      <h2>Power</h2>
-      <div class='border'>
-        <div id='power'></div>
-      </div>
+      <h2 id='lift-off'>Lift Off</h2>
+      <h2 id='false-start'>False Start</h2>
+      <div id='power-top'></div>
+      <div id='power'></div>
+      <div id='power-bottom'></div>
     </div>
 
     <script src='/socket.io/socket.io.js'></script>

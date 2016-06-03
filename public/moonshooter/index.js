@@ -17,10 +17,11 @@
     power : document.getElementById('power'),
     targetHi : document.getElementById('target-hi'),
     targetLo : document.getElementById('target-lo'),
+    targetHiText : document.getElementById('target-hi-text'),
+    targetLoText : document.getElementById('target-lo-text'),
+    targetText : document.getElementById('target-text'),
     video : document.getElementById('video')
   };
-  $.targetHi.style.top = (100 - Utils.config.hiThreshold) + '%';
-  $.targetLo.style.top = (100 - Utils.config.loThreshold) + '%';
 
 
   // preload all the images
@@ -43,14 +44,16 @@
   });
 
   Scream.socket.on('config-update', function(data){
-    $.targetHi.style.top = (100 - Utils.config.hiThreshold) + '%';
-    $.targetLo.style.top = (100 - Utils.config.loThreshold) + '%';
+    var hiPos = (100 - Utils.config.hiThreshold);
+    $.targetHi.style.top = hiPos + '%';
+    $.targetHiText.style.top = hiPos + '%';
 
-    if(data.loThreshold){
-      $.targetLo.style.top = (100 - data.loThreshold) + '%';
-    } else if(data.hiThreshold){
-      $.targetHi.style.top = (100 - data.hiThreshold) + '%';
-    }
+    var loPos = (100 - Utils.config.loThreshold);
+    $.targetLo.style.top = loPos + '%';
+    $.targetLoText.style.top = loPos + '%';
+
+    var targetPos = (hiPos + (loPos - hiPos)/2);
+    $.targetText.style.top = targetPos + '%';
   });
 
 

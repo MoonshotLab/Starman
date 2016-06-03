@@ -8,9 +8,7 @@ html, body{
   overflow: hidden;
 }
 
-h2{
-  font-size: 100%;
-}
+
 
 #video{
   height: 100%;
@@ -18,41 +16,94 @@ h2{
   margin: auto;
 }
 
+
+
+/* power and target containers*/
+h2{
+  color: rgb(233, 32, 25);
+  position: absolute;
+  margin: 0;
+  width: 500%;
+  margin-top: -5%;
+}
 #power-container, #volume-container{
   position: absolute;
-  left: 50px;
-  bottom: 50px;
+  left: 5%;
+  top: 10%;
+  width: 7%;
+  height: 80%;
+  border: 5px solid white;
 }
-
-.border{
-  position: relative;
-  border: 3px solid white;
-  width: 50px;
-  height: 200px;
-}
-
 #power-container{
   left: auto;
-  right: 50px;
+  right: 5%;
+  border-top: none;
+  border-bottom: none;
 }
 
+
+
+/* target bar borders */
+#volume-container h2{
+  left: 125%;
+}
 #target-hi, #target-lo{
-  width: 8px;
-  height: 8px;
-  background-color: white;
-  right: -15px;
+  width: 105%;
+  left: -2.5%;
+  height: 5%;
+  background-image: url('./img/squiggle.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
   position: absolute;
-  top: 25px;
+  background-position: center;
+  z-index: 1;
 }
-
+#target-lo{
+  transform: scaleX(-1) scaleY(-1);
+}
 #target-lo{
   top: 70px;
 }
 
+
+
+/* power bar borders */
+#power-container h2{
+  right: 125%;
+  text-align: right;
+}
+h2#false-start{
+  bottom: 0;
+}
+#power-top, #power-bottom{
+  background-image: url('./img/squiggle.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 105%;
+  height: 5%;
+  left: -2.5%;
+  position: absolute;
+}
+#power-top{
+  top: -.25%;
+}
+#power-bottom{
+  bottom: -.25%;
+  transform: scaleX(-1) scaleY(-1);
+}
+
+
+
+/* target and power bars */
 #power, #volume{
-  background-color: red;
+  background-image: url('./img/line-meter.svg');
+  background-size: 100%;
+  background-color: rgba(233, 32, 25, .4);
   position: absolute;
   bottom: 0;
   width: 100%;
-  height: 0%;
+  left: 0;
+}
+#power{
+  bottom: 1%;
 }
