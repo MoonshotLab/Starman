@@ -30,6 +30,7 @@ Scream.SC = class SoundCapture {
         }
       });
 
+      if(!foundDevice) foundDevice = devices[0];
       next(foundDevice);
     });
   }
