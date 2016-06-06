@@ -96,14 +96,11 @@ h2#false-start{
 
 /* target and power bars */
 #power, #volume{
-  /*background-image: url('./img/line-meter.svg');*/
+  background-image: url('./img/line-meter.svg');
   background-size: 100%;
-  background-color: rgba(233, 32, 25, .25);
+  background-position: bottom left;
   position: absolute;
-  bottom: 0;
-  width: 100%;
-  left: 0;
-}
-#power{
-  bottom: 1%;
+  bottom: 1.5%;
+  width: 80%;
+  left: 10%;
 }

@@ -41,9 +41,9 @@ html, body{
 .volume{
   background-image: url('./img/line-meter.svg');
   background-size: 100%;
-  background-color: rgba(233, 32, 25, .4);
   position: absolute;
-  bottom: 1%;
-  width: 100%;
-  left: 0;
+  background-position: bottom left;
+  bottom: 2%;
+  width: 80%;
+  left: 10%;
 }
