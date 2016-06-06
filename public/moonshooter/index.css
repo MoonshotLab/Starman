@@ -96,9 +96,9 @@ h2#false-start{
 
 /* target and power bars */
 #power, #volume{
-  background-image: url('./img/line-meter.svg');
+  /*background-image: url('./img/line-meter.svg');*/
   background-size: 100%;
-  background-color: rgba(233, 32, 25, .4);
+  background-color: rgba(233, 32, 25, .25);
   position: absolute;
   bottom: 0;
   width: 100%;

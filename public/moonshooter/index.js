@@ -35,12 +35,10 @@
   // listen for volume changes and react
   Scream.socket.on('stage-left', function(data){
     volume.left = data.volume;
-    calculatePower();
   });
 
   Scream.socket.on('stage-right', function(data){
     volume.right = data.volume;
-    calculatePower();
   });
 
   Scream.socket.on('config-update', function(data){
@@ -63,9 +61,9 @@
     if(volumeLevel >= 100) volumeLevel = 100;
 
     if(volumeLevel < Utils.config.hiThreshold && volumeLevel > Utils.config.loThreshold){
-      powerLevel += 0.025;
+      powerLevel += 1;
     } else {
-      powerLevel -= 0.025;
+      powerLevel -= 1;
       if(powerLevel <= 0) powerLevel = 0;
     }
 
@@ -79,9 +77,13 @@
     $.video.src = './img/frame_' + videoFrame + '.png';
 
     if(powerLevel >= 100){
-      // alert('BLAST OFF!');
       powerLevel = 100;
     }
+
+    window.requestAnimationFrame(calculatePower);
   }
+
+  // animate
+  window.requestAnimationFrame(calculatePower);
 
 })();
