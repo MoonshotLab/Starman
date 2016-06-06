@@ -22,30 +22,35 @@ Scream.SC = class SoundCapture {
   // pass a device label
   // returns their media info
   static getDevice(deviceName, next){
-    var foundDevice = null;
     navigator.mediaDevices.enumerateDevices().then(function(devices){
+      var err, foundDevice;
+
       devices.forEach(function(device){
         if(deviceName == device.label && device.kind == 'audioinput'){
           foundDevice = device;
         }
       });
 
-      if(!foundDevice) foundDevice = devices[0];
-      next(foundDevice);
+      if(!foundDevice) err = 'Could not find device';
+      next(err, foundDevice);
     });
   }
 
 
 
   // pass a device's media info
-  listen(device){
+  listen(device, next){
     var self = this;
 
-    navigator.getUserMedia({
-      audio : {
-        optional : [{ sourceId : device.sourceId }]
-      }
-    }, startStream, handleError);
+    var err;
+    try{
+      navigator.getUserMedia({
+        audio : {
+          optional : [{ sourceId : device.sourceId }]
+        }
+      }, startStream, handleError);
+    } catch(e){ err = e; }
+    next(err, 'connecting...');
 
     function startStream(stream){
       // setup the media stream source and connect

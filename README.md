@@ -9,6 +9,8 @@ Capturing streaming audio from multiple microphone inputs using a single web bro
 
 The capture interfaces must be loaded in separate browsers (NOT separate windows of the same browser!). The capture interfaces are located at `/capture?stage=left` and `/capture?stage=right`.
 
+Additionally, two separate aggregate devices must be setup using the Audio Midi Setup panel on OSX. You should name these channels 'left' and 'right'.
+
 For best results, adjust the settings on each browser and check "Allow all sites to use system exclusive messages to access MIDI devices". This setting can be found by clicking on the video/audio manager icon in the browser's url entry field, then clicking "Manage Microphone Settings".
 
 

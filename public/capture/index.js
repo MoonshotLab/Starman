@@ -20,13 +20,19 @@
       frequencyNodeCount : Utils.config.frequencyNodeCount
     });
 
-    var deviceName = 'Default';
-    if(stage == 'left') deviceName = 'Default';
-    else if(stage == 'right') deviceName = 'AudioBox USB';
-
     // startup the device
-    Scream.SC.getDevice(deviceName, function(device){
-      soundCapture.listen(device);
+    Scream.SC.getDevice(stage, function(err, device){
+      var result;
+      if(!err){
+        soundCapture.listen(device, function(err){
+          var res;
+          if(err) res = err;
+          else res = 'Connected to Stage ' + stage;
+          document.getElementById('status').innerHTML = res;
+        });
+      } else {
+        document.getElementById('status').innerHTML = err;
+      }
     });
 
     // emit the stage left or right sound to the server
