@@ -1,5 +1,10 @@
 (function(){
 
+  var channels = {
+    left  : { volume : 0, frequency : [] },
+    right : { volume : 0, frequency : [] }
+  };
+
   // create dom selectors
   window.$el = {
     rangeSelectors : {
@@ -72,28 +77,43 @@
 
   // update the stage left and right meters
   Scream.socket.on('stage-left', function(data){
-    updateDom('left', data);
+    channels.left = data;
   });
 
   Scream.socket.on('stage-right', function(data){
-    updateDom('right', data);
+    channels.right = data;
   });
 
 
-  var updateDom = function(side, data){
-    // update the volume bar
-    var volumeHeight = Math.round(data.volume/Utils.config.sensitivity);
-    if(volumeHeight > 100) volumeHeight = 100;
-    $el.channels[side].volume[0].style.height = volumeHeight + '%';
+  var updateDom = function(){
+    // update the volume bars
+    var leftVolume = Math.round(channels.left.volume/Utils.config.sensitivity);
+    if(leftVolume > 100) leftVolume = 100;
+    $el.channels.left.volume[0].style.height = leftVolume + '%';
+
+    var rightVolume = Math.round(channels.right.volume/Utils.config.sensitivity);
+    if(rightVolume > 100) rightVolume = 100;
+    $el.channels.right.volume[0].style.height = rightVolume + '%';
 
     // update the frequency bars and values
-    data.frequency.forEach(function(frequency, i){
+    channels.left.frequency.forEach(function(frequency, i){
       var height = Math.round(frequency/Utils.config.sensitivity);
       if(height > 100) height = 100;
-      $el.channels[side].frequencies[i].meter[0].style.height = height + '%';
+      $el.channels.left.frequencies[i].meter[0].style.height = height + '%';
     });
+
+    channels.right.frequency.forEach(function(frequency, i){
+      var height = Math.round(frequency/Utils.config.sensitivity);
+      if(height > 100) height = 100;
+      $el.channels.right.frequencies[i].meter[0].style.height = height + '%';
+    });
+
+    // try it again
+    window.requestAnimationFrame(updateDom);
   };
 
+  // animate
+  window.requestAnimationFrame(updateDom);
 
   // loop over each range selector and attach event listeners
   for(var key in $el.rangeSelectors){
