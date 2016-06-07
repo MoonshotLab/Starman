@@ -1,7 +1,8 @@
 class Queue{
-  constructor(){
+  constructor(opts){
     this.$el = $('#queue');
     this.items = [];
+    this.bpm = opts.bpm;
 
     var $now = $('#now');
     this.threshold = {
@@ -23,42 +24,44 @@ class Queue{
     ].join('');
 
     // generate some random positional attributes
-    var height = Utils.random(5, 50);
-    var left = Utils.random(0, 2);
     var position = 100;
 
     // create the move element
     var $move = $('<div />', {
       class : 'move', css : {
         bottom : position + '%',
-        height : height + '%',
-        backgroundColor : color,
-        left : left*33.3 + '%',
+        backgroundColor : color
       }
     });
 
     // append to dom
     this.$el.append($move);
 
+    // get the height
+    var height = parseFloat($move.height()/$move.parent().height())*100;
+
     // remember in queue array
     this.items.push({
       $el     : $move,    // the dom element
-      height  : height,   // the height of the dome element
+      height  : height,   // the height of the dom element
       pos     : position, // the y position from bottom
       active  : false,    // is within the active zone
       tone    : tone,     // the tone this item represents
-      passed  : false     // has passed the tone test
+      passed  : false,    // has passed the tone test
+      createdAt : Date.now()
     });
   }
 
 
-  animate(speed){
+  animate(now){
     var self = this;
 
     this.items.forEach(function(item, i){
 
       // set the position of each item
-      item.pos -= speed;
+      var diff = (now - item.createdAt)/1000;
+      diff = diff*self.bpm/60;
+      item.pos = 100 - ((100 - item.height)*diff);
       item.$el.css('bottom', item.pos + '%');
 
       // if the item has passed the tone test

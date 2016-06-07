@@ -1,7 +1,6 @@
 (function(){
 
-  // speed of the moves
-  var speed = 0.5;
+  // store points
   var points = 0;
 
 
@@ -15,7 +14,7 @@
 
 
   // create the queue and add a move
-  var queue = new Queue();
+  var queue = new Queue({ bpm : 60 });
   queue.addMove(toneListener.getRandomTone());
 
 
@@ -28,20 +27,9 @@
   };
 
 
-  // add a new move every so often
-  // and increment the speed
-  setInterval(function(){
-    queue.addMove(toneListener.getRandomTone());
-
-    speed += 0.01;
-    if(speed >= 2.5) speed = 2.5;
-  }, 2000);
-
-
   // request the animation frame and animate
   var frame = function(){
-    queue.animate(speed);
-
+    queue.animate(Date.now());
     requestAnimationFrame(frame);
   };
   requestAnimationFrame(frame);

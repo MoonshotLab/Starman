@@ -25,13 +25,13 @@ html, body{
   position: absolute;
   width: 100%;
   background-color: red;
-  height: 16.665%;
+  height: 16.6667%;
 }
 
 #now{
   background-color: rgba(255,255,255,.15);
   position: absolute;
   width: 100%;
-  height: 1%;
-  bottom: 16.665%;
+  height: 16.6667%;
+  bottom: 16.6667%;
 }
