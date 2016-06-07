@@ -23,17 +23,17 @@ class Player {
 
   update(volume){
     // determine the horizontal speed of the rocket
-    var speed = volume.right - volume.left;
+    var speed = (volume.left - volume.right)*3;
     this.sprite.body.velocity.x = speed;
     this.sprite.body.velocity.y = -1*(volume.right + volume.left);
 
     // play the proper sprite
-    if(volume.right && volume.left){
+    if(volume.right > Utils.config.loThreshold && volume.left > Utils.config.hiThreshold){
       this.sprite.animations.play('both-boosters');
-    } else if(volume.right){
-      this.sprite.animations.play('left-booster');
-    } else if(volume.left){
+    } else if(volume.right > Utils.config.loThreshold){
       this.sprite.animations.play('right-booster');
+    } else if(volume.left > Utils.config.loThreshold){
+      this.sprite.animations.play('left-booster');
     } else{
       this.sprite.animations.play('no-boosters');
     }

@@ -18,14 +18,14 @@
     var volume = Math.round(data.volume/Utils.config.sensitivity);
     if(volume >= 100) volume = 100;
     $el.volumeLeft.css('height', volume + '%');
-    game.leftVolume = volume;
+    game.volume.left = volume;
   });
 
   Scream.socket.on('stage-right', function(data){
     var volume = Math.round(data.volume/Utils.config.sensitivity);
     if(volume >= 100) volume = 100;
     $el.volumeRight.css('height', volume + '%');
-    game.rightVolume = volume;
+    game.volume.right = volume;
   });
 
 

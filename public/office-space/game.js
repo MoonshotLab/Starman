@@ -40,7 +40,7 @@ class Game {
     // preload all the obstacle images
     self.obstacleConfig.forEach(function(config){
       var path = './img/' + config + '.png';
-      self.game.load.image(config, path, config.width, config.height);
+      self.game.load.image(config, path);
     });
   }
 
