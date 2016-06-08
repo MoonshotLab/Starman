@@ -4,16 +4,20 @@
   var song = [];
 
 
-  // create a queue and assign bpms
+  // create a queue
   var queue = new Queue();
+
+
+  // create a dancer
+  var dancer = new Dancer();
 
 
   // create a tone listener
   var toneListener = new ToneListener();
   toneListener.emitter.addListener('new-tone', function(tone){
     var pass = queue.compareTone(tone);
-    if(pass) console.log('pass');
-    else console.log('fail');
+    if(pass) dancer.progress();
+    else dancer.fail();
   });
 
 

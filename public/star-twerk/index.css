@@ -43,3 +43,18 @@ html, body{
   height: 16.6667%;
   bottom: 16.6667%;
 }
+
+
+#fail{
+  position: absolute;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  background-color: red;
+  -webkit-transition: opacity .25s;
+  opacity: 0;
+  top: 0;
+}
+#fail.show{
+  opacity: .8;
+}
