@@ -3,7 +3,8 @@ class ToneListener{
     var self = this;
 
     // make the tone set available to external classes
-    this.toneSet = ['lo', 'hi', 'clap'];
+    // lo, hi, clap... respectively
+    this.toneSet = ['l', 'h', 'c'];
 
     // only process tone if wait has been turned off
     this.wait = false;
@@ -84,12 +85,5 @@ class ToneListener{
       console.log('tone       :', tone);
       console.log('--------------');
     }
-  }
-
-
-
-  getRandomTone(){
-    var index = Utils.random(0, this.toneSet.length - 1);
-    return this.toneSet.name;
   }
 }

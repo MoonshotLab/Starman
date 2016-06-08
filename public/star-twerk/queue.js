@@ -13,24 +13,10 @@ class Queue{
 
 
   addMove(tone){
-
-    // generate a random color
-    var color = [
-      'rgb(',
-        Utils.random(0, 255), ',',
-        Utils.random(0, 255), ',',
-        Utils.random(0, 255),
-      ')'
-    ].join('');
-
-    // generate some random positional attributes
-    var position = 100;
-
     // create the move element
     var $move = $('<div />', {
-      class : 'move', css : {
-        bottom : position + '%',
-        backgroundColor : color
+      class : 'move ' + tone, css : {
+        bottom : '100%'
       }
     });
 
@@ -44,7 +30,7 @@ class Queue{
     this.items.push({
       $el     : $move,    // the dom element
       height  : height,   // the height of the dom element
-      pos     : position, // the y position from bottom
+      pos     : 100,      // the y position from bottom
       active  : false,    // is within the active zone
       tone    : tone,     // the tone this item represents
       passed  : false,    // has passed the tone test

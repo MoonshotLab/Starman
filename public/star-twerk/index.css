@@ -24,8 +24,16 @@ html, body{
 .move{
   position: absolute;
   width: 100%;
-  background-color: red;
   height: 16.6667%;
+}
+.move.l{
+  background-color: blue;
+}
+.move.h{
+  background-color: yellow;
+}
+.move.c{
+  background-color: red;
 }
 
 #now{
