@@ -1,15 +1,11 @@
 (function(){
-  // set a bpm
-  var bpm = 60;
-
-
   // make a song
   var beatIndex = 0;
   var song = [];
 
 
   // create a queue and assign bpms
-  var queue = new Queue({ bpm : bpm });
+  var queue = new Queue();
 
 
   // create a tone listener
@@ -23,15 +19,16 @@
 
   // determine if it's time to add a new note
   // request the animation frame and animate
+  var startTime = Date.now();
   var frame = function(){
     var now  = Date.now();
-    var diff = ((now - startTime)/1000)*(bpm/60);
+    var diff = ((now - startTime)/1000)*(Utils.config.bpm/60);
     var quarter = diff*4;
 
-    if(quarter >= beatIndex){
+    if(quarter > beatIndex){
       var beat = song[beatIndex];
-      if(beat != '0')
-        queue.addMove(beat);
+      if(beat && beat != '0')
+        queue.addBeat(beat);
       beatIndex++;
     }
 

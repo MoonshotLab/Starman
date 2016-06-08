@@ -10,7 +10,8 @@
     rangeSelectors : {
       sensitivity : document.getElementById('sensitivity'),
       loThreshold : document.getElementById('loThreshold'),
-      hiThreshold : document.getElementById('hiThreshold')
+      hiThreshold : document.getElementById('hiThreshold'),
+      bpm         : document.getElementById('bpm')
     },
     channels : {
       left : {

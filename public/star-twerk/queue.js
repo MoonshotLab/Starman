@@ -1,8 +1,7 @@
 class Queue{
-  constructor(opts){
+  constructor(){
     this.$el = $('#queue');
     this.items = [];
-    this.bpm = opts.bpm;
 
     var $now = $('#now');
     this.threshold = {
@@ -12,23 +11,23 @@ class Queue{
   }
 
 
-  addMove(tone){
-    // create the move element
-    var $move = $('<div />', {
-      class : 'move ' + tone, css : {
+  addBeat(tone){
+    // create the beat element
+    var $beat = $('<div />', {
+      class : 'beat ' + tone, css : {
         bottom : '100%'
       }
     });
 
     // append to dom
-    this.$el.append($move);
+    this.$el.append($beat);
 
     // get the height
-    var height = parseFloat($move.height()/$move.parent().height())*100;
+    var height = parseFloat($beat.height()/$beat.parent().height())*100;
 
     // remember in queue array
     this.items.push({
-      $el     : $move,    // the dom element
+      $el     : $beat,    // the dom element
       height  : height,   // the height of the dom element
       pos     : 100,      // the y position from bottom
       active  : false,    // is within the active zone
@@ -46,7 +45,7 @@ class Queue{
 
       // set the position of each item
       var diff = (now - item.createdAt)/1000;
-      diff = diff*self.bpm/60;
+      diff = diff*Utils.config.bpm/60;
       item.pos = 100 - ((100 - item.height)*diff);
       item.$el.css('bottom', item.pos + '%');
 

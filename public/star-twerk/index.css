@@ -21,18 +21,18 @@ html, body{
   height: 100%;
 }
 
-.move{
+.beat{
   position: absolute;
   width: 100%;
   height: 16.6667%;
 }
-.move.l{
+.beat.l{
   background-color: blue;
 }
-.move.h{
+.beat.h{
   background-color: yellow;
 }
-.move.c{
+.beat.c{
   background-color: red;
 }
 
