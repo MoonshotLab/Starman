@@ -2,4 +2,4 @@ bower_components
 .DS_Store
 node_modules
 todo.md
-public/moonshooter/img/*.png
+public/moonshooter/img/*.jpg

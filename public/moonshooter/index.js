@@ -2,7 +2,8 @@
 
   // retain
   var powerLevel = 0;
-  var numberOfFrames = 123;
+  var numGameFrames = 67;
+  var numWinFrames = 30;
 
   var volume = {
     left : 0,
@@ -20,15 +21,17 @@
     targetHiText : document.getElementById('target-hi-text'),
     targetLoText : document.getElementById('target-lo-text'),
     targetText : document.getElementById('target-text'),
-    video : document.getElementById('video')
+    framed : document.getElementById('framed'),
+    winner : document.getElementById('winner')
   };
 
 
   // preload all the images
-  var images = [];
-  for(var i = 1; i < numberOfFrames; i++) {
-    images[i] = new Image();
-    images[i].src = './img/frame_' + i + '.png';
+  for(var i = 1; i < numGameFrames; i++) {
+    new Image().src = './img/game_frame_' + i + '.jpg';
+  }
+  for(var j = 1; j < numWinFrames; j++) {
+    new Image().src = './img/win_frame_' + j + '.jpg';
   }
 
 
@@ -70,20 +73,42 @@
     $.volume.style.height = volumeLevel + '%';
     $.power.style.height = powerLevel + '%';
 
-    var videoFrame = Math.round((powerLevel/100) * numberOfFrames);
+    var videoFrame = Math.round((powerLevel/100) * numGameFrames);
     if(videoFrame <= 0) videoFrame = 1;
-    if(videoFrame >= numberOfFrames) videoFrame = numberOfFrames;
+    if(videoFrame >= numGameFrames) videoFrame = numGameFrames;
 
-    $.video.src = './img/frame_' + videoFrame + '.png';
+    // $.framed.src = './img/game_frame_' + videoFrame + '.jpg';
 
     if(powerLevel >= 100){
       powerLevel = 100;
+      showWinScreen();
+    } else{
+      window.requestAnimationFrame(calculatePower);
     }
-
-    window.requestAnimationFrame(calculatePower);
   }
+
+
+  function showWinScreen(){
+    // play the win screen animation
+    var activeFrame = 1;
+    setInterval(function(){
+      if(activeFrame <= numWinFrames){
+        $.framed.src = './img/win_frame_' + activeFrame + '.jpg';
+        activeFrame++;
+      }
+    }, 100);
+
+    // blink the winner screen
+    setInterval(function(){
+      if($.winner.style.display == 'block'){
+        $.winner.style.display = 'none';
+      } else{
+        $.winner.style.display = 'block';
+      }
+    }, 350);
+  }
+
 
   // animate
   window.requestAnimationFrame(calculatePower);
-
 })();

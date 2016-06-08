@@ -10,10 +10,11 @@ html, body{
 
 
 
-#video{
-  height: 100%;
-  display: block;
-  margin: auto;
+#framed{
+  width: 100%;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 
@@ -29,9 +30,9 @@ h2{
 #power-container, #volume-container{
   position: absolute;
   left: 5%;
-  top: 10%;
+  top: 15%;
   width: 7%;
-  height: 80%;
+  height: 70%;
   border: 5px solid white;
 }
 #power-container{
@@ -103,4 +104,10 @@ h2#false-start{
   bottom: 1.5%;
   width: 80%;
   left: 10%;
+}
+
+
+
+#winner{
+  display: none;
 }
