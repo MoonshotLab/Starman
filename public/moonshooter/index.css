@@ -110,4 +110,9 @@ h2#false-start{
 
 #winner{
   display: none;
+  text-align: center;
+  position: absolute;
+  width: 100%;
+  top: 30%;
+  font-size: 500%;
 }

@@ -2,8 +2,8 @@
 
   // retain
   var powerLevel = 0;
-  var numGameFrames = 67;
-  var numWinFrames = 30;
+  var numGameFrames = 22;
+  var numWinFrames = 17;
 
   var volume = {
     left : 0,
@@ -77,7 +77,7 @@
     if(videoFrame <= 0) videoFrame = 1;
     if(videoFrame >= numGameFrames) videoFrame = numGameFrames;
 
-    // $.framed.src = './img/game_frame_' + videoFrame + '.jpg';
+    $.framed.src = './img/game_frame_' + videoFrame + '.jpg';
 
     if(powerLevel >= 100){
       powerLevel = 100;
