@@ -3,7 +3,7 @@ class ToneListener{
     var self = this;
 
     // make the tone set available to external classes
-    // lo, hi, clap... respectively
+    // boom, woo, clap... respectively
     this.toneSet = ['l', 'h', 'c'];
 
     // only process tone if wait has been turned off
@@ -34,7 +34,7 @@ class ToneListener{
     if(volume > Utils.config.loThreshold && this.wait === false){
       this.wait = true;
 
-      setTimeout(function(){ self.wait = false; }, 1000);
+      setTimeout(function(){ self.wait = false; }, 300);
 
       var mixed = [];
       this.left.frequency.forEach(function(value, i){

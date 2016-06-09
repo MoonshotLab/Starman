@@ -4,6 +4,7 @@ class Game{
 
     this.startTime = Date.now();
     this.score = 0;
+    this.$score = document.getElementById('score');
 
     this.beatIndex = 0;
     this.song = opts.song;
@@ -29,8 +30,8 @@ class Game{
 
   updateScore(){
     this.score++;
-    $el.score.style.height = 100*(this.score/20) + '%';
-    if(this.score >= 3){
+    this.$score.style.height = 100*(this.score/20) + '%';
+    if(this.score >= 20){
       this.dancer.pause();
       this.emitter.emitEvent('done', []);
     }

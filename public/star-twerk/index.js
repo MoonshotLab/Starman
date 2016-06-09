@@ -29,7 +29,6 @@
 
 
   var $el = {
-    score : document.getElementById('score'),
     intro : document.getElementById('intro'),
     outro : document.getElementById('outro'),
     gameplay : document.getElementById('gameplay')
