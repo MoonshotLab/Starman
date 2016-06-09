@@ -1,5 +1,5 @@
 class Game{
-  constructor(dancer){
+  constructor(){
     var self = this;
 
     this.startTime = Date.now();
@@ -12,7 +12,11 @@ class Game{
     this.dancer = new Dancer();
 
     this.toneListener = new ToneListener();
-    this.toneListener.emitter.addListener('new-tone', this.checkTone);
+    this.toneListener.emitter.addListener('new-tone', function(tone){
+      var pass = self.queue.compareTone(tone);
+      if(pass) self.updateScore();
+      else self.dancer.fail();
+    });
 
     this.emitter = new EventEmitter();
 
@@ -21,12 +25,6 @@ class Game{
     });
   }
 
-
-  checkTone(tone){
-    var pass = this.queue.compareTone(tone);
-    if(pass) this.updateScore();
-    else this.dancer.fail();
-  }
 
 
   updateScore(){
