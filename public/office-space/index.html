@@ -5,23 +5,30 @@
     <link rel='stylesheet' href='./index.css' />
   </head>
   <body>
-    <div id='game'></div>
+    <video id='intro'>
+      <source src='./intro.mp4' type='video/mp4' />
+    </video>
+    <video id='outro'>
+      <source src='./outro.mp4' type='video/mp4' />
+    </video>
+
+    <div id='gameplay' class='show'>
+      <div id='game'></div>
 
 
-    <!-- volume indicators -->
-    <div id='stage-left'>
-      <div class='top'></div>
-      <div class='volume'></div>
+      <!-- volume indicators -->
+      <div id='stage-left'>
+        <div class='top'></div>
+        <div class='volume'></div>
+      </div>
+      <div id='stage-right'>
+        <div class='top'></div>
+        <div class='volume'></div>
+      </div>
     </div>
-    <div id='stage-right'>
-      <div class='top'></div>
-      <div class='volume'></div>
-    </div>
 
 
-    <h1 id='score'></h1>
-
-
+    <script src='/bower_components/eventEmitter/EventEmitter.min.js'></script>
     <script src='/bower_components/zepto/zepto.min.js'></script>
     <script src='/bower_components/phaser/build/phaser.min.js'></script>
     <script src='/socket.io/socket.io.js'></script>

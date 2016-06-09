@@ -41,4 +41,10 @@ class Player {
     // rotate
     this.sprite.body.angle = speed/4;
   }
+
+
+  stop(){
+    this.sprite.body.velocity.x = 0;
+    this.sprite.body.velocity.y = 0;
+  }
 }

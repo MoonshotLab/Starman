@@ -4,6 +4,7 @@ class Game {
     var self = this;
 
     // class properties
+    this.emitter = new EventEmitter();
     this.obstacleMap = opts.obstacleMap;
     this.score = 0;
     this.obstacles = null;
@@ -77,13 +78,20 @@ class Game {
 
 
   update(self){
-    // update player position and rotation
-    self.player.update(self.volume);
+    var playerSprite = self.player.sprite;
+    if(playerSprite.y >= playerSprite.height){
+      // update player position and rotation
+      self.player.update(self.volume);
+    } else{
+      // stop moving!
+      self.player.stop();
+      self.game.paused = true;
+      self.emitter.emitEvent('done', []);
+    }
 
     // follow player with camera
-    var playerSprite = self.player.sprite;
     self.game.camera.focusOnXY(
-      playerSprite.x - 150, playerSprite.y - 150
+      playerSprite.x, playerSprite.y - playerSprite.height
     );
   }
 

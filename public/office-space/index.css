@@ -6,6 +6,31 @@ html, body{
 
 
 
+/* intro, outro, and primary gameplay stuff */
+video{
+  width: 100%;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+video{
+  z-index: 2;
+}
+#outro, #gameplay{
+  display: none;
+  opacity: 0;
+  transition: .5s linear opacity;
+}
+#gameplay{
+  display: block;
+}
+#outro.show, #gameplay.show{
+  opacity: 1;
+}
+
+
+
+
 #stage-left, #stage-right{
   position: absolute;
   left: 5%;

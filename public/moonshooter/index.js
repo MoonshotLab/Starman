@@ -26,7 +26,7 @@
   };
 
 
- // space bar to initialize
+  // space bar to initialize
   document.onkeydown = function(e){
     if(e.keyCode == 32){
       $.intro.play();
