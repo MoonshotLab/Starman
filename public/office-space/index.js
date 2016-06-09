@@ -1,6 +1,18 @@
 (function(){
 
-  var obstacles = ['bell', 'coffee', 'glue', 'glue2', 'pins', 'rubberBand', 'stapler', 'tape', 'whiteOut'];
+  var obstacleMap = [
+    { name : 'bell',        x : -1,  y : 40 },
+    { name : 'coffee',      x : 1,   y : 80 },
+    { name : 'postit',      x : 1,   y : 60 },
+    { name : 'glue',        x : 1,   y : 20 },
+    { name : 'pins',        x : 0,   y : 50 },
+    { name : 'rubberBand',  x : 0,   y : 30 },
+    { name : 'stapler',     x : 1,   y : 45 },
+    { name : 'tape',        x : -1,  y : 10 },
+    { name : 'whiteOut',    x : -1,  y : 70 },
+  ];
+
+  // retain volume containers
   var $el = {
     volumeLeft : $('#stage-left').find('.volume'),
     volumeRight : $('#stage-right').find('.volume')
@@ -9,8 +21,7 @@
   var game = new Game({
     width : window.innerWidth,
     height : window.innerHeight,
-    obstacleConfig : obstacles,
-    obstacleCount: 20
+    obstacleMap : obstacleMap,
   });
 
 
