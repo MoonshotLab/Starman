@@ -58,3 +58,35 @@ html, body{
 #fail.show{
   opacity: .8;
 }
+
+
+#score-container{
+  position: absolute;
+  right: 5%;
+  top: 20%;
+  width: 7%;
+  height: 60%;
+  border: 6px solid white;
+  border-top: none;
+}
+#score-top{
+  background-image: url('./img/squiggle.svg');
+  background-position: center center;
+  transform: scaleX(-1) scaleY(-1);
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 105%;
+  height: 5%;
+  left: -2.5%;
+  position: absolute;
+  top: -7%;
+}
+#score{
+  background-image: url('./img/line-meter.svg');
+  background-size: 15%;
+  background-position: bottom left;
+  position: absolute;
+  bottom: 1.5%;
+  width: 80%;
+  left: 10%;
+}

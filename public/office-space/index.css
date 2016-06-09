@@ -49,6 +49,7 @@ video{
 
 .top{
   background-image: url('./img/squiggle.svg');
+  background-position: center center;
   background-size: contain;
   transform: scaleX(-1) scaleY(-1);
   background-repeat: no-repeat;

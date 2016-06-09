@@ -2,8 +2,13 @@
 <!-- Generator: Adobe Illustrator 16.0.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 width="83.368px" height="62.724px" viewBox="0 0 83.368 62.724" enable-background="new 0 0 83.368 62.724" xml:space="preserve">
-<rect x="39.684" y="-18.891" transform="matrix(0.592 0.8059 -0.8059 0.592 42.2802 -20.7994)" fill="#E92023" width="4" height="100.505"/>
-<rect x="39.684" y="12.471" transform="matrix(0.592 0.8059 -0.8059 0.592 67.555 -8.0051)" fill="#E92023" width="4" height="100.505"/>
-<rect x="39.684" y="-51.253" transform="matrix(0.592 0.8059 -0.8059 0.592 16.1996 -34.0017)" fill="#E92023" width="4" height="100.505"/>
+	 width="20px" height="20px" viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve">
+<g>
+	<polygon fill="#E2243C" points="20,0 5.596,0 0,5.596 0,20 0.021,20 20,0.021 	"/>
+	<polygon fill="#E2243C" points="20,5.678 5.678,20 20,20 	"/>
+	<polygon fill="#BC202F" points="20,0.021 0.021,20 5.678,20 20,5.678 	"/>
+	<polygon fill="#C92034" points="20,0.021 0.021,20 5.678,20 20,5.678 	"/>
+	<polygon fill="#BC202F" points="0,0 0,5.596 5.596,0 	"/>
+	<polygon fill="#C92034" points="0,0 0,5.596 5.596,0 	"/>
+</g>
 </svg>
