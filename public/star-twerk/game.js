@@ -1,12 +1,12 @@
 class Game{
-  constructor(){
+  constructor(opts){
     var self = this;
 
     this.startTime = Date.now();
     this.score = 0;
 
     this.beatIndex = 0;
-    this.song = ['c', '0', '0', 'c'];
+    this.song = opts.song;
 
     this.queue = new Queue();
     this.dancer = new Dancer();

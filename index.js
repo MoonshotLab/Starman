@@ -11,7 +11,7 @@ var config = {
   loThreshold : 60,
   hiThreshold : 80,
   frequencyNodeCount : 32,
-  bpm : 60
+  bpm : 30
 };
 
 

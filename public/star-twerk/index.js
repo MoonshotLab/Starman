@@ -1,5 +1,33 @@
 (function(){
 
+  var song = [
+    '0', '0', 'c', '0',
+    '0', 'c', '0', 'c',
+    '0', 'l', 'c', '0',
+    '0', 'h', 'c', '0',
+    '0', 'l', 'c', '0',
+    '0', 'h', 'c', '0',
+    '0', '0', 'c', '0',
+    '0', 'c', '0', 'c',
+    '0', 'l', 'c', '0',
+    '0', 'h', 'c', '0',
+    '0', 'l', 'c', '0',
+    '0', 'h', 'c', '0',
+    '0', '0', 'c', '0',
+    '0', 'c', '0', 'c',
+    '0', 'l', 'c', '0',
+    '0', 'h', 'c', '0',
+    '0', 'l', 'c', '0',
+    '0', 'h', 'c', '0',
+    '0', '0', 'c', '0',
+    '0', 'c', '0', 'c',
+    '0', 'l', 'c', '0',
+    '0', 'h', 'c', '0',
+    '0', 'l', 'c', '0',
+    '0', 'h', 'c', '0',
+  ];
+
+
   var $el = {
     score : document.getElementById('score'),
     intro : document.getElementById('intro'),
@@ -21,7 +49,7 @@
     $el.intro.style.display = 'none';
     $el.gameplay.style.display = 'block';
 
-    var game = new Game();
+    var game = new Game({ song : song });
     game.emitter.on('done', function(){
       $el.outro.style.display = 'block';
       setTimeout(function(){
