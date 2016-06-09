@@ -18,7 +18,8 @@
     volumeRight : $('#stage-right').find('.volume'),
     game : document.getElementById('gameplay'),
     intro : document.getElementById('intro'),
-    outro : document.getElementById('outro')
+    outro : document.getElementById('outro'),
+    winner : document.getElementById('winner')
   };
 
 
@@ -49,6 +50,8 @@
 
     // listen for when game is done
     game.emitter.on('done', function(){
+      $el.winner.style.display = 'block';
+
       setTimeout(function(){
         $el.outro.style.display = 'block';
         setTimeout(function(){
@@ -79,11 +82,11 @@
     // have a keyboard just in case
     document.onkeydown = function(e){
       if(e.keyCode == 37){
-        if(game.volume.left == 50) game.volume.left = 0;
-        else game.volume.left = 50;
+        if(game.volume.left == 100) game.volume.left = 0;
+        else game.volume.left = 100;
       } else if(e.keyCode == 39){
-        if(game.volume.right == 50) game.volume.right = 0;
-        else game.volume.right = 50;
+        if(game.volume.right == 100) game.volume.right = 0;
+        else game.volume.right = 100;
       }
     };
   }

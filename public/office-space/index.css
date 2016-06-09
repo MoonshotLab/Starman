@@ -63,11 +63,24 @@ video{
 
 .volume{
   background-image: url('./img/line-meter.svg');
-  background-color: #e1243b;
-  background-size: 100%;
+  background-size: 15%;
   position: absolute;
   background-position: bottom left;
   bottom: 2%;
   width: 80%;
   left: 10%;
+}
+
+
+
+#winner{
+  display: none;
+  position: absolute;
+  top: 0;
+  margin: 0;
+  width: 100%;
+  font-size: 500%;
+  background: url('./img/success.svg') no-repeat center center;
+  height: 100%;
+  z-index: 3;
 }

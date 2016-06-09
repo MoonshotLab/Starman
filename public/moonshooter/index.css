@@ -89,8 +89,7 @@ video{
 /* target and power bars */
 #power, #volume{
   background-image: url('./img/line-meter.svg');
-  background-color: #e1243b;
-  background-size: 100%;
+  background-size: 15%;
   background-position: bottom left;
   position: absolute;
   bottom: 1.5%;
