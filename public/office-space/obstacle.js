@@ -9,6 +9,7 @@ class Obstacle {
     this.sprite = new Phaser.Sprite(
       opts.context.game, x, y, opts.config
     );
+    this.sprite.scale.setTo(0.25, 0.25);
 
     // add this sprite to the group
     opts.context.obstacles.add(this.sprite);

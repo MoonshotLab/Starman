@@ -34,20 +34,21 @@ class Game {
 
 
   preload(self){
-    self.game.load.image('paper', './img/paper.png');
-    self.game.load.spritesheet('rocket', './img/rocket-sprite.png', 215, 479);
+    self.game.load.image('background', './img/background.jpg');
+    self.game.load.spritesheet('rocket', './img/rocket-sprite.png', 250, 457);
 
     // preload all the obstacle images
     self.obstacleConfig.forEach(function(config){
-      var path = './img/' + config + '.png';
+      var path = './img/obstacles/' + config + '.png';
       self.game.load.image(config, path);
     });
   }
 
 
   create(self, opts){
-    // setup world bounds and physics system
-    self.game.add.tileSprite(0, 0, opts.width, opts.height*5, 'paper');
+    // setup background, world bounds and physics system
+    var background = self.game.add.tileSprite(0, 0, opts.width, opts.height*5, 'background');
+    background.fixedToCamera = true;
     self.game.world.setBounds(0, 0, opts.width, opts.height*5);
     self.game.physics.startSystem(Phaser.Physics.P2JS);
     self.game.physics.p2.restitution = 0.5;
@@ -69,7 +70,7 @@ class Game {
       });
     }
 
-    // setup player sprite
+    // setup player sprite and use camera to follow
     self.player = new Player({ game : self.game });
     self.game.camera.follow(self.player.sprite);
   }

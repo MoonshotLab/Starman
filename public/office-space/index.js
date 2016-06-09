@@ -1,6 +1,6 @@
 (function(){
 
-  var obstacles = ['paperclip', 'ice-cream', 'sharpie', 'post-it', 'scissors'];
+  var obstacles = ['bell', 'coffee', 'glue', 'glue2', 'pins', 'rubberBand', 'stapler', 'tape', 'whiteOut'];
   var $el = {
     volumeLeft : $('#stage-left').find('.volume'),
     volumeRight : $('#stage-right').find('.volume')
