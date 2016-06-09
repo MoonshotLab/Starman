@@ -30,6 +30,7 @@
   document.onkeydown = function(e){
     if(e.keyCode == 32){
       $.intro.play();
+      document.getElementById('identifier').style.display = 'none';
     }
   };
 

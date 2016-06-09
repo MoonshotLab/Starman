@@ -27,6 +27,7 @@
   document.onkeydown = function(e){
     if(e.keyCode == 32){
       $el.intro.play();
+      document.getElementById('identifier').style.display = 'none';
     }
   };
 

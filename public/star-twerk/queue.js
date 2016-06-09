@@ -80,8 +80,9 @@ class Queue{
 
     this.items.forEach(function(item){
       if(item.active === true &&
-         item.passed === false &&
-         item.tone   ==  tone){
+         item.passed === false){
+        //  item.tone   ==  tone){
+
         item.passed = true;
         passed = true;
       }

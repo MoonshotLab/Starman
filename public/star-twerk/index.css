@@ -4,6 +4,7 @@ html, body{
   overflow: hidden;
   background-color: black;
   margin: 0;
+  font-family: Helvetica;
 }
 
 
@@ -112,4 +113,13 @@ video{
   bottom: 1.5%;
   width: 80%;
   left: 10%;
+}
+
+
+h6{
+  bottom: 0;
+  position: absolute;
+  color: white;
+  right: 15px;
+  z-index: 4;
 }

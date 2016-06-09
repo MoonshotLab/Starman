@@ -111,3 +111,12 @@ video{
   background: url('./img/blast-off.svg') no-repeat center center;
   height: 100%;
 }
+
+
+h6{
+  bottom: 0;
+  position: absolute;
+  color: white;
+  right: 15px;
+  z-index: 4;
+}

@@ -2,6 +2,7 @@ html, body{
   background-color: black;
   margin: 0;
   overflow: hidden;
+  font-family: Helvetica;
 }
 
 
@@ -84,4 +85,13 @@ video{
   background: url('./img/success.svg') no-repeat center center;
   height: 100%;
   z-index: 3;
+}
+
+
+h6{
+  bottom: 0;
+  position: absolute;
+  color: white;
+  right: 15px;
+  z-index: 4;
 }
