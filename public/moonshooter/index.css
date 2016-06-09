@@ -10,44 +10,47 @@ html, body{
 
 
 
-#framed{
+
+
+/* intro, outro, and primary gameplay stuff */
+#framed, video{
   width: 100%;
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
 }
+video{
+  z-index: 2;
+}
+#outro, #gameplay{
+  display: none;
+  opacity: 0;
+  transition: .5s linear opacity;
+}
+#outro.show, #gameplay.show{
+  opacity: 1;
+}
 
 
 
 /* power and target containers*/
-h2{
-  color: rgb(233, 32, 25);
-  position: absolute;
-  margin: 0;
-  width: 500%;
-  margin-top: -5%;
-}
 #power-container, #volume-container{
   position: absolute;
   left: 5%;
-  top: 15%;
+  top: 20%;
   width: 7%;
-  height: 70%;
-  border: 5px solid white;
+  height: 60%;
+  border: 6px solid white;
 }
 #power-container{
   left: auto;
   right: 5%;
   border-top: none;
-  border-bottom: none;
 }
 
 
 
 /* target bar borders */
-#volume-container h2{
-  left: 125%;
-}
 #target-hi, #target-lo{
   width: 105%;
   left: -2.5%;
@@ -69,28 +72,16 @@ h2{
 
 
 /* power bar borders */
-#power-container h2{
-  right: 125%;
-  text-align: right;
-}
-h2#false-start{
-  bottom: 0;
-}
-#power-top, #power-bottom{
+#power-top{
   background-image: url('./img/squiggle.svg');
+  transform: scaleX(-1) scaleY(-1);
   background-size: contain;
   background-repeat: no-repeat;
   width: 105%;
   height: 5%;
   left: -2.5%;
   position: absolute;
-}
-#power-top{
-  top: -.25%;
-}
-#power-bottom{
-  bottom: -.25%;
-  transform: scaleX(-1) scaleY(-1);
+  top: -7%;
 }
 
 
@@ -98,21 +89,25 @@ h2#false-start{
 /* target and power bars */
 #power, #volume{
   background-image: url('./img/line-meter.svg');
+  background-color: #e1243b;
   background-size: 100%;
   background-position: bottom left;
   position: absolute;
   bottom: 1.5%;
   width: 80%;
   left: 10%;
+  height: 20%;
 }
 
 
 
 #winner{
   display: none;
-  text-align: center;
   position: absolute;
+  top: 0;
+  margin: 0;
   width: 100%;
-  top: 30%;
   font-size: 500%;
+  background: url('./img/blast-off.svg') no-repeat center center;
+  height: 100%;
 }

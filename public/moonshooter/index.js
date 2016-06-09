@@ -18,12 +18,28 @@
     power : document.getElementById('power'),
     targetHi : document.getElementById('target-hi'),
     targetLo : document.getElementById('target-lo'),
-    targetHiText : document.getElementById('target-hi-text'),
-    targetLoText : document.getElementById('target-lo-text'),
-    targetText : document.getElementById('target-text'),
     framed : document.getElementById('framed'),
-    winner : document.getElementById('winner')
+    winner : document.getElementById('winner'),
+    intro : document.getElementById('intro'),
+    outro : document.getElementById('outro'),
+    gameplay : document.getElementById('gameplay')
   };
+
+
+ // space bar to initialize
+  document.onkeydown = function(e){
+    if(e.keyCode == 32){
+      $.intro.play();
+    }
+  };
+
+  // when video is done hide it and begin requesting animation frames
+  $.intro.addEventListener('ended', function(){
+    $.intro.style.display = 'none';
+    $.gameplay.style.display = 'block';
+
+    window.requestAnimationFrame(calculatePower);
+  },false);
 
 
   // preload all the images
@@ -47,14 +63,11 @@
   Scream.socket.on('config-update', function(data){
     var hiPos = (100 - Utils.config.hiThreshold);
     $.targetHi.style.top = hiPos + '%';
-    $.targetHiText.style.top = hiPos + '%';
 
     var loPos = (100 - Utils.config.loThreshold);
     $.targetLo.style.top = loPos + '%';
-    $.targetLoText.style.top = loPos + '%';
 
     var targetPos = (hiPos + (loPos - hiPos)/2);
-    $.targetText.style.top = targetPos + '%';
   });
 
 
@@ -89,26 +102,32 @@
 
 
   function showWinScreen(){
+    // show the win text
+    $.winner.style.display = 'block';
+
     // play the win screen animation
     var activeFrame = 1;
-    setInterval(function(){
+    var frameInterval = setInterval(function(){
       if(activeFrame <= numWinFrames){
         $.framed.src = './img/win_frame_' + activeFrame + '.jpg';
         activeFrame++;
       }
-    }, 100);
 
-    // blink the winner screen
-    setInterval(function(){
-      if($.winner.style.display == 'block'){
-        $.winner.style.display = 'none';
-      } else{
-        $.winner.style.display = 'block';
+      // if win screen animation is done
+      if(activeFrame >= numWinFrames){
+        // stop animating
+        clearInterval(frameInterval);
+
+        // wait, then show outro video
+        setTimeout(function(){
+          $.outro.style.display = 'block';
+          setTimeout(function(){
+            $.gameplay.className = '';
+            $.outro.className = 'show';
+            $.outro.play();
+          }, 100);
+        }, 2000);
       }
-    }, 350);
+    }, 100);
   }
-
-
-  // animate
-  window.requestAnimationFrame(calculatePower);
 })();
