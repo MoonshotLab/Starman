@@ -16,9 +16,17 @@
   var toneListener = new ToneListener();
   toneListener.emitter.addListener('new-tone', function(tone){
     var pass = queue.compareTone(tone);
-    if(pass) dancer.progress();
+    if(pass) updateScore();
     else dancer.fail();
   });
+
+
+  var score = 0;
+  var $score = document.getElementById('score');
+  function updateScore(){
+    score++;
+    $score.style.height = 100*(score/20) + '%';
+  }
 
 
   // determine if it's time to add a new note
