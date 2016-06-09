@@ -6,8 +6,8 @@ class Dancer{
   }
 
 
-  progress(){
-    console.log('progress');
+  pause(){
+    this.$el.pause();
   }
 
 

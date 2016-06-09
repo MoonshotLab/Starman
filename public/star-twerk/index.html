@@ -6,24 +6,32 @@
   </head>
   <body>
 
-
-    <div id='score-container'>
-      <div id='score-top'></div>
-      <div id='score'></div>
-    </div>
-
-
-    <div id='queue-container'>
-      <div id='queue'></div>
-      <div id='now'></div>
-    </div>
-
-
-    <div id='fail'></div>
-    <video id='dancer' loop>
-      <source src='./game.mp4' type='video/mp4' />
+    <video id='intro'>
+      <source src='./intro.mp4' type='video/mp4' />
     </video>
 
+
+    <video id='outro'>
+      <source src='./outro.mp4' type='video/mp4' />
+    </video>
+
+
+    <div id='gameplay' class='show'>
+      <div id='score-container'>
+        <div id='score-top'></div>
+        <div id='score'></div>
+      </div>
+
+      <div id='queue-container'>
+        <div id='queue'></div>
+        <div id='now'></div>
+      </div>
+
+      <div id='fail'></div>
+      <video id='dancer' loop>
+        <source src='./game.mp4' type='video/mp4' />
+      </video>
+    </div>
 
     <script src='/bower_components/zepto/zepto.min.js'></script>
     <script src='/bower_components/eventEmitter/EventEmitter.min.js'></script>
@@ -32,6 +40,7 @@
     <script src='./dancer.js'></script>
     <script src='./toneListener.js'></script>
     <script src='./queue.js'></script>
+    <script src='./game.js'></script>
     <script src='./index.js'></script>
   </body>
 </html>
