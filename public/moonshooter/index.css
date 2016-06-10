@@ -35,9 +35,9 @@ video{
   top: 20%;
   width: 7%;
   height: 60%;
-  border: 6px solid white;
 }
 #power-container{
+  border: 6px solid white;
   left: auto;
   right: 5%;
   border-top: none;
@@ -47,9 +47,22 @@ video{
 
 /* target bar borders */
 #target-hi, #target-lo{
+  border: 6px solid white;
+  width: 100%;
+  position: absolute;
+}
+#target-hi{
+  top: 0;
+  border-bottom: none;
+}
+#target-lo{
+  border-top: none;
+  bottom: 0;
+}
+.squiggle{
   width: 105%;
   left: -2.5%;
-  height: 5%;
+  height: 15px;
   background-image: url('./img/squiggle.svg');
   background-position: center center;
   background-size: contain;
@@ -58,27 +71,28 @@ video{
   background-position: center;
   z-index: 1;
 }
-#target-lo{
-  transform: scaleX(-1) scaleY(-1);
+#target-hi .squiggle{
+  bottom: -20px;
 }
-#target-lo{
-  top: 70px;
+#target-lo .squiggle{
+  top: -20px;
+  transform: scaleX(-1) scaleY(-1);
 }
 
 
 
 /* power bar borders */
 #power-top{
+  height: 15px;
   background-image: url('./img/squiggle.svg');
   background-position: center center;
   transform: scaleX(-1) scaleY(-1);
   background-size: contain;
   background-repeat: no-repeat;
   width: 105%;
-  height: 5%;
   left: -2.5%;
   position: absolute;
-  top: -7%;
+  top: -20px;
 }
 
 

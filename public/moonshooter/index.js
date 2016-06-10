@@ -63,10 +63,10 @@
 
   Scream.socket.on('config-update', function(data){
     var hiPos = (100 - Utils.config.hiThreshold);
-    $.targetHi.style.top = hiPos + '%';
+    $.targetHi.style.height = hiPos + '%';
 
-    var loPos = (100 - Utils.config.loThreshold);
-    $.targetLo.style.top = loPos + '%';
+    var loPos = Utils.config.loThreshold;
+    $.targetLo.style.height = Utils.config.loThreshold + '%';
 
     var targetPos = (hiPos + (loPos - hiPos)/2);
   });
