@@ -2,8 +2,8 @@
 
   // retain
   var powerLevel = 0;
-  var numGameFrames = 22;
-  var numWinFrames = 17;
+  var numGameFrames = 9;
+  var numWinFrames = 30;
 
   var volume = {
     left : 0,
