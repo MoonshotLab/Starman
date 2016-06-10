@@ -122,12 +122,9 @@
         // wait, then show outro video
         setTimeout(function(){
           $.outro.style.display = 'block';
-          setTimeout(function(){
-            $.gameplay.className = '';
-            $.outro.className = 'show';
-            $.outro.play();
-          }, 100);
-        }, 2000);
+          $.gameplay.style.display = 'none';
+          $.outro.play();
+        }, 3000);
       }
     }, 100);
   }
