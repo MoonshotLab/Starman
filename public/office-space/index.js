@@ -19,7 +19,8 @@
     game : document.getElementById('gameplay'),
     intro : document.getElementById('intro'),
     outro : document.getElementById('outro'),
-    winner : document.getElementById('winner')
+    winner : document.getElementById('winner'),
+    audioWin : document.getElementById('audio-win')
   };
 
 
@@ -51,6 +52,7 @@
 
     // listen for when game is done
     game.emitter.on('done', function(){
+      $el.audioWin.play();
       $el.winner.style.display = 'block';
 
       setTimeout(function(){

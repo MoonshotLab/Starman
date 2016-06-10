@@ -22,7 +22,9 @@
     winner : document.getElementById('winner'),
     intro : document.getElementById('intro'),
     outro : document.getElementById('outro'),
-    gameplay : document.getElementById('gameplay')
+    gameplay : document.getElementById('gameplay'),
+    audioWin : document.getElementById('audio-win'),
+    audioLaunch : document.getElementById('audio-launch')
   };
 
 
@@ -106,7 +108,11 @@
     // show the win text
     $.winner.style.display = 'block';
 
-    // play the win screen animation
+    // wait a second then play the win sound
+    setTimeout($.audioWin.play, 1000);
+
+    // play the win screen animation and launch sound
+    $.audioLaunch.play();
     var activeFrame = 1;
     var frameInterval = setInterval(function(){
       if(activeFrame <= numWinFrames){
