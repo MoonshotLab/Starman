@@ -61,6 +61,11 @@ class Queue{
       if(a < 0 && b > 0){
         item.active = true;
       } else{
+        // we've passed the active mode
+        if(item.active === true && item.passed === false){
+          item.$el.addClass('miss');
+        }
+
         item.active = false;
       }
 

@@ -2,7 +2,7 @@ class Dancer{
   constructor(){
     this.$el = document.getElementById('dancer');
     this.$el.play();
-    this.$fail = document.getElementById('fail');
+    this.$queue = $('#queue-container');
   }
 
 
@@ -13,11 +13,11 @@ class Dancer{
 
   fail(){
     this.$el.pause();
+    this.$queue.addClass('miss');
 
     var self = this;
-    this.$fail.className += 'show';
     setTimeout(function(){
-      self.$fail.className = '';
+      self.$queue.removeClass('miss');
       self.$el.play();
     }, 250);
   }

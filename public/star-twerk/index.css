@@ -29,6 +29,13 @@ video{
 
 
 /* Beat Stuff */
+@keyframes pass {
+    0%   { opacity: 1;  }
+    25%  { opacity: .2; }
+    50%  { opacity: 1;  }
+    75%  { opacity: .2; }
+    100% { opacity: 1;  }
+}
 .beat{
   position: absolute;
   width: 70%;
@@ -38,14 +45,27 @@ video{
   background-position: center center;
   background-size: contain;
 }
+.beat.passed{
+  animation-name: pass;
+  animation-duration: .5s;
+}
 .beat.l{
   background-image: url('./img/boom.svg');
+}
+.beat.l.miss{
+  background-image: url('./img/boom-miss.svg');
 }
 .beat.h{
   background-image: url('./img/woo.svg');
 }
+.beat.h.miss{
+  background-image: url('./img/woo-miss.svg');
+}
 .beat.c{
   background-image: url('./img/clap.svg');
+}
+.beat.c.miss{
+  background-image: url('./img/clap-miss.svg');
 }
 
 #now{
@@ -54,7 +74,7 @@ video{
   height: 16.6667%;
   bottom: 16.6667%;
 }
-#now .squiggle-top, #now .squiggle-bottom{
+#now .squiggle{
   position: absolute;
   width: 105%;
   left: -2.5%;
@@ -73,6 +93,14 @@ video{
 #now .squiggle-bottom{
   bottom: 0;
   transform: scaleX(-1) scaleY(-1);
+}
+
+
+#queue-container.miss .squiggle{
+  background-image: url('./img/squiggle-miss.svg');
+}
+#queue-container.miss .top, #queue-container.miss .bottom{
+  border-color: #e2243c;
 }
 
 
