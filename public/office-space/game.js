@@ -36,6 +36,7 @@ class Game {
 
   preload(self){
     self.game.load.image('background', './img/background.jpg');
+    self.game.load.image('parallax', './img/parallax-background.png');
     self.game.load.spritesheet('rocket', './img/rocket-sprite.png', 250, 457);
 
     // preload all the obstacle images
@@ -47,12 +48,18 @@ class Game {
 
 
   create(self, opts){
+    var verticalFactor = 10;
+
     // setup background, world bounds and physics system
-    var background = self.game.add.tileSprite(0, 0, opts.width, opts.height*5, 'background');
+    var background = self.game.add.tileSprite(0, 0, opts.width, opts.height*verticalFactor, 'background');
     background.fixedToCamera = true;
-    self.game.world.setBounds(0, 0, opts.width, opts.height*7);
+
+    self.parallax = self.game.add.tileSprite(0, 0, opts.width, opts.height*verticalFactor, 'parallax');
+    self.parallax.fixedToCamera = true;
+
+    self.game.world.setBounds(0, 0, opts.width, opts.height*verticalFactor);
     self.game.physics.startSystem(Phaser.Physics.P2JS);
-    self.game.physics.p2.restitution = 0.5;
+    self.game.physics.p2.restitution = 0.25;
 
     // create an obstacle container and setup hit detection
     self.obstacles = self.game.add.group();
@@ -73,11 +80,13 @@ class Game {
 
     // setup player sprite
     self.player = new Player({ game : self.game });
-    window.player = self.player;
   }
 
 
   update(self){
+    // parallax the background
+    self.parallax.tilePosition.set(-self.game.camera.x/3, -self.game.camera.y/3);
+
     var playerSprite = self.player.sprite;
     if(playerSprite.y >= playerSprite.height){
       // update player position and rotation
@@ -91,7 +100,7 @@ class Game {
 
     // follow player with camera
     self.game.camera.focusOnXY(
-      playerSprite.x, playerSprite.y - playerSprite.height
+      playerSprite.x, playerSprite.y - playerSprite.height/2
     );
   }
 
