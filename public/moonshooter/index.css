@@ -24,11 +24,6 @@ video{
 }
 #outro, #gameplay{
   display: none;
-  opacity: 0;
-  transition: .5s linear opacity;
-}
-#outro.show, #gameplay.show{
-  opacity: 1;
 }
 
 
