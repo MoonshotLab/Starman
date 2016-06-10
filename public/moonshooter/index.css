@@ -102,8 +102,8 @@ video{
   top: 0;
   margin: 0;
   width: 100%;
-  font-size: 500%;
   background: url('./img/blast-off.svg') no-repeat center center;
+  background-size: 30%;
   height: 100%;
 }
 
