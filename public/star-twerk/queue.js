@@ -59,10 +59,8 @@ class Queue{
       var b = item.pos + item.height - self.threshold.bottom;
 
       if(a < 0 && b > 0){
-        item.$el.css('opacity', 1);
         item.active = true;
       } else{
-        item.$el.css('opacity', 0.25);
         item.active = false;
       }
 
