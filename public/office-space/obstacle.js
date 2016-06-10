@@ -25,13 +25,13 @@ class Obstacle {
     this.sprite = new Phaser.Sprite(
       opts.context.game, x, y, opts.config.name
     );
-    this.sprite.scale.setTo(0.3, 0.3);
+    this.sprite.scale.setTo(0.4, 0.4);
 
     // add this sprite to the group
     opts.context.obstacles.add(this.sprite);
 
-    // rotate dat
-    this.sprite.body.angle = Utils.random(0, 360);
+    // give it some weight
+    this.sprite.body.damping = 1;
 
     return this;
   }

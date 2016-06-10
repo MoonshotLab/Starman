@@ -3,9 +3,9 @@ class Player {
   constructor(opts){
     // setup and position sprite
     var x = opts.game.world.bounds.width/2;
-    var y = opts.game.world.bounds.height;
+    var y = opts.game.world.bounds.height - 200;
     this.sprite = opts.game.add.sprite(x, y, 'rocket');
-    this.sprite.scale.setTo(0.4, 0.4);
+    this.sprite.scale.setTo(0.7, 0.7);
 
     // setup animations
     this.sprite.animations.add('no-boosters', [0], 1, false);
@@ -16,6 +16,7 @@ class Player {
     // setup physics
     opts.game.physics.p2.enable(this.sprite);
     this.sprite.body.collideWorldBounds = true;
+    this.sprite.body.damping = 0.4;
 
     return this;
   }
@@ -23,12 +24,12 @@ class Player {
 
   update(volume){
     // determine the horizontal speed of the rocket
-    var speed = (volume.left - volume.right)*3;
-    this.sprite.body.velocity.x = speed;
-    this.sprite.body.velocity.y = -1*(volume.right + volume.left);
+    var speed = (volume.left + volume.right)/2;
+    var angle = (volume.left - volume.right);
+    var powered = true;
 
     // play the proper sprite
-    if(volume.right > Utils.config.loThreshold && volume.left > Utils.config.hiThreshold){
+    if(volume.right > Utils.config.loThreshold && volume.left > Utils.config.loThreshold){
       this.sprite.animations.play('both-boosters');
     } else if(volume.right > Utils.config.loThreshold){
       this.sprite.animations.play('right-booster');
@@ -36,10 +37,19 @@ class Player {
       this.sprite.animations.play('left-booster');
     } else{
       this.sprite.animations.play('no-boosters');
+      powered = false;
     }
 
-    // rotate
-    this.sprite.body.angle = speed/4;
+    // thrust and rotate
+    if(powered){
+      this.sprite.body.thrust(speed*9);
+      this.sprite.body.angle = angle;
+
+      if(this.sprite.body.angle >= 40)
+        this.sprite.body.angle = 40;
+      else if(this.sprite.body.angle <= -40)
+        this.sprite.body.angle = -40;
+    }
   }
 
 
