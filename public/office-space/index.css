@@ -55,9 +55,9 @@ video{
   transform: scaleX(-1) scaleY(-1);
   background-repeat: no-repeat;
   width: 105%;
-  height: 5%;
+  height: 15px;
   left: -2.5%;
-  top: -7%;
+  top: -20px;
   position: absolute;
 }
 
