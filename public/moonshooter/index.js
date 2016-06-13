@@ -80,7 +80,7 @@
     if(volumeLevel >= 100) volumeLevel = 100;
 
     if(volumeLevel < Utils.config.hiThreshold && volumeLevel > Utils.config.loThreshold){
-      powerLevel += 1;
+      powerLevel += 0.5;
     } else {
       powerLevel -= 1;
       if(powerLevel <= 0) powerLevel = 0;
