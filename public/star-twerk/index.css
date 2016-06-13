@@ -129,6 +129,7 @@ video{
   border: 6px solid white;
   border-top: none;
   z-index: 3;
+  box-sizing: border-box;
 }
 #queue-container{
   border: none;

@@ -50,6 +50,7 @@ video{
   border: 6px solid white;
   width: 100%;
   position: absolute;
+  box-sizing: border-box;
 }
 #target-hi{
   top: 0;
