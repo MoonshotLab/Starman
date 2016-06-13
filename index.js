@@ -7,11 +7,11 @@ var port = process.env.PORT || 3000;
 
 // set up a config
 var config = {
-  sensitivity : 10,
+  sensitivity : 5,
   loThreshold : 60,
   hiThreshold : 80,
   frequencyNodeCount : 32,
-  bpm : 30
+  bpm : 20
 };
 
 
