@@ -31,7 +31,7 @@ class Obstacle {
     opts.context.obstacles.add(this.sprite);
 
     // give it some weight
-    this.sprite.body.damping = 1;
+    this.sprite.body.damping = 0.8;
 
     return this;
   }
