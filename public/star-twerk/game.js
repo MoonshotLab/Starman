@@ -30,8 +30,8 @@ class Game{
 
   updateScore(){
     this.score++;
-    this.$score.style.height = 100*(this.score/20) + '%';
-    if(this.score >= 20){
+    this.$score.style.height = 100*(this.score/35) + '%';
+    if(this.score == 35){
       this.dancer.pause();
       this.emitter.emitEvent('done', []);
     }
