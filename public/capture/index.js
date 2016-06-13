@@ -11,14 +11,14 @@
     queryParams[splitz[0]] = splitz[1];
   });
 
+  // create ONE AND ONLY sound capture device
+  var soundCapture = new Scream.SC({
+    frequencyNodeCount : 32
+  });
+
   // wait for the config to load
   Scream.socket.on('config-update', function(data){
     var stage = queryParams.stage;
-
-    // create a sound capture instance
-    var soundCapture = new Scream.SC({
-      frequencyNodeCount : Utils.config.frequencyNodeCount
-    });
 
     // startup the device
     Scream.SC.getDevice(stage, function(err, device){
