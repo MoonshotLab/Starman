@@ -1,15 +1,23 @@
 (function(){
-
   // retain
   var powerLevel = 0;
   var numGameFrames = 9;
   var numWinFrames = 30;
 
-  var volume = {
-    left : 0,
-    right : 0
-  };
 
+  // create a new instance of a sound capture device
+  var soundCapture = new Starman.SC({
+    frequencyNodeCount : Starman.utils.config.frequencyNodeCount
+  });
+
+  soundCapture.listen(function(err){
+    if(err) alert(JSON.stringify(err));
+  });
+
+  // get the volume from the sound capture instance
+  soundCapture.emitter.addListener('sound', function(vol, freq){
+    volume = vol;
+  });
 
 
   // reference some dom elements
@@ -36,6 +44,7 @@
     }
   };
 
+
   // when video is done hide it and begin requesting animation frames
   $.intro.addEventListener('ended', function(){
     $.intro.style.display = 'none';
@@ -54,32 +63,19 @@
   }
 
 
-  // listen for volume changes and react
-  Scream.socket.on('stage-left', function(data){
-    volume.left = data.volume;
-  });
-
-  Scream.socket.on('stage-right', function(data){
-    volume.right = data.volume;
-  });
-
-  Scream.socket.on('config-update', function(data){
-    var hiPos = (100 - Utils.config.hiThreshold);
-    $.targetHi.style.height = hiPos + '%';
-
-    var loPos = Utils.config.loThreshold;
-    $.targetLo.style.height = Utils.config.loThreshold + '%';
-
-    var targetPos = (hiPos + (loPos - hiPos)/2);
-  });
+  // setup the high and low position selectors
+  var hiPos = (100 - Starman.utils.config.hiThreshold);
+  var loPos = Starman.utils.config.loThreshold;
+  $.targetHi.style.height = hiPos + '%';
+  $.targetLo.style.height = Starman.utils.config.loThreshold + '%';
 
 
   function calculatePower(){
-    var averageVolume = (volume.left + volume.right)/2;
-    var volumeLevel = Math.round(averageVolume/Utils.config.sensitivity);
+    var volumeLevel = Math.round(volume/Starman.utils.config.sensitivity);
     if(volumeLevel >= 100) volumeLevel = 100;
 
-    if(volumeLevel < Utils.config.hiThreshold && volumeLevel > Utils.config.loThreshold){
+    if(volumeLevel < Starman.utils.config.hiThreshold &&
+      volumeLevel > Starman.utils.config.loThreshold){
       powerLevel += 0.5;
     } else {
       powerLevel -= 1;
