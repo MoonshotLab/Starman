@@ -1,9 +1,3 @@
-// setup a container
-var Scream = {
-  socket : io()
-};
-
-
 // shims
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
 navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia;
@@ -16,11 +10,3 @@ var Utils = {
     return Math.floor(Math.random() * (1 + hi - lo)) + lo;
   }
 };
-
-
-// listen for configuration updates
-Scream.socket.on('config-update', function(data){
-  for(var key in data){
-    Utils.config[key] = data[key];
-  }
-});
