@@ -41,7 +41,7 @@ class Game{
   frame(ctx){
     var context = ctx;
     var now  = Date.now();
-    var diff = ((now - context.startTime)/1000)*(Utils.config.bpm/60);
+    var diff = ((now - context.startTime)/1000)*(Starman.utils.config.bpm/60);
     var quarter = diff*4;
 
     if(quarter > context.beatIndex){

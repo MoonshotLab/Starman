@@ -45,7 +45,7 @@ class Queue{
 
       // set the position of each item
       var diff = (now - item.createdAt)/1000;
-      diff = diff*Utils.config.bpm/60;
+      diff = diff*Starman.utils.config.bpm/60;
       item.pos = 100 - ((100 - item.height)*diff);
       item.$el.css('bottom', item.pos + '%');
 
