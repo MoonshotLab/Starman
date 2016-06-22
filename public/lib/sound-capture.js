@@ -1,5 +1,5 @@
 // Sound capturing utilities
-Scream.SC = class SoundCapture {
+Starman.SC = class SoundCapture {
 
 
   constructor(opts){
@@ -19,35 +19,14 @@ Scream.SC = class SoundCapture {
 
 
 
-  // pass a device label
-  // returns their media info
-  static getDevice(deviceName, next){
-    navigator.mediaDevices.enumerateDevices().then(function(devices){
-      var err, foundDevice;
-
-      devices.forEach(function(device){
-        if(deviceName == device.label && device.kind == 'audioinput'){
-          foundDevice = device;
-        }
-      });
-
-      if(!foundDevice) err = 'Could not find device';
-      next(err, foundDevice);
-    });
-  }
-
-
-
   // pass a device's media info
-  listen(device, next){
+  listen(next){
     var self = this;
 
     var err;
     try{
       navigator.getUserMedia({
-        audio : {
-          optional : [{ sourceId : device.sourceId }]
-        }
+        audio : {}
       }, startStream, handleError);
     } catch(e){ err = e; }
     next(err, 'connecting...');
