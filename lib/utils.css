@@ -12,12 +12,68 @@ html, body{
 
 .screen{
   width: 100%;
+  height: 100%;
   display: none;
 }
 
 
 
+/* Button Screen */
+.button-screen{
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+.button-screen a, .button-screen h1.title{
+  display: block;
+  text-indent: -5000%;
+  background-repeat: no-repeat;
+  background-position: center center;
+  margin: 0;
+  padding: 0;
+  background-size: contain;
+}
+.button-screen h1.title{
+  min-height: 25%;
+  margin: 0% auto 5%;
+  width: 80%;
+  padding-top: 10%;
+}
+.button-screen a:first-of-type{
+  margin-bottom: 2.5%;
+}
+.button-screen a{
+  height: 15%;
+}
+#demo-button{
+  background-image: url('../img/demo.png');
+}
+#demo-button:hover{
+  background-image: url('../img/demo-hover.png');
+}
+#play-button{
+  background-image: url('../img/play.png');
+}
+#play-button:hover{
+  background-image: url('../img/play-hover.png');
+}
+#next-game-button{
+  background-image: url('../img/next-game.png');
+}
+#next-game-button:hover{
+  background-image: url('../img/next-game-hover.png');
+}
+#replay-button{
+  background-image: url('../img/replay.png');
+}
+#replay-button:hover{
+  background-image: url('../img/replay-hover.png');
+}
+
+
+
 .meter{
+  z-index: 10;
   position: absolute;
   top: 20%;
   width: 7%;
