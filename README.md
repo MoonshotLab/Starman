@@ -1,6 +1,6 @@
-# Scream 5
+# Starman
 
-A series of crowd based yelling games for [Barkley's](http://barkleyus.com/) 2016 annual meeting.
+A series of audio input based video games.
 
 
 ## About / Setup
