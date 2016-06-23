@@ -32,7 +32,7 @@ video{
 
 
 
-#stage-left, #stage-right{
+#volume{
   position: absolute;
   left: 5%;
   top: 20%;
@@ -41,13 +41,6 @@ video{
   border: 6px solid white;
   border-top: none;
 }
-#stage-right{
-  left: auto;
-  right: 5%;
-}
-
-
-
 .top{
   background-image: url('./img/squiggle.svg');
   background-position: center center;

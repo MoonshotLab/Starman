@@ -11,16 +11,16 @@ class Obstacle {
 
     // set the x position with a little bit of randomness
     if(opts.config.x == -1)
-      x = Utils.random(0, w/3);
+      x = Starman.utils.random(0, w/3);
     else if(opts.config.x == 1)
-      x = Utils.random(w*0.66, w);
+      x = Starman.utils.random(w*0.66, w);
     else
-      x = Utils.random(w/3, w*0.66);
+      x = Starman.utils.random(w/3, w*0.66);
 
     // set the y position with a little bit of randomness
     var fixedY = h*(opts.config.y/100);
     var randomY = h*0.05;
-    y = Utils.random(fixedY - randomY, fixedY + randomY);
+    y = Starman.utils.random(fixedY - randomY, fixedY + randomY);
 
     this.sprite = new Phaser.Sprite(
       opts.context.game, x, y, opts.config.name

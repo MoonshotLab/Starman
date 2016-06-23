@@ -9,7 +9,7 @@ class Game {
     this.score = 0;
     this.obstacles = null;
     this.player = null;
-    this.volume = { left : 0, right : 0 };
+    this.volume = 0;
 
     // dom storage
     this.$ = {

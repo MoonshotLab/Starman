@@ -14,8 +14,7 @@
 
   // retain volume containers
   var $el = {
-    volumeLeft : $('#stage-left').find('.volume'),
-    volumeRight : $('#stage-right').find('.volume'),
+    volume : $('#volume').find('.volume'),
     game : document.getElementById('gameplay'),
     intro : document.getElementById('intro'),
     outro : document.getElementById('outro'),
@@ -42,7 +41,7 @@
   },false);
 
 
-  // star tthe game
+  // star the game
   function startGame(){
     var game = new Game({
       width : window.innerWidth,
@@ -66,32 +65,22 @@
     });
 
 
-    // listen to sound sockets
-    Scream.socket.on('stage-left', function(data){
-      var volume = Math.round(data.volume/Utils.config.sensitivity);
-      if(volume >= 100) volume = 100;
-      $el.volumeLeft.css('height', volume + '%');
-      game.volume.left = volume;
+    // create a new instance of a sound capture device
+    var soundCapture = new Starman.SC({
+      frequencyNodeCount : Starman.utils.config.frequencyNodeCount
     });
 
-    Scream.socket.on('stage-right', function(data){
-      var volume = Math.round(data.volume/Utils.config.sensitivity);
-      if(volume >= 100) volume = 100;
-      $el.volumeRight.css('height', volume + '%');
-      game.volume.right = volume;
+    soundCapture.listen(function(err){
+      if(err) alert(JSON.stringify(err));
     });
 
-
-    // have a keyboard just in case
-    document.onkeydown = function(e){
-      if(e.keyCode == 37){
-        if(game.volume.left == 100) game.volume.left = 0;
-        else game.volume.left = 100;
-      } else if(e.keyCode == 39){
-        if(game.volume.right == 100) game.volume.right = 0;
-        else game.volume.right = 100;
-      }
-    };
+    // get the volume from the sound capture instance
+    soundCapture.emitter.addListener('sound', function(vol, freq){
+      var volume = Math.round(vol/Starman.utils.config.sensitivity);
+      if(volume >= 100) volume = 100;
+      $el.volume.css('height', volume + '%');
+      game.volume = volume;
+    });
   }
 
 })();
