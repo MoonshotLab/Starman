@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>Office Space</title>
+    <link rel='stylesheet' href='../lib/utils.css' />
     <link rel='stylesheet' href='./index.css' />
   </head>
   <body>
@@ -21,13 +22,12 @@
       <div id='game'></div>
 
       <!-- volume indicators -->
-      <div id='volume'>
+      <div id='volume' class='meter left'>
         <div class='top'></div>
-        <div class='volume'></div>
+        <div class='volume value'></div>
       </div>
     </div>
 
-    <h6 id='identifier'>Office Space</h6>
     <script src='/bower_components/eventEmitter/EventEmitter.min.js'></script>
     <script src='/bower_components/zepto/zepto.min.js'></script>
     <script src='/bower_components/phaser/build/phaser.min.js'></script>

@@ -32,41 +32,6 @@ video{
 
 
 
-#volume{
-  position: absolute;
-  left: 5%;
-  top: 20%;
-  width: 7%;
-  height: 60%;
-  border: 6px solid white;
-  border-top: none;
-}
-.top{
-  background-image: url('./img/squiggle.svg');
-  background-position: center center;
-  background-size: contain;
-  transform: scaleX(-1) scaleY(-1);
-  background-repeat: no-repeat;
-  width: 105%;
-  height: 15px;
-  left: -2.5%;
-  top: -20px;
-  position: absolute;
-}
-
-
-
-.volume{
-  background-image: url('./img/line-meter.svg');
-  background-size: 15%;
-  position: absolute;
-  background-position: bottom left;
-  bottom: 2%;
-  width: 80%;
-  left: 10%;
-}
-
-
 
 #winner{
   display: none;
@@ -78,13 +43,4 @@ video{
   background: url('./img/success.svg') no-repeat center center;
   height: 100%;
   z-index: 3;
-}
-
-
-h6{
-  bottom: 0;
-  position: absolute;
-  color: white;
-  right: 15px;
-  z-index: 4;
 }

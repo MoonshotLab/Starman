@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>Star Twerk - The Y Generation</title>
+    <link rel='stylesheet' href='../lib/utils.css' />
     <link rel='stylesheet' href='./index.css' />
   </head>
   <body>
@@ -17,9 +18,9 @@
 
 
     <div id='gameplay' class='show'>
-      <div id='score-container'>
-        <div id='score-top'></div>
-        <div id='score'></div>
+      <div id='score-container' class='meter right'>
+        <div id='score-top' class='top'></div>
+        <div id='score' class='value'></div>
       </div>
 
       <div id='queue-container'>
@@ -38,7 +39,6 @@
       </video>
     </div>
 
-    <h6 id='identifier'>Star Twerk</h6>
     <script src='/bower_components/zepto/zepto.min.js'></script>
     <script src='/bower_components/eventEmitter/EventEmitter.min.js'></script>
 

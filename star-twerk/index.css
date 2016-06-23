@@ -79,7 +79,7 @@ video{
   width: 105%;
   left: -2.5%;
   height: 15px;
-  background-image: url('./img/squiggle.svg');
+  background-image: url('../img/squiggle.svg');
   background-position: center center;
   background-size: contain;
   background-repeat: no-repeat;
@@ -97,7 +97,7 @@ video{
 
 
 #queue-container.miss .squiggle{
-  background-image: url('./img/squiggle-miss.svg');
+  background-image: url('../img/squiggle-miss.svg');
 }
 #queue-container.miss .top, #queue-container.miss .bottom{
   border-color: #e2243c;
@@ -120,7 +120,7 @@ video{
 
 
 /* queue and score */
-#score-container, #queue-container{
+#queue-container{
   position: absolute;
   right: 5%;
   top: 20%;
@@ -157,34 +157,4 @@ video{
   height: 100%;
   position: relative;
   overflow: hidden;
-}
-#score-top{
-  background-image: url('./img/squiggle.svg');
-  background-position: center center;
-  transform: scaleX(-1) scaleY(-1);
-  background-size: contain;
-  background-repeat: no-repeat;
-  width: 105%;
-  height: 15px;
-  left: -2.5%;
-  position: absolute;
-  top: -20px;
-}
-#score{
-  background-image: url('./img/line-meter.svg');
-  background-size: 15%;
-  background-position: bottom left;
-  position: absolute;
-  bottom: 1.5%;
-  width: 80%;
-  left: 10%;
-}
-
-
-h6{
-  bottom: 0;
-  position: absolute;
-  color: white;
-  right: 15px;
-  z-index: 4;
 }
