@@ -6,15 +6,38 @@
     <link rel='stylesheet' href='./index.css' />
   </head>
   <body>
-    <video id='intro'>
+
+
+    <video id='intro' class='screen' autoplay>
       <source src='./intro.mp4' type='video/mp4' />
     </video>
-    <video id='outro'>
-      <source src='./outro.mp4' type='video/mp4' />
+
+
+
+    <div id='play' class='screen button-screen'>
+      <h1 class='title'>Moonshooter</h1>
+      <a href='#' id='demo-button'>demo</a>
+      <a href='#' id='play-button'>play</a>
+    </div>
+
+
+
+    <video id='instructions' class='screen'>
+      <source src='./instructions.mp4' type='video/mp4' />
     </video>
 
-    <div id='gameplay' class='show'>
-      <img id='framed' src='./img/game_frame_1.jpg' />
+
+
+    <video id='build-up' class='screen'>
+      <source src='./build-up.mp4' type='video/mp4' />
+    </video>
+
+
+
+    <div id='game' class='screen'>
+      <div id='frame-wrapper'>
+        <img id='framed' src='./img/game_frame_1.jpg' />
+      </div>
 
       <audio id='audio-win'>
         <source src='./win.m4a' type='audio/mpeg' />
@@ -41,9 +64,24 @@
       </div>
     </div>
 
-    <h6 id='identifier'>Moonshooter</h6>
+
+
+    <video id='outro' class='screen'>
+      <source src='./outro.mp4' type='video/mp4' />
+    </video>
+
+
+
+    <div id='replay' class='button-screen screen'>
+      <h1 class='title'></h1>
+      <a href='#' id='next-game-button'>next-game</a>
+      <a href='#' id='replay-button'>replay</a>
+    </div>
+
+
 
     <script src='/bower_components/eventEmitter/EventEmitter.min.js'></script>
+    <script src='/bower_components/zepto/zepto.min.js'></script>
 
     <script src='/lib/utils.js'></script>
     <script src='/lib/sound-capture.js'></script>

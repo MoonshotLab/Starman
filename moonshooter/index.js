@@ -3,6 +3,15 @@
   var powerLevel = 0;
   var numGameFrames = 9;
   var numWinFrames = 30;
+  var animationFrame = null;
+
+  // retain dom elements
+  var $el = {
+    volume : $('#volume'),
+    power : $('#power'),
+    framed : $('#framed')
+  };
+
 
 
   // create a new instance of a sound capture device
@@ -20,38 +29,48 @@
   });
 
 
-  // reference some dom elements
-  var $ = {
-    volume : document.getElementById('volume'),
-    power : document.getElementById('power'),
-    targetHi : document.getElementById('target-hi'),
-    targetLo : document.getElementById('target-lo'),
-    framed : document.getElementById('framed'),
-    winner : document.getElementById('winner'),
-    intro : document.getElementById('intro'),
-    outro : document.getElementById('outro'),
-    gameplay : document.getElementById('gameplay'),
-    audioWin : document.getElementById('audio-win'),
-    audioLaunch : document.getElementById('audio-launch')
-  };
+
+  // click listeners for the button screens
+  $('#demo-button').click(function(){
+    $('#play').hide();
+    $('#instructions').show();
+    $('#instructions')[0].play();
+  });
+
+  $('#play-button').click(function(){
+    $('#play').hide();
+    startGame();
+  });
+
+  $('#next-game-button').click(function(){
+    window.location.href = '/office-space';
+  });
+
+  $('#replay-button').click(function(){
+    $('#replay').hide();
+    startGame();
+  });
 
 
-  // space bar to initialize
-  document.onkeydown = function(e){
-    if(e.keyCode == 32){
-      $.intro.play();
-      document.getElementById('identifier').style.display = 'none';
-    }
-  };
 
-
-  // when video is done hide it and begin requesting animation frames
-  $.intro.addEventListener('ended', function(){
-    $.intro.style.display = 'none';
-    $.gameplay.style.display = 'block';
-
-    window.requestAnimationFrame(calculatePower);
+  // when intro video is done, hide it and show the button screen
+  $('#intro')[0].addEventListener('ended', function(){
+    $('#intro').hide();
+    $('#play').show();
   },false);
+
+  // when instructions video is done, hide it and begin the game
+  $('#instructions')[0].addEventListener('ended', function(){
+    $('#instructions').hide();
+    startGame();
+  },false);
+
+  // when outro video is done, hide it and show the replay screen
+  $('#outro')[0].addEventListener('ended', function(){
+    $('#outro').hide();
+    $('#replay').show();
+  });
+
 
 
   // preload all the images
@@ -63,11 +82,20 @@
   }
 
 
+
+  var startGame = function(){
+    $('#game').show();
+    animationFrame = window.requestAnimationFrame(calculatePower);
+  };
+
+
+
   // setup the high and low position selectors
   var hiPos = (100 - Starman.utils.config.hiThreshold);
   var loPos = Starman.utils.config.loThreshold;
-  $.targetHi.style.height = hiPos + '%';
-  $.targetLo.style.height = Starman.utils.config.loThreshold + '%';
+  $('#target-hi').css('height', hiPos + '%');
+  $('#target-lo').css('height', Starman.utils.config.loThreshold + '%');
+
 
 
   function calculatePower(){
@@ -82,17 +110,17 @@
       if(powerLevel <= 0) powerLevel = 0;
     }
 
-    $.volume.style.height = volumeLevel + '%';
-    $.power.style.height = powerLevel + '%';
+    $el.volume.css('height', volumeLevel + '%');
+    $el.power.css('height', powerLevel + '%');
 
     var videoFrame = Math.round((powerLevel/100) * numGameFrames);
     if(videoFrame <= 0) videoFrame = 1;
     if(videoFrame >= numGameFrames) videoFrame = numGameFrames;
 
-    $.framed.src = './img/game_frame_' + videoFrame + '.jpg';
+    $el.framed[0].src = './img/game_frame_' + videoFrame + '.jpg';
 
     if(powerLevel >= 100){
-      powerLevel = 100;
+      powerLevel = 0;
       showWinScreen();
     } else{
       window.requestAnimationFrame(calculatePower);
@@ -101,18 +129,16 @@
 
 
   function showWinScreen(){
-    // show the win text
-    $.winner.style.display = 'block';
-
-    // wait a second then play the win sound
-    setTimeout($.audioWin.play, 1000);
+    // show the win text and play the sound
+    $('#winner').show();
+    $('#audio-win')[0].play();
 
     // play the win screen animation and launch sound
-    $.audioLaunch.play();
+    $('#audio-launch')[0].play();
     var activeFrame = 1;
     var frameInterval = setInterval(function(){
       if(activeFrame <= numWinFrames){
-        $.framed.src = './img/win_frame_' + activeFrame + '.jpg';
+        $el.framed[0].src = './img/win_frame_' + activeFrame + '.jpg';
         activeFrame++;
       }
 
@@ -123,9 +149,9 @@
 
         // wait, then show outro video
         setTimeout(function(){
-          $.outro.style.display = 'block';
-          $.gameplay.style.display = 'none';
-          $.outro.play();
+          $('#outro').show();
+          $('#game').hide();
+          $('#outro')[0].play();
         }, 3000);
       }
     }, 100);
