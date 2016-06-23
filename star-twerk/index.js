@@ -60,36 +60,70 @@
   ];
 
 
-  var $el = {
-    intro : document.getElementById('intro'),
-    outro : document.getElementById('outro'),
-    gameplay : document.getElementById('gameplay')
-  };
+  // retain
+  var game = null;
 
 
-  // space bar to initialize
-  document.onkeydown = function(e){
-    if(e.keyCode == 32){
-      $el.intro.play();
-      document.getElementById('identifier').style.display = 'none';
-    }
-  };
+
+  // click listeners for the button screens
+  $('#demo-button').click(function(){
+    $('#play').hide();
+    $('#instructions').show();
+    $('#instructions')[0].play();
+  });
+
+  $('#play-button').click(function(){
+    $('#play').hide();
+    startGame();
+  });
+
+  $('#next-game-button').click(function(){
+    window.location.href = '/moonshooter';
+  });
+
+  $('#replay-button').click(function(){
+    $('#replay').hide();
+    startGame();
+  });
 
 
-  // when video is done hide it and begin requesting animation frames
-  $el.intro.addEventListener('ended', function(){
-    $el.intro.style.display = 'none';
-    $el.gameplay.style.display = 'block';
 
-    var game = new Game({ song : song });
+  // when intro video is done, hide it and show the button screen
+  $('#intro')[0].addEventListener('ended', function(){
+    $('#intro').hide();
+    $('#play').show();
+  },false);
+
+  // when instructions video is done, hide it and begin the game
+  $('#instructions')[0].addEventListener('ended', function(){
+    $('#instructions').hide();
+    startGame();
+  },false);
+
+  // when outro video is done, hide it and show the replay screen
+  $('#outro')[0].addEventListener('ended', function(){
+    $('#outro').hide();
+    $('#replay').show();
+  });
+
+
+
+  // when the intro video is done, hide it and begin game
+  var startGame = function(){
+    $('#game').show();
+
+    game = new Game({ song : song });
     game.emitter.on('done', function(){
-      $el.outro.style.display = 'block';
+      game.pause = true;
+      game.reset();
+      $('#outro').show();
+
       setTimeout(function(){
-        $el.gameplay.className = '';
-        $el.outro.className = 'show';
-        $el.outro.play();
+        game = null;
+        $('#game').hide();
+        $('#outro')[0].play();
       }, 100);
     });
-  },false);
+  };
 
 })();

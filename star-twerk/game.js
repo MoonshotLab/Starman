@@ -3,11 +3,14 @@ class Game{
     var self = this;
 
     this.startTime = Date.now();
+    this.maxScore = 30;
     this.score = 0;
     this.$score = document.getElementById('score');
 
     this.beatIndex = 0;
     this.song = opts.song;
+
+    this.pause = false;
 
     this.queue = new Queue();
     this.dancer = new Dancer();
@@ -27,11 +30,17 @@ class Game{
   }
 
 
+  reset(){
+    this.score = 0;
+    this.$score.style.height = 0;
+    $('#queue').empty();
+  }
+
 
   updateScore(){
     this.score++;
-    this.$score.style.height = 100*(this.score/35) + '%';
-    if(this.score == 35){
+    this.$score.style.height = 100*(this.score/this.maxScore) + '%';
+    if(this.score == this.maxScore){
       this.dancer.pause();
       this.emitter.emitEvent('done', []);
     }
@@ -55,8 +64,10 @@ class Game{
     context.queue.animate(now);
 
     // recurse
-    requestAnimationFrame(function(){
-      context.frame(context);
-    });
+    if(!ctx.pause){
+      requestAnimationFrame(function(){
+        context.frame(context);
+      });
+    }
   }
 }

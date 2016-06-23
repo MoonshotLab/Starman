@@ -7,17 +7,34 @@
   </head>
   <body>
 
-    <video id='intro'>
+
+    <video id='intro' autoplay class='screen'>
       <source src='./intro.mp4' type='video/mp4' />
     </video>
 
 
-    <video id='outro'>
-      <source src='./outro.mp4' type='video/mp4' />
+
+    <div id='play' class='screen button-screen'>
+      <h1 class='title'>Star Twerk</h1>
+      <a href='#' id='demo-button'>demo</a>
+      <a href='#' id='play-button'>play</a>
+    </div>
+
+
+
+    <video id='instructions' class='screen'>
+      <source src='./instructions.mp4' type='video/mp4' />
     </video>
 
 
-    <div id='gameplay' class='show'>
+
+    <video id='build-up' class='screen'>
+      <source src='./build-up.mp4' type='video/mp4' />
+    </video>
+
+
+
+    <div id='game' class='screen'>
       <div id='score-container' class='meter right'>
         <div id='score-top' class='top'></div>
         <div id='score' class='value'></div>
@@ -38,6 +55,22 @@
         <source src='./game.mp4' type='video/mp4' />
       </video>
     </div>
+
+
+
+    <video id='outro'>
+      <source src='./outro.mp4' type='video/mp4' />
+    </video>
+
+
+
+    <div id='replay' class='button-screen screen'>
+      <h1 class='title'>Star Twerk</h1>
+      <a href='#' id='next-game-button'>next-game</a>
+      <a href='#' id='replay-button'>replay</a>
+    </div>
+
+
 
     <script src='/bower_components/zepto/zepto.min.js'></script>
     <script src='/bower_components/eventEmitter/EventEmitter.min.js'></script>
