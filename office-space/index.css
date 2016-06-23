@@ -1,35 +1,15 @@
-html, body{
-  background-color: black;
-  margin: 0;
-  overflow: hidden;
-  font-family: Helvetica;
-}
-
-
-
-/* intro, outro, and primary gameplay stuff */
-video{
-  width: 100%;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-}
-video{
-  z-index: 2;
-}
-#outro, #gameplay{
-  display: none;
-  opacity: 0;
-  transition: .5s linear opacity;
-}
-#gameplay{
+#intro{
   display: block;
 }
-#outro.show, #gameplay.show{
-  opacity: 1;
+
+
+/* Configure the Button Screen */
+.button-screen{
+  background-image: url('./img/background.png');
 }
-
-
+.button-screen h1.title{
+  background-image: url('./img/title.png');
+}
 
 
 

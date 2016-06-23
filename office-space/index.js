@@ -23,26 +23,51 @@
   };
 
 
-  // space bar to initialize
-  document.onkeydown = function(e){
-    if(e.keyCode == 32){
-      $el.intro.play();
-      document.getElementById('identifier').style.display = 'none';
-    }
-  };
+  // click listeners for the button screens
+  $('#demo-button').click(function(){
+    $('#play').hide();
+    $('#instructions').show();
+    $('#instructions')[0].play();
+  });
+
+  $('#play-button').click(function(){
+    $('#play').hide();
+    startGame();
+  });
+
+  $('#next-game-button').click(function(){
+    window.location.href = '/office-space';
+  });
+
+  $('#replay-button').click(function(){
+    $('#replay').hide();
+    startGame();
+  });
 
 
-  // when video is done hide it and create game
-  $el.intro.addEventListener('ended', function(){
-    $el.intro.style.display = 'none';
-    $el.game.style.display = 'block';
+  // when intro ideo is done hide it and create game
+  $('#intro')[0].addEventListener('ended', function(){
+    $('#intro').hide();
+    $('#play').show();
+  },false);
 
+  // when instructions video is done, hide it and begin the game
+  $('#instructions')[0].addEventListener('ended', function(){
+    $('#instructions').hide();
     startGame();
   },false);
+
+  // when outro video is done, hide it and show the replay screen
+  $('#outro')[0].addEventListener('ended', function(){
+    $('#outro').hide();
+    $('#replay').show();
+  });
 
 
   // star the game
   function startGame(){
+    $('#gameplay').show();
+
     var game = new Game({
       width : window.innerWidth,
       height : window.innerHeight,
