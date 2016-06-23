@@ -1,15 +1,15 @@
 (function(){
 
   var obstacleMap = [
-    { name : 'bell',        x : -1,  y : 40 },
-    { name : 'coffee',      x : 1,   y : 80 },
-    { name : 'postit',      x : 1,   y : 60 },
-    { name : 'glue',        x : 1,   y : 20 },
-    { name : 'pins',        x : 0,   y : 50 },
-    { name : 'rubberBand',  x : 0,   y : 30 },
-    { name : 'stapler',     x : 1,   y : 45 },
-    { name : 'tape',        x : -1,  y : 10 },
-    { name : 'whiteOut',    x : -1,  y : 70 },
+    { name : 'bell',        x : 40,  y : -1 },
+    { name : 'coffee',      x : 80,  y : 1  },
+    { name : 'postit',      x : 60,  y : 1  },
+    { name : 'glue',        x : 20,  y : 1  },
+    { name : 'pins',        x : 50,  y : 0  },
+    { name : 'rubberBand',  x : 30,  y : 0  },
+    { name : 'stapler',     x : 45,  y : 1  },
+    { name : 'tape',        x : 10,  y : -1 },
+    { name : 'whiteOut',    x : 70,  y : -1 },
   ];
 
   // retain volume containers

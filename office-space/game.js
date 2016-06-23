@@ -48,18 +48,19 @@ class Game {
 
 
   create(self, opts){
-    var verticalFactor = 10;
+    var worlScaleFactor = 10;
 
     // setup background, world bounds and physics system
-    var background = self.game.add.tileSprite(0, 0, opts.width, opts.height*verticalFactor, 'background');
+    var background = self.game.add.tileSprite(0, 0, opts.width*worlScaleFactor, opts.height, 'background');
     background.fixedToCamera = true;
 
-    self.parallax = self.game.add.tileSprite(0, 0, opts.width, opts.height*verticalFactor, 'parallax');
+    self.parallax = self.game.add.tileSprite(0, 0, opts.width*worlScaleFactor, opts.height, 'parallax');
     self.parallax.fixedToCamera = true;
 
-    self.game.world.setBounds(0, 0, opts.width, opts.height*verticalFactor);
+    self.game.world.setBounds(0, 0, opts.width*worlScaleFactor, opts.height);
     self.game.physics.startSystem(Phaser.Physics.P2JS);
     self.game.physics.p2.restitution = 0.25;
+    self.game.physics.p2.gravity.y = 300;
 
     // create an obstacle container and setup hit detection
     self.obstacles = self.game.add.group();
@@ -88,7 +89,7 @@ class Game {
     self.parallax.tilePosition.set(-self.game.camera.x/3, -self.game.camera.y/3);
 
     var playerSprite = self.player.sprite;
-    if(playerSprite.y >= playerSprite.height){
+    if(playerSprite.x <= self.game.world.width - playerSprite.width){
       // update player position and rotation
       self.player.update(self.volume);
     } else{
@@ -102,11 +103,5 @@ class Game {
     self.game.camera.focusOnXY(
       playerSprite.x, playerSprite.y - playerSprite.height/2
     );
-  }
-
-
-  addScore(){
-    this.score += 1;
-    this.$.score.textContent = this.score;
   }
 }

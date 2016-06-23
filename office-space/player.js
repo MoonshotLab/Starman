@@ -2,8 +2,8 @@ class Player {
 
   constructor(opts){
     // setup and position sprite
-    var x = opts.game.world.bounds.width/2;
-    var y = opts.game.world.bounds.height - 200;
+    var x = 400;
+    var y = opts.game.world.bounds.height - 300;
     this.sprite = opts.game.add.sprite(x, y, 'rocket');
     this.sprite.scale.setTo(0.7, 0.7);
 
@@ -18,6 +18,8 @@ class Player {
     this.sprite.body.collideWorldBounds = true;
     this.sprite.body.damping = 0.4;
 
+    this.sprite.body.angle = 45;
+
     return this;
   }
 
@@ -30,14 +32,16 @@ class Player {
     // play the proper sprite
     if(volume > Starman.utils.config.loThreshold){
       this.sprite.animations.play('both-boosters');
+      this.sprite.body.angle = 45;
     } else{
       this.sprite.animations.play('no-boosters');
+      this.sprite.body.angle = 135;
       powered = false;
     }
 
     // thrust and rotate
     if(powered){
-      this.sprite.body.thrust(speed*2);
+      this.sprite.body.thrust(speed*100);
     }
   }
 
