@@ -6,7 +6,6 @@
 
 /* Configure the Button Screen */
 .button-screen{
-  /*display: block;*/
   background-image: url('./img/background.png');
 }
 .button-screen h1.title{
