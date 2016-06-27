@@ -1,28 +1,10 @@
 # Starman
 
-A series of audio input based video games.
+A series of video games which are controlled via sound input.
 
 
-## About / Setup
-
-Capturing streaming audio from multiple microphone inputs using a single web browser appears to be impossible. To resolve this issue, this project utilizes both Google Chrome and Google Chrome Canary to send microphone data to a single processing source.
-
-The capture interfaces must be loaded in separate browsers (NOT separate windows of the same browser!). The capture interfaces are located at `/capture?stage=left` and `/capture?stage=right`.
-
-Additionally, two separate aggregate devices must be setup using the Audio Midi Setup panel on OSX. You should name these channels 'left' and 'right'.
-
-For best results, adjust the settings on each browser and check "Allow all sites to use system exclusive messages to access MIDI devices". This setting can be found by clicking on the video/audio manager icon in the browser's url entry field, then clicking "Manage Microphone Settings".
-
-
-
-## Config - /config
-Set configuration options for each game. This interface can be reached via a mobile device if on the same network as the machine running the games. Visit `http://localhost:3000/config` to operate.
-
-
-
-## Capture - /capture
-An interface required to capture the left and right channel data. Pass in a query key of `stage` to use. Accepted routes are `/capture?stage=left` and `/capture?stage=right`.
-
+## Config
+Configuration options for each game can be set at /lib/utils.js.
 
 
 ## Moonshooter - /moonshooter
