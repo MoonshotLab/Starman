@@ -41,7 +41,7 @@ class Player {
 
     // thrust and rotate
     if(powered){
-      this.sprite.body.thrust(speed*100);
+      this.sprite.body.thrust(speed*50);
     }
   }
 
