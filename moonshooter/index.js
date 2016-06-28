@@ -39,7 +39,8 @@
 
   $('#play-button').click(function(){
     $('#play').hide();
-    startGame();
+    $('#build-up').show();
+    $('#build-up')[0].play();
   });
 
   $('#next-game-button').click(function(){
@@ -48,7 +49,8 @@
 
   $('#replay-button').click(function(){
     $('#replay').hide();
-    startGame();
+    $('#build-up').show();
+    $('#build-up')[0].play();
   });
 
 
@@ -59,11 +61,16 @@
     $('#play').show();
   },false);
 
-  // when instructions video is done, hide it and begin the game
+  // when instructions video is done, hide it and start the build up vid
   $('#instructions')[0].addEventListener('ended', function(){
     $('#instructions').hide();
-    startGame();
+    $('#build-up').show();
+    $('#build-up')[0].play();
   },false);
+
+  $('#build-up')[0].addEventListener('ended', function(){
+    startGame();
+  });
 
   // when outro video is done, hide it and show the replay screen
   $('#outro')[0].addEventListener('ended', function(){
