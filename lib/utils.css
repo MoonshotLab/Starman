@@ -166,4 +166,5 @@ video{
   right: 30px;
   height: 2%;
   background-size: contain;
+  z-index: 5;
 }
