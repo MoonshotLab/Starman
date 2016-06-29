@@ -110,6 +110,7 @@
 
   // when the intro video is done, hide it and begin game
   var startGame = function(){
+    $('#music')[0].pause();
     $('#game').show();
 
     game = new Game({ song : song });

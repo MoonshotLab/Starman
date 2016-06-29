@@ -1,15 +1,24 @@
 (function(){
 
   var obstacleMap = [
-    { name : 'bell',        x : 40,  y : -1 },
-    { name : 'coffee',      x : 80,  y : 1  },
-    { name : 'postit',      x : 60,  y : 1  },
-    { name : 'glue',        x : 20,  y : 1  },
-    { name : 'pins',        x : 50,  y : 0  },
-    { name : 'rubberBand',  x : 30,  y : 0  },
-    { name : 'stapler',     x : 45,  y : 1  },
-    { name : 'tape',        x : 10,  y : -1 },
-    { name : 'whiteOut',    x : 70,  y : -1 },
+    { name : 'tape',        x : 05,  y : -1 },
+    { name : 'glue',        x : 10,  y : 1  },
+    { name : 'rubberBand',  x : 15,  y : 0  },
+    { name : 'bell',        x : 20,  y : -1 },
+    { name : 'stapler',     x : 25,  y : 1  },
+    { name : 'pins',        x : 30,  y : 0  },
+    { name : 'postit',      x : 35,  y : 1  },
+    { name : 'whiteOut',    x : 40,  y : -1 },
+    { name : 'coffee',      x : 45,  y : 1  },
+    { name : 'tape',        x : 50,  y : -1 },
+    { name : 'glue',        x : 55,  y : 1  },
+    { name : 'rubberBand',  x : 60,  y : 0  },
+    { name : 'bell',        x : 65,  y : -1 },
+    { name : 'stapler',     x : 70,  y : 1  },
+    { name : 'pins',        x : 75,  y : 0  },
+    { name : 'postit',      x : 80,  y : 1  },
+    { name : 'whiteOut',    x : 85,  y : -1 },
+    { name : 'coffee',      x : 90,  y : 1  }
   ];
 
   // retain volume containers
@@ -36,7 +45,7 @@
   });
 
   $('#next-game-button').click(function(){
-    window.location.href = '/office-space';
+    window.location.href = '/star-twerk';
   });
 
   $('#replay-button').click(function(){
@@ -66,6 +75,7 @@
 
   // star the game
   function startGame(){
+    $('#music')[0].pause();
     $('#gameplay').show();
 
     var game = new Game({
@@ -80,12 +90,10 @@
       $el.winner.style.display = 'block';
 
       setTimeout(function(){
-        $el.outro.style.display = 'block';
-        setTimeout(function(){
-          $el.game.className = '';
-          $el.outro.className = 'show';
-          $el.outro.play();
-        }, 100);
+        $('#gameplay').hide();
+        $('#outro').show();
+        $('#outro')[0].play();
+        $('#music')[0].play();
       }, 2000);
     });
 

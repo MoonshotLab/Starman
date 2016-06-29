@@ -41,15 +41,15 @@ video{
 }
 .button-screen h1.title{
   min-height: 25%;
-  margin: 0% auto 5%;
-  width: 80%;
+  margin: 0% auto;
+  width: 40%;
   padding-top: 10%;
 }
 .button-screen a:first-of-type{
   margin-bottom: 2.5%;
 }
 .button-screen a{
-  height: 15%;
+  height: 7.5%;
 }
 #demo-button{
   background-image: url('../img/demo.png');
@@ -153,4 +153,17 @@ video{
   bottom: 6px;
   width: 80%;
   left: 10%;
+}
+
+
+#by-moonshot{
+  background-image: url('../img/by-moonshot.png');
+  background-repeat: no-repeat;
+  background-position: bottom right;
+  position: absolute;
+  width: 20%;
+  bottom: 20px;
+  right: 30px;
+  height: 2%;
+  background-size: contain;
 }

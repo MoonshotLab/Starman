@@ -48,7 +48,7 @@ class Game {
 
 
   create(self, opts){
-    var worlScaleFactor = 10;
+    var worlScaleFactor = 20;
 
     // setup background, world bounds and physics system
     var background = self.game.add.tileSprite(0, 0, opts.width*worlScaleFactor, opts.height, 'background');

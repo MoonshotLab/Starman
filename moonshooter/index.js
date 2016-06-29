@@ -92,6 +92,7 @@
 
   var startGame = function(){
     $('#game').show();
+    $('#music')[0].pause();
     animationFrame = window.requestAnimationFrame(calculatePower);
   };
 
@@ -139,6 +140,8 @@
     // show the win text and play the sound
     $('#winner').show();
     $('#audio-win')[0].play();
+    $('#music')[0].play();
+    $('#build-up').hide();
 
     // play the win screen animation and launch sound
     $('#audio-launch')[0].play();
