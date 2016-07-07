@@ -32,12 +32,14 @@
 
   // click listeners for the button screens
   $('#demo-button').click(function(){
+    $('#select')[0].play();
     $('#play').hide();
     $('#instructions').show();
     $('#instructions')[0].play();
   });
 
   $('#play-button').click(function(){
+    $('#select')[0].play();
     $('#play').hide();
     $('#build-up').show();
     $('#build-up')[0].play();

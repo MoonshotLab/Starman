@@ -18,7 +18,7 @@ class Player {
     this.sprite.body.collideWorldBounds = true;
     this.sprite.body.damping = 0.4;
 
-    this.sprite.body.angle = 45;
+    this.sprite.body.angle = 70;
 
     return this;
   }
@@ -32,10 +32,10 @@ class Player {
     // play the proper sprite
     if(volume > Starman.utils.config.loThreshold){
       this.sprite.animations.play('both-boosters');
-      this.sprite.body.angle = 45;
+      this.sprite.body.angle = 60;
     } else{
       this.sprite.animations.play('no-boosters');
-      this.sprite.body.angle = 135;
+      this.sprite.body.angle = 120;
       powered = false;
     }
 

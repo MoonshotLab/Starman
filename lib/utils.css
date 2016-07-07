@@ -40,10 +40,10 @@ video{
   background-size: contain;
 }
 .button-screen h1.title{
-  min-height: 25%;
-  margin: 0% auto;
+  margin: 0% auto 5%;
   width: 40%;
-  padding-top: 10%;
+  padding-top: 20%;
+  background-position: bottom center;
 }
 .button-screen a:first-of-type{
   margin-bottom: 2.5%;
@@ -74,6 +74,15 @@ video{
 }
 #replay-button:hover{
   background-image: url('../img/replay-hover.png');
+}
+#replay.button-screen{
+  background: none;
+}
+#replay.button-screen h1.title{
+  display: none;
+}
+#replay.button-screen a:first-of-type{
+  margin-top: 20%;
 }
 
 
