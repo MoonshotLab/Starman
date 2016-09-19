@@ -376,20 +376,22 @@ Phaser.Keyboard.prototype = {
             return;
         }
 
+        var key = event.keyCode;
+
         //   The event is being captured but another hotkey may need it
-        if (this._capture[event.keyCode])
+        if (this._capture[key])
         {
             event.preventDefault();
         }
 
-        if (!this._keys[event.keyCode])
+        if (!this._keys[key])
         {
-            this._keys[event.keyCode] = new Phaser.Key(this.game, event.keyCode);
+            this._keys[key] = new Phaser.Key(this.game, key);
         }
 
-        this._keys[event.keyCode].processKeyDown(event);
+        this._keys[key].processKeyDown(event);
 
-        this._k = event.keyCode;
+        this._k = key;
 
         if (this.onDownCallback)
         {
@@ -437,17 +439,19 @@ Phaser.Keyboard.prototype = {
             return;
         }
 
-        if (this._capture[event.keyCode])
+        var key = event.keyCode;
+
+        if (this._capture[key])
         {
             event.preventDefault();
         }
 
-        if (!this._keys[event.keyCode])
+        if (!this._keys[key])
         {
-            this._keys[event.keyCode] = new Phaser.Key(this.game, event.keyCode);
+            this._keys[key] = new Phaser.Key(this.game, key);
         }
 
-        this._keys[event.keyCode].processKeyUp(event);
+        this._keys[key].processKeyUp(event);
 
         if (this.onUpCallback)
         {
@@ -600,7 +604,7 @@ Phaser.Keyboard.prototype.constructor = Phaser.Keyboard;
 * _Note_: Use `Phaser.KeyCode.KEY` instead of `Phaser.Keyboard.KEY` to refer to a key code;
 * the latter approach is supported for compatibility.
 *
-* @namespace
+* @class Phaser.KeyCode
 */
 Phaser.KeyCode = {
     /** @static */
@@ -810,8 +814,10 @@ Phaser.KeyCode = {
 };
 
 // Duplicate Phaser.KeyCode values in Phaser.Keyboard for compatibility
-for (var key in Phaser.KeyCode) {
-    if (Phaser.KeyCode.hasOwnProperty(key) && !key.match(/[a-z]/)) {
+for (var key in Phaser.KeyCode)
+{
+    if (Phaser.KeyCode.hasOwnProperty(key) && !key.match(/[a-z]/))
+    {
         Phaser.Keyboard[key] = Phaser.KeyCode[key];
     }
 }

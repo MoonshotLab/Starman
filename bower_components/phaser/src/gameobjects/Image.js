@@ -24,6 +24,7 @@
 * @extends Phaser.Component.LoadTexture
 * @extends Phaser.Component.Overlap
 * @extends Phaser.Component.Reset
+* @extends Phaser.Component.ScaleMinMax
 * @extends Phaser.Component.Smoothed
 * @constructor
 * @param {Phaser.Game} game - A reference to the currently running game.
@@ -45,7 +46,7 @@ Phaser.Image = function (game, x, y, key, frame) {
     */
     this.type = Phaser.IMAGE;
 
-    PIXI.Sprite.call(this, PIXI.TextureCache['__default']);
+    PIXI.Sprite.call(this, Phaser.Cache.DEFAULT);
 
     Phaser.Component.Core.init.call(this, game, x, y, key, frame);
 
@@ -68,6 +69,7 @@ Phaser.Component.Core.install.call(Phaser.Image.prototype, [
     'LoadTexture',
     'Overlap',
     'Reset',
+    'ScaleMinMax',
     'Smoothed'
 ]);
 

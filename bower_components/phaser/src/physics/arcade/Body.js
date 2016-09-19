@@ -36,6 +36,25 @@ Phaser.Physics.Arcade.Body = function (sprite) {
     this.enable = true;
 
     /**
+    * If `true` this Body is using circular collision detection. If `false` it is using rectangular.
+    * Use `Body.setCircle` to control the collision shape this Body uses.
+    * @property {boolean} isCircle
+    * @default
+    * @readOnly
+    */
+    this.isCircle = false;
+
+    /**
+    * The radius of the circular collision shape this Body is using if Body.setCircle has been enabled.
+    * If you wish to change the radius then call `setCircle` again with the new value.
+    * If you wish to stop the Body using a circle then call `setCircle` with a radius of zero (or undefined).
+    * @property {number} radius
+    * @default
+    * @readOnly
+    */
+    this.radius = 0;
+
+    /**
     * @property {Phaser.Point} offset - The offset of the Physics Body from the Sprite x/y position.
     */
     this.offset = new Phaser.Point();
@@ -59,17 +78,17 @@ Phaser.Physics.Arcade.Body = function (sprite) {
     this.allowRotation = true;
 
     /**
-    * An Arcade Physics Body can have angularVelocity and angularAcceleration. Please understand that the collision Body
+    * The Body's rotation in degrees, as calculated by its angularVelocity and angularAcceleration. Please understand that the collision Body
     * itself never rotates, it is always axis-aligned. However these values are passed up to the parent Sprite and updates its rotation.
     * @property {number} rotation
     */
-    this.rotation = sprite.rotation;
+    this.rotation = sprite.angle;
 
     /**
     * @property {number} preRotation - The previous rotation of the physics body.
     * @readonly
     */
-    this.preRotation = sprite.rotation;
+    this.preRotation = sprite.angle;
 
     /**
     * @property {number} width - The calculated width of the physics body.
@@ -128,12 +147,12 @@ Phaser.Physics.Arcade.Body = function (sprite) {
     * @property {Phaser.Point} newVelocity - The new velocity. Calculated during the Body.preUpdate and applied to its position.
     * @readonly
     */
-    this.newVelocity = new Phaser.Point(0, 0);
+    this.newVelocity = new Phaser.Point();
 
     /**
     * @property {Phaser.Point} deltaMax - The Sprite position is updated based on the delta x/y values. You can set a cap on those (both +-) using deltaMax.
     */
-    this.deltaMax = new Phaser.Point(0, 0);
+    this.deltaMax = new Phaser.Point();
 
     /**
     * @property {Phaser.Point} acceleration - The acceleration is the rate of change of the velocity. Measured in pixels per second squared.
@@ -154,7 +173,7 @@ Phaser.Physics.Arcade.Body = function (sprite) {
     /**
     * @property {Phaser.Point} gravity - A local gravity applied to this Body. If non-zero this over rides any world gravity, unless Body.allowGravity is set to false.
     */
-    this.gravity = new Phaser.Point(0, 0);
+    this.gravity = new Phaser.Point();
 
     /**
     * @property {Phaser.Point} bounce - The elasticity of the Body when colliding. bounce.x/y = 1 means full rebound, bounce.x/y = 0.5 means 50% rebound velocity.
@@ -170,6 +189,58 @@ Phaser.Physics.Arcade.Body = function (sprite) {
     this.worldBounce = null;
 
     /**
+    * A Signal that is dispatched when this Body collides with the world bounds.
+    * Due to the potentially high volume of signals this could create it is disabled by default.
+    * To use this feature set this property to a Phaser.Signal: `sprite.body.onWorldBounds = new Phaser.Signal()`
+    * and it will be called when a collision happens, passing five arguments:
+    * `onWorldBounds(sprite, up, down, left, right)`
+    * where the Sprite is a reference to the Sprite that owns this Body, and the other arguments are booleans
+    * indicating on which side of the world the Body collided.
+    * @property {Phaser.Signal} onWorldBounds
+    */
+    this.onWorldBounds = null;
+
+    /**
+    * A Signal that is dispatched when this Body collides with another Body.
+    * 
+    * You still need to call `game.physics.arcade.collide` in your `update` method in order
+    * for this signal to be dispatched.
+    *
+    * Usually you'd pass a callback to the `collide` method, but this signal provides for
+    * a different level of notification.
+    * 
+    * Due to the potentially high volume of signals this could create it is disabled by default.
+    * 
+    * To use this feature set this property to a Phaser.Signal: `sprite.body.onCollide = new Phaser.Signal()`
+    * and it will be called when a collision happens, passing two arguments: the sprites which collided.
+    * The first sprite in the argument is always the owner of this Body.
+    * 
+    * If two Bodies with this Signal set collide, both will dispatch the Signal.
+    * @property {Phaser.Signal} onCollide
+    */
+    this.onCollide = null;
+
+    /**
+    * A Signal that is dispatched when this Body overlaps with another Body.
+    * 
+    * You still need to call `game.physics.arcade.overlap` in your `update` method in order
+    * for this signal to be dispatched.
+    *
+    * Usually you'd pass a callback to the `overlap` method, but this signal provides for
+    * a different level of notification.
+    * 
+    * Due to the potentially high volume of signals this could create it is disabled by default.
+    * 
+    * To use this feature set this property to a Phaser.Signal: `sprite.body.onOverlap = new Phaser.Signal()`
+    * and it will be called when a collision happens, passing two arguments: the sprites which collided.
+    * The first sprite in the argument is always the owner of this Body.
+    * 
+    * If two Bodies with this Signal set collide, both will dispatch the Signal.
+    * @property {Phaser.Signal} onOverlap
+    */
+    this.onOverlap = null;
+
+    /**
     * @property {Phaser.Point} maxVelocity - The maximum velocity in pixels per second sq. that the Body can reach.
     * @default
     */
@@ -181,25 +252,25 @@ Phaser.Physics.Arcade.Body = function (sprite) {
     this.friction = new Phaser.Point(1, 0);
 
     /**
-    * @property {number} angularVelocity - The angular velocity controls the rotation speed of the Body. It is measured in radians per second.
+    * @property {number} angularVelocity - The angular velocity controls the rotation speed of the Body. It is measured in degrees per second.
     * @default
     */
     this.angularVelocity = 0;
 
     /**
-    * @property {number} angularAcceleration - The angular acceleration is the rate of change of the angular velocity. Measured in radians per second squared.
+    * @property {number} angularAcceleration - The angular acceleration is the rate of change of the angular velocity. Measured in degrees per second squared.
     * @default
     */
     this.angularAcceleration = 0;
 
     /**
-    * @property {number} angularDrag - The drag applied during the rotation of the Body.
+    * @property {number} angularDrag - The drag applied during the rotation of the Body. Measured in degrees per second squared.
     * @default
     */
     this.angularDrag = 0;
 
     /**
-    * @property {number} maxAngular - The maximum angular velocity in radians per second that the Body can reach.
+    * @property {number} maxAngular - The maximum angular velocity in degrees per second that the Body can reach.
     * @default
     */
     this.maxAngular = 1000;
@@ -211,7 +282,7 @@ Phaser.Physics.Arcade.Body = function (sprite) {
     this.mass = 1;
 
     /**
-    * @property {number} angle - The angle of the Body in radians, as calculated by its angularVelocity.
+    * @property {number} angle - The angle of the Body's velocity in radians.
     * @readonly
     */
     this.angle = 0;
@@ -272,6 +343,12 @@ Phaser.Physics.Arcade.Body = function (sprite) {
     this.overlapY = 0;
 
     /**
+    * If `Body.isCircle` is true, and this body collides with another circular body, the amount of overlap is stored here.
+    * @property {number} overlapR - The amount of overlap during the collision.
+    */
+    this.overlapR = 0;
+
+    /**
     * If a body is overlapping with another body, but neither of them are moving (maybe they spawned on-top of each other?) this is set to true.
     * @property {boolean} embedded - Body embed value.
     */
@@ -286,6 +363,8 @@ Phaser.Physics.Arcade.Body = function (sprite) {
     /**
     * Set the checkCollision properties to control which directions collision is processed for this Body.
     * For example checkCollision.up = false means it won't collide when the collision happened while moving up.
+    * If you need to disable a Body entirely, use `body.enable = false`, this will also disable motion.
+    * If you need to disable just collision and/or overlap checks, but retain motion, set `checkCollision.none = true`.
     * @property {object} checkCollision - An object containing allowed collision.
     */
     this.checkCollision = { none: false, any: true, up: true, down: true, left: true, right: true };
@@ -336,6 +415,61 @@ Phaser.Physics.Arcade.Body = function (sprite) {
     * @default
     */
     this.syncBounds = false;
+
+    /**
+    * @property {boolean} isMoving - Set by the `moveTo` and `moveFrom` methods.
+    */
+    this.isMoving = false;
+
+    /**
+    * @property {boolean} stopVelocityOnCollide - Set by the `moveTo` and `moveFrom` methods.
+    */
+    this.stopVelocityOnCollide = true;
+
+    /**
+    * @property {integer} moveTimer - Internal time used by the `moveTo` and `moveFrom` methods.
+    * @private
+    */
+    this.moveTimer = 0;
+
+    /**
+    * @property {integer} moveDistance - Internal distance value, used by the `moveTo` and `moveFrom` methods.
+    * @private
+    */
+    this.moveDistance = 0;
+
+    /**
+    * @property {integer} moveDuration - Internal duration value, used by the `moveTo` and `moveFrom` methods.
+    * @private
+    */
+    this.moveDuration = 0;
+
+    /**
+    * @property {Phaser.Line} moveTarget - Set by the `moveTo` method, and updated each frame.
+    * @private
+    */
+    this.moveTarget = null;
+
+    /**
+    * @property {Phaser.Point} moveEnd - Set by the `moveTo` method, and updated each frame.
+    * @private
+    */
+    this.moveEnd = null;
+
+    /**
+    * @property {Phaser.Signal} onMoveComplete - Listen for the completion of `moveTo` or `moveFrom` events.
+    */
+    this.onMoveComplete = new Phaser.Signal();
+
+    /**
+    * @property {function} movementCallback - Optional callback. If set, invoked during the running of `moveTo` or `moveFrom` events.
+    */
+    this.movementCallback = null;
+
+    /**
+    * @property {object} movementCallbackContext - Context in which to call the movementCallback.
+    */
+    this.movementCallbackContext = null;
 
     /**
     * @property {boolean} _reset - Internal cache var.
@@ -452,8 +586,11 @@ Phaser.Physics.Arcade.Body.prototype = {
 
         this.updateBounds();
 
-        this.position.x = (this.sprite.world.x - (this.sprite.anchor.x * this.sprite.width)) + this.offset.x;
-        this.position.y = (this.sprite.world.y - (this.sprite.anchor.y * this.sprite.height)) + this.offset.y;
+        this.position.x = (this.sprite.world.x - (this.sprite.anchor.x * this.sprite.width)) + this.sprite.scale.x * this.offset.x;
+        this.position.x -= this.sprite.scale.x < 0 ? this.width : 0;
+
+        this.position.y = (this.sprite.world.y - (this.sprite.anchor.y * this.sprite.height)) + this.sprite.scale.y * this.offset.y;
+        this.position.y -= this.sprite.scale.y < 0 ? this.height : 0;
 
         this.rotation = this.sprite.angle;
 
@@ -486,7 +623,10 @@ Phaser.Physics.Arcade.Body.prototype = {
 
             if (this.collideWorldBounds)
             {
-                this.checkWorldBounds();
+                if (this.checkWorldBounds() && this.onWorldBounds)
+                {
+                    this.onWorldBounds.dispatch(this.sprite, this.blocked.up, this.blocked.down, this.blocked.left, this.blocked.right);
+                }
             }
         }
 
@@ -494,6 +634,75 @@ Phaser.Physics.Arcade.Body.prototype = {
         this._dy = this.deltaY();
 
         this._reset = false;
+
+    },
+
+    /**
+    * Internal method.
+    *
+    * @method Phaser.Physics.Arcade.Body#updateMovement
+    * @protected
+    */
+    updateMovement: function () {
+
+        var percent = 0;
+        var collided = (this.overlapX !== 0 || this.overlapY !== 0);
+
+        //  Duration or Distance based?
+
+        if (this.moveDuration > 0)
+        {
+            this.moveTimer += this.game.time.elapsedMS;
+
+            percent = this.moveTimer / this.moveDuration;
+        }
+        else
+        {
+            this.moveTarget.end.set(this.position.x, this.position.y);
+
+            percent = this.moveTarget.length / this.moveDistance;
+        }
+
+        if (this.movementCallback)
+        {
+            var result = this.movementCallback.call(this.movementCallbackContext, this, this.velocity, percent);
+        }
+
+        if (collided || percent >= 1 || (result !== undefined && result !== true))
+        {
+            this.stopMovement((percent >= 1) || (this.stopVelocityOnCollide && collided));
+            return false;
+        }
+
+        return true;
+
+    },
+
+    /**
+    * If this Body is moving as a result of a call to `moveTo` or `moveFrom` (i.e. it
+    * has Body.isMoving true), then calling this method will stop the movement before
+    * either the duration or distance counters expire.
+    *
+    * The `onMoveComplete` signal is dispatched.
+    *
+    * @method Phaser.Physics.Arcade.Body#stopMovement
+    * @param {boolean} [stopVelocity] - Should the Body.velocity be set to zero?
+    */
+    stopMovement: function (stopVelocity) {
+
+        if (this.isMoving)
+        {
+            this.isMoving = false;
+
+            if (stopVelocity)
+            {
+                this.velocity.set(0);
+            }
+
+            //  Send the Sprite this Body belongs to
+            //  and a boolean indicating if it stopped because of a collision or not
+            this.onMoveComplete.dispatch(this.sprite, (this.overlapX !== 0 || this.overlapY !== 0));
+        }
 
     },
 
@@ -509,6 +718,12 @@ Phaser.Physics.Arcade.Body.prototype = {
         if (!this.enable || !this.dirty)
         {
             return;
+        }
+
+        //  Moving?
+        if (this.isMoving)
+        {
+            this.updateMovement();
         }
 
         this.dirty = false;
@@ -582,6 +797,7 @@ Phaser.Physics.Arcade.Body.prototype = {
     *
     * @method Phaser.Physics.Arcade.Body#checkWorldBounds
     * @protected
+    * @return {boolean} True if the Body collided with the world bounds, otherwise false.
     */
     checkWorldBounds: function () {
 
@@ -592,54 +808,260 @@ Phaser.Physics.Arcade.Body.prototype = {
         var bx = (this.worldBounce) ? -this.worldBounce.x : -this.bounce.x;
         var by = (this.worldBounce) ? -this.worldBounce.y : -this.bounce.y;
 
-        if (pos.x < bounds.x && check.left)
+        if (this.isCircle)
         {
-            pos.x = bounds.x;
-            this.velocity.x *= bx;
-            this.blocked.left = true;
+            var bodyBounds = {
+                x: this.center.x - this.radius,
+                y: this.center.y - this.radius,
+                right: this.center.x + this.radius,
+                bottom: this.center.y + this.radius
+            };
+
+            if (bodyBounds.x < bounds.x && check.left)
+            {
+                pos.x = bounds.x - this.halfWidth + this.radius;
+                this.velocity.x *= bx;
+                this.blocked.left = true;
+            }
+            else if (bodyBounds.right > bounds.right && check.right)
+            {
+                pos.x = bounds.right - this.halfWidth - this.radius;
+                this.velocity.x *= bx;
+                this.blocked.right = true;
+            }
+
+            if (bodyBounds.y < bounds.y && check.up)
+            {
+                pos.y = bounds.y - this.halfHeight + this.radius;
+                this.velocity.y *= by;
+                this.blocked.up = true;
+            }
+            else if (bodyBounds.bottom > bounds.bottom && check.down)
+            {
+                pos.y = bounds.bottom  - this.halfHeight - this.radius;
+                this.velocity.y *= by;
+                this.blocked.down = true;
+            }
         }
-        else if (this.right > bounds.right && check.right)
+        else
         {
-            pos.x = bounds.right - this.width;
-            this.velocity.x *= bx;
-            this.blocked.right = true;
+            if (pos.x < bounds.x && check.left)
+            {
+                pos.x = bounds.x;
+                this.velocity.x *= bx;
+                this.blocked.left = true;
+            }
+            else if (this.right > bounds.right && check.right)
+            {
+                pos.x = bounds.right - this.width;
+                this.velocity.x *= bx;
+                this.blocked.right = true;
+            }
+
+            if (pos.y < bounds.y && check.up)
+            {
+                pos.y = bounds.y;
+                this.velocity.y *= by;
+                this.blocked.up = true;
+            }
+            else if (this.bottom > bounds.bottom && check.down)
+            {
+                pos.y = bounds.bottom - this.height;
+                this.velocity.y *= by;
+                this.blocked.down = true;
+            }
         }
 
-        if (pos.y < bounds.y && check.up)
+        return (this.blocked.up || this.blocked.down || this.blocked.left || this.blocked.right);
+
+    },
+
+    /**
+    * Note: This method is experimental, and may be changed or removed in a future release.
+    * 
+    * This method moves the Body in the given direction, for the duration specified.
+    * It works by setting the velocity on the Body, and an internal timer, and then
+    * monitoring the duration each frame. When the duration is up the movement is
+    * stopped and the `Body.onMoveComplete` signal is dispatched.
+    *
+    * Movement also stops if the Body collides or overlaps with any other Body.
+    * 
+    * You can control if the velocity should be reset to zero on collision, by using
+    * the property `Body.stopVelocityOnCollide`.
+    *
+    * Stop the movement at any time by calling `Body.stopMovement`.
+    *
+    * You can optionally set a speed in pixels per second. If not specified it
+    * will use the current `Body.speed` value. If this is zero, the function will return false.
+    *
+    * Please note that due to browser timings you should allow for a variance in 
+    * when the duration will actually expire. Depending on system it may be as much as
+    * +- 50ms. Also this method doesn't take into consideration any other forces acting
+    * on the Body, such as Gravity, drag or maxVelocity, all of which may impact the
+    * movement.
+    * 
+    * @method Phaser.Physics.Arcade.Body#moveFrom
+    * @param  {integer} duration  - The duration of the movement, in ms.
+    * @param  {integer} [speed] - The speed of the movement, in pixels per second. If not provided `Body.speed` is used.
+    * @param  {integer} [direction] - The angle of movement. If not provided `Body.angle` is used.
+    * @return {boolean} True if the movement successfully started, otherwise false.
+    */
+    moveFrom: function (duration, speed, direction) {
+
+        if (speed === undefined) { speed = this.speed; }
+
+        if (speed === 0)
         {
-            pos.y = bounds.y;
-            this.velocity.y *= by;
-            this.blocked.up = true;
+            return false;
         }
-        else if (this.bottom > bounds.bottom && check.down)
+
+        var angle;
+
+        if (direction === undefined)
         {
-            pos.y = bounds.bottom - this.height;
-            this.velocity.y *= by;
-            this.blocked.down = true;
+            angle = this.angle;
+            direction = this.game.math.radToDeg(angle);
         }
+        else
+        {
+            angle = this.game.math.degToRad(direction);
+        }
+
+        this.moveTimer = 0;
+        this.moveDuration = duration;
+
+        //  Avoid sin/cos
+        if (direction === 0 || direction === 180)
+        {
+            this.velocity.set(Math.cos(angle) * speed, 0);
+        }
+        else if (direction === 90 || direction === 270)
+        {
+            this.velocity.set(0, Math.sin(angle) * speed);
+        }
+        else
+        {
+            this.velocity.set(Math.cos(angle) * speed, Math.sin(angle) * speed);
+        }
+
+        this.isMoving = true;
+
+        return true;
+
+    },
+
+    /**
+    * Note: This method is experimental, and may be changed or removed in a future release.
+    * 
+    * This method moves the Body in the given direction, for the duration specified.
+    * It works by setting the velocity on the Body, and an internal distance counter.
+    * The distance is monitored each frame. When the distance equals the distance
+    * specified in this call, the movement is stopped, and the `Body.onMoveComplete` 
+    * signal is dispatched.
+    *
+    * Movement also stops if the Body collides or overlaps with any other Body.
+    * 
+    * You can control if the velocity should be reset to zero on collision, by using
+    * the property `Body.stopVelocityOnCollide`.
+    *
+    * Stop the movement at any time by calling `Body.stopMovement`.
+    *
+    * Please note that due to browser timings you should allow for a variance in 
+    * when the distance will actually expire.
+    * 
+    * Note: This method doesn't take into consideration any other forces acting
+    * on the Body, such as Gravity, drag or maxVelocity, all of which may impact the
+    * movement.
+    * 
+    * @method Phaser.Physics.Arcade.Body#moveTo
+    * @param  {integer} duration - The duration of the movement, in ms.
+    * @param  {integer} distance - The distance, in pixels, the Body will move.
+    * @param  {integer} [direction] - The angle of movement. If not provided `Body.angle` is used.
+    * @return {boolean} True if the movement successfully started, otherwise false.
+    */
+    moveTo: function (duration, distance, direction) {
+
+        var speed = distance / (duration / 1000);
+
+        if (speed === 0)
+        {
+            return false;
+        }
+
+        var angle;
+
+        if (direction === undefined)
+        {
+            angle = this.angle;
+            direction = this.game.math.radToDeg(angle);
+        }
+        else
+        {
+            angle = this.game.math.degToRad(direction);
+        }
+
+        distance = Math.abs(distance);
+
+        this.moveDuration = 0;
+        this.moveDistance = distance;
+
+        if (this.moveTarget === null)
+        {
+            this.moveTarget = new Phaser.Line();
+            this.moveEnd = new Phaser.Point();
+        }
+
+        this.moveTarget.fromAngle(this.x, this.y, angle, distance);
+
+        this.moveEnd.set(this.moveTarget.end.x, this.moveTarget.end.y);
+
+        this.moveTarget.setTo(this.x, this.y, this.x, this.y);
+
+        //  Avoid sin/cos
+        if (direction === 0 || direction === 180)
+        {
+            this.velocity.set(Math.cos(angle) * speed, 0);
+        }
+        else if (direction === 90 || direction === 270)
+        {
+            this.velocity.set(0, Math.sin(angle) * speed);
+        }
+        else
+        {
+            this.velocity.set(Math.cos(angle) * speed, Math.sin(angle) * speed);
+        }
+
+        this.isMoving = true;
+
+        return true;
 
     },
 
     /**
     * You can modify the size of the physics Body to be any dimension you need.
-    * So it could be smaller or larger than the parent Sprite. You can also control the x and y offset, which
-    * is the position of the Body relative to the top-left of the Sprite.
+    * This allows you to make it smaller, or larger, than the parent Sprite.
+    * You can also control the x and y offset of the Body. This is the position of the
+    * Body relative to the top-left of the Sprite _texture_.
     *
-    * Calling `setSize` will have no effect if you have previously used `Body.setCircle`. To change a collision
-    * circle use `setCircle` instead.
+    * For example: If you have a Sprite with a texture that is 80x100 in size,
+    * and you want the physics body to be 32x32 pixels in the middle of the texture, you would do:
+    *
+    * `setSize(32, 32, 24, 34)`
+    *
+    * Where the first two parameters is the new Body size (32x32 pixels).
+    * 24 is the horizontal offset of the Body from the top-left of the Sprites texture, and 34
+    * is the vertical offset.
+    *
+    * Calling `setSize` on a Body that has already had `setCircle` will reset all of the Circle
+    * properties, making this Body rectangular again.
     *
     * @method Phaser.Physics.Arcade.Body#setSize
     * @param {number} width - The width of the Body.
     * @param {number} height - The height of the Body.
-    * @param {number} [offsetX] - The X offset of the Body from the Sprite position.
-    * @param {number} [offsetY] - The Y offset of the Body from the Sprite position.
+    * @param {number} [offsetX] - The X offset of the Body from the top-left of the Sprites texture.
+    * @param {number} [offsetY] - The Y offset of the Body from the top-left of the Sprites texture.
     */
     setSize: function (width, height, offsetX, offsetY) {
-
-        if (this.isCircle)
-        {
-            return;
-        }
 
         if (offsetX === undefined) { offsetX = this.offset.x; }
         if (offsetY === undefined) { offsetY = this.offset.y; }
@@ -654,13 +1076,21 @@ Phaser.Physics.Arcade.Body.prototype = {
 
         this.center.setTo(this.position.x + this.halfWidth, this.position.y + this.halfHeight);
 
+        this.isCircle = false;
+        this.radius = 0;
+
     },
 
     /**
     * Sets this Body as using a circle, of the given radius, for all collision detection instead of a rectangle.
     * The radius is given in pixels and is the distance from the center of the circle to the edge.
-    * 
+    *
     * You can also control the x and y offset, which is the position of the Body relative to the top-left of the Sprite.
+    *
+    * To change a Body back to being rectangular again call `Body.setSize`.
+    *
+    * Note: Circular collision only happens with other Arcade Physics bodies, it does not
+    * work against tile maps, where rectangular collision is the only method supported.
     *
     * @method Phaser.Physics.Arcade.Body#setCircle
     * @param {number} [radius] - The radius of the Body in pixels. Pass a value of zero / undefined, to stop the Body using a circle for collision.
@@ -713,8 +1143,11 @@ Phaser.Physics.Arcade.Body.prototype = {
         this.angularVelocity = 0;
         this.angularAcceleration = 0;
 
-        this.position.x = (x - (this.sprite.anchor.x * this.sprite.width)) + this.offset.x;
-        this.position.y = (y - (this.sprite.anchor.y * this.sprite.height)) + this.offset.y;
+        this.position.x = (x - (this.sprite.anchor.x * this.sprite.width)) + this.sprite.scale.x * this.offset.x;
+        this.position.x -= this.sprite.scale.x < 0 ? this.width : 0;
+
+        this.position.y = (y - (this.sprite.anchor.y * this.sprite.height)) + this.sprite.scale.y * this.offset.y;
+        this.position.y -= this.sprite.scale.y < 0 ? this.height : 0;
 
         this.prev.x = this.position.x;
         this.prev.y = this.position.y;
@@ -726,6 +1159,36 @@ Phaser.Physics.Arcade.Body.prototype = {
         this._sy = this.sprite.scale.y;
 
         this.center.setTo(this.position.x + this.halfWidth, this.position.y + this.halfHeight);
+
+    },
+
+    /**
+    * Returns the bounds of this physics body.
+    * 
+    * Only used internally by the World collision methods.
+    *
+    * @method Phaser.Physics.Arcade.Body#getBounds
+    * @param {object} obj - The object in which to set the bounds values.
+    * @return {object} The object that was given to this method.
+    */
+    getBounds: function (obj) {
+
+        if (this.isCircle)
+        {
+            obj.x = this.center.x - this.radius;
+            obj.y = this.center.y - this.radius;
+            obj.right = this.center.x + this.radius;
+            obj.bottom = this.center.y + this.radius;
+        }
+        else
+        {
+            obj.x = this.x;
+            obj.y = this.y;
+            obj.right = this.right;
+            obj.bottom = this.bottom;
+        }
+
+        return obj;
 
     },
 
@@ -758,7 +1221,7 @@ Phaser.Physics.Arcade.Body.prototype = {
     /**
     * Returns true if the top of this Body is in contact with either the world bounds or a tile.
     *
-    * @method Phaser.Physics.Arcade.Body#onTop
+    * @method Phaser.Physics.Arcade.Body#onCeiling
     * @return {boolean} True if in contact with either the world bounds or a tile.
     */
     onCeiling: function(){
@@ -973,15 +1436,33 @@ Phaser.Physics.Arcade.Body.render = function (context, body, color, filled) {
 
     color = color || 'rgba(0,255,0,0.4)';
 
-    if (filled)
+    context.fillStyle = color;
+    context.strokeStyle = color;
+
+    if (body.isCircle)
     {
-        context.fillStyle = color;
-        context.fillRect(body.position.x - body.game.camera.x, body.position.y - body.game.camera.y, body.width, body.height);
+        context.beginPath();
+        context.arc(body.center.x - body.game.camera.x, body.center.y - body.game.camera.y, body.radius, 0, 2 * Math.PI);
+
+        if (filled)
+        {
+            context.fill();
+        }
+        else
+        {
+            context.stroke();
+        }
     }
     else
     {
-        context.strokeStyle = color;
-        context.strokeRect(body.position.x - body.game.camera.x, body.position.y - body.game.camera.y, body.width, body.height);
+        if (filled)
+        {
+            context.fillRect(body.position.x - body.game.camera.x, body.position.y - body.game.camera.y, body.width, body.height);
+        }
+        else
+        {
+            context.strokeRect(body.position.x - body.game.camera.x, body.position.y - body.game.camera.y, body.width, body.height);
+        }
     }
 
 };

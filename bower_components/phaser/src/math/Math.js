@@ -24,6 +24,20 @@ Phaser.Math = {
     PI2: Math.PI * 2,
 
     /**
+    * Returns a number between the `min` and `max` values.
+    *
+    * @method Phaser.Math#between
+    * @param {number} min - The minimum value. Must be positive, and less than 'max'.
+    * @param {number} max - The maximum value. Must be position, and greater than 'min'.
+    * @return {number} A value between the range min to max.
+    */
+    between: function (min, max) {
+
+        return Math.floor(Math.random() * (max - min + 1) + min);
+
+    },
+
+    /**
     * Two number are fuzzyEqual if their difference is less than epsilon.
     *
     * @method Phaser.Math#fuzzyEqual
@@ -133,7 +147,9 @@ Phaser.Math = {
     * @return {number} n mod 1
     */
     shear: function (n) {
+
         return n % 1;
+
     },
 
     /**
@@ -144,8 +160,8 @@ Phaser.Math = {
     * @method Phaser.Math#snapTo
     * @param {number} input - The value to snap.
     * @param {number} gap - The interval gap of the grid.
-    * @param {number} [start] - Optional starting offset for gap.
-    * @return {number}
+    * @param {number} [start=0] - Optional starting offset for gap.
+    * @return {number} The snapped value.
     */
     snapTo: function (input, gap, start) {
 
@@ -171,8 +187,8 @@ Phaser.Math = {
     * @method Phaser.Math#snapToFloor
     * @param {number} input - The value to snap.
     * @param {number} gap - The interval gap of the grid.
-    * @param {number} [start] - Optional starting offset for gap.
-    * @return {number}
+    * @param {number} [start=0] - Optional starting offset for gap.
+    * @return {number} The snapped value.
     */
     snapToFloor: function (input, gap, start) {
 
@@ -198,8 +214,8 @@ Phaser.Math = {
     * @method Phaser.Math#snapToCeil
     * @param {number} input - The value to snap.
     * @param {number} gap - The interval gap of the grid.
-    * @param {number} [start] - Optional starting offset for gap.
-    * @return {number}
+    * @param {number} [start=0] - Optional starting offset for gap.
+    * @return {number} The snapped value.
     */
     snapToCeil: function (input, gap, start) {
 
@@ -247,9 +263,9 @@ Phaser.Math = {
     *
     * @method Phaser.Math#roundTo
     * @param {number} value - The value to round.
-    * @param {number} place - The place to round to.
-    * @param {number} base - The base to round in... default is 10 for decimal.
-    * @return {number}
+    * @param {number} [place=0] - The place to round to.
+    * @param {number} [base=10] - The base to round in. Default is 10 for decimal.
+    * @return {number} The rounded value.
     */
     roundTo: function (value, place, base) {
 
@@ -263,11 +279,14 @@ Phaser.Math = {
     },
 
     /**
+    * Floors to some place comparative to a `base`, default is 10 for decimal place.
+    * The `place` is represented by the power applied to `base` to get that place.
+    * 
     * @method Phaser.Math#floorTo
     * @param {number} value - The value to round.
-    * @param {number} place - The place to round to.
-    * @param {number} base - The base to round in... default is 10 for decimal.
-    * @return {number}
+    * @param {number} [place=0] - The place to round to.
+    * @param {number} [base=10] - The base to round in. Default is 10 for decimal.
+    * @return {number} The rounded value.
     */
     floorTo: function (value, place, base) {
 
@@ -281,11 +300,14 @@ Phaser.Math = {
     },
 
     /**
+    * Ceils to some place comparative to a `base`, default is 10 for decimal place.
+    * The `place` is represented by the power applied to `base` to get that place.
+    * 
     * @method Phaser.Math#ceilTo
     * @param {number} value - The value to round.
-    * @param {number} place - The place to round to.
-    * @param {number} base - The base to round in... default is 10 for decimal.
-    * @return {number}
+    * @param {number} [place=0] - The place to round to.
+    * @param {number} [base=10] - The base to round in. Default is 10 for decimal.
+    * @return {number} The rounded value.
     */
     ceilTo: function (value, place, base) {
 
@@ -299,43 +321,133 @@ Phaser.Math = {
     },
 
     /**
-    * Find the angle of a segment from (x1, y1) -> (x2, y2).
-    * @method Phaser.Math#angleBetween
-    * @param {number} x1
-    * @param {number} y1
-    * @param {number} x2
-    * @param {number} y2
-    * @return {number} The angle, in radians.
+    * Rotates currentAngle towards targetAngle, taking the shortest rotation distance.
+    * The lerp argument is the amount to rotate by in this call.
+    * 
+    * @method Phaser.Math#rotateToAngle
+    * @param {number} currentAngle - The current angle, in radians.
+    * @param {number} targetAngle - The target angle to rotate to, in radians.
+    * @param {number} [lerp=0.05] - The lerp value to add to the current angle.
+    * @return {number} The adjusted angle.
     */
-    angleBetween: function (x1, y1, x2, y2) {
-        return Math.atan2(y2 - y1, x2 - x1);
+    rotateToAngle: function (currentAngle, targetAngle, lerp) {
+
+        if (lerp === undefined) { lerp = 0.05; }
+
+        if (currentAngle === targetAngle)
+        {
+            return currentAngle;
+        }
+
+        if (Math.abs(targetAngle - currentAngle) <= lerp || Math.abs(targetAngle - currentAngle) >= (Phaser.Math.PI2 - lerp))
+        {
+            currentAngle = targetAngle;
+        }
+        else
+        {
+            if (Math.abs(targetAngle - currentAngle) > Math.PI)
+            {
+                if (targetAngle < currentAngle)
+                {
+                    targetAngle += Phaser.Math.PI2;
+                }
+                else
+                {
+                    targetAngle -= Phaser.Math.PI2;
+                }
+            }
+
+            if (targetAngle > currentAngle)
+            {
+                currentAngle += lerp;
+            }
+            else if (targetAngle < currentAngle)
+            {
+                currentAngle -= lerp;
+            }
+        }
+
+        return currentAngle;
+
+    },
+
+    /**
+    * Gets the shortest angle between `angle1` and `angle2`.
+    * Both angles must be in the range -180 to 180, which is the same clamped
+    * range that `sprite.angle` uses, so you can pass in two sprite angles to
+    * this method, and get the shortest angle back between the two of them.
+    *
+    * The angle returned will be in the same range. If the returned angle is
+    * greater than 0 then it's a counter-clockwise rotation, if < 0 then it's
+    * a clockwise rotation.
+    * 
+    * @method Phaser.Math#getShortestAngle
+    * @param {number} angle1 - The first angle. In the range -180 to 180.
+    * @param {number} angle2 - The second angle. In the range -180 to 180.
+    * @return {number} The shortest angle, in degrees. If greater than zero it's a counter-clockwise rotation.
+    */
+    getShortestAngle: function (angle1, angle2) {
+
+        var difference = angle2 - angle1;
+
+        if (difference === 0)
+        {
+            return 0;
+        }
+
+        var times = Math.floor((difference - (-180)) / 360);
+
+        return difference - (times * 360);
+
     },
 
     /**
     * Find the angle of a segment from (x1, y1) -> (x2, y2).
-    * Note that the difference between this method and Math.angleBetween is that this assumes the y coordinate travels
+    * 
+    * @method Phaser.Math#angleBetween
+    * @param {number} x1 - The x coordinate of the first value.
+    * @param {number} y1 - The y coordinate of the first value.
+    * @param {number} x2 - The x coordinate of the second value.
+    * @param {number} y2 - The y coordinate of the second value.
+    * @return {number} The angle, in radians.
+    */
+    angleBetween: function (x1, y1, x2, y2) {
+
+        return Math.atan2(y2 - y1, x2 - x1);
+
+    },
+
+    /**
+    * Find the angle of a segment from (x1, y1) -> (x2, y2).
+    * 
+    * The difference between this method and Math.angleBetween is that this assumes the y coordinate travels
     * down the screen.
     *
     * @method Phaser.Math#angleBetweenY
-    * @param {number} x1
-    * @param {number} y1
-    * @param {number} x2
-    * @param {number} y2
+    * @param {number} x1 - The x coordinate of the first value.
+    * @param {number} y1 - The y coordinate of the first value.
+    * @param {number} x2 - The x coordinate of the second value.
+    * @param {number} y2 - The y coordinate of the second value.
     * @return {number} The angle, in radians.
     */
     angleBetweenY: function (x1, y1, x2, y2) {
+
         return Math.atan2(x2 - x1, y2 - y1);
+
     },
 
     /**
     * Find the angle of a segment from (point1.x, point1.y) -> (point2.x, point2.y).
+    * 
     * @method Phaser.Math#angleBetweenPoints
-    * @param {Phaser.Point} point1
-    * @param {Phaser.Point} point2
-    * @return {number} The angle, in radians.
+    * @param {Phaser.Point} point1 - The first point.
+    * @param {Phaser.Point} point2 - The second point.
+    * @return {number} The angle between the two points, in radians.
     */
     angleBetweenPoints: function (point1, point2) {
+
         return Math.atan2(point2.y - point1.y, point2.x - point1.x);
+
     },
 
     /**
@@ -346,24 +458,28 @@ Phaser.Math = {
     * @return {number} The angle, in radians.
     */
     angleBetweenPointsY: function (point1, point2) {
+
         return Math.atan2(point2.x - point1.x, point2.y - point1.y);
+
     },
 
     /**
     * Reverses an angle.
     * @method Phaser.Math#reverseAngle
     * @param {number} angleRad - The angle to reverse, in radians.
-    * @return {number} Returns the reverse angle, in radians.
+    * @return {number} The reverse angle, in radians.
     */
     reverseAngle: function (angleRad) {
+
         return this.normalizeAngle(angleRad + Math.PI, true);
+
     },
 
     /**
     * Normalizes an angle to the [0,2pi) range.
     * @method Phaser.Math#normalizeAngle
     * @param {number} angleRad - The angle to normalize, in radians.
-    * @return {number} Returns the angle, fit within the [0,2pi] range, in radians.
+    * @return {number} The angle, fit within the [0,2pi] range, in radians.
     */
     normalizeAngle: function (angleRad) {
 
@@ -379,10 +495,12 @@ Phaser.Math = {
     * @param {number} value - The value to add the amount to.
     * @param {number} amount - The amount to add to the value.
     * @param {number} max - The maximum the value is allowed to be.
-    * @return {number}
+    * @return {number} The new value.
     */
     maxAdd: function (value, amount, max) {
+
         return Math.min(value + amount, max);
+
     },
 
     /**
@@ -395,7 +513,9 @@ Phaser.Math = {
     * @return {number} The new value.
     */
     minSub: function (value, amount, min) {
+
         return Math.max(value - amount, min);
+
     },
 
     /**
@@ -460,8 +580,10 @@ Phaser.Math = {
     * @return {boolean} True if the given number is odd. False if the given number is even.
     */
     isOdd: function (n) {
+
         // Does not work with extremely large values
         return !!(n & 1);
+
     },
 
     /**
@@ -472,8 +594,10 @@ Phaser.Math = {
     * @return {boolean} True if the given number is even. False if the given number is odd.
     */
     isEven: function (n) {
+
         // Does not work with extremely large values
         return !(n & 1);
+
     },
 
     /**
@@ -710,11 +834,13 @@ Phaser.Math = {
     * @method Phaser.Math#linear
     * @param {number} p0
     * @param {number} p1
-    * @param {number} t
+    * @param {number} t - A value between 0 and 1.
     * @return {number}
     */
     linear: function (p0, p1, t) {
+
         return (p1 - p0) * t + p0;
+
     },
 
     /**
@@ -725,7 +851,9 @@ Phaser.Math = {
     * @return {number}
     */
     bernstein: function (n, i) {
+
         return this.factorial(n) / this.factorial(i) / this.factorial(n - i);
+
     },
 
     /**
@@ -733,7 +861,7 @@ Phaser.Math = {
     * @param {number} value - the number you want to evaluate
     * @return {number}
     */
-    factorial : function( value ){
+    factorial: function (value) {
 
         if (value === 0)
         {
@@ -772,15 +900,17 @@ Phaser.Math = {
     },
 
     /**
-    * The (absolute) difference between two values.
+    * The absolute difference between two values.
     *
     * @method Phaser.Math#difference
-    * @param {number} a
-    * @param {number} b
-    * @return {number}
+    * @param {number} a - The first value to check.
+    * @param {number} b - The second value to check.
+    * @return {number} The absolute difference between the two values.
     */
     difference: function (a, b) {
+
         return Math.abs(a - b);
+
     },
 
     /**
@@ -931,7 +1061,9 @@ Phaser.Math = {
     * @return {number}
     */
     clampBottom: function (x, a) {
+
         return x < a ? a : x;
+
     },
 
     /**
@@ -945,22 +1077,26 @@ Phaser.Math = {
     * @see {@link Phaser.Math.fuzzyEqual}
     */
     within: function (a, b, tolerance) {
+
         return (Math.abs(a - b) <= tolerance);
+
     },
 
     /**
     * Linear mapping from range <a1, a2> to range <b1, b2>
     *
     * @method Phaser.Math#mapLinear
-    * @param {number} x the value to map
-    * @param {number} a1 first endpoint of the range <a1, a2>
-    * @param {number} a2 final endpoint of the range <a1, a2>
-    * @param {number} b1 first endpoint of the range <b1, b2>
-    * @param {number} b2 final endpoint of the range  <b1, b2>
+    * @param {number} x - The value to map
+    * @param {number} a1 - First endpoint of the range <a1, a2>
+    * @param {number} a2 - Final endpoint of the range <a1, a2>
+    * @param {number} b1 - First endpoint of the range <b1, b2>
+    * @param {number} b2 - Final endpoint of the range  <b1, b2>
     * @return {number}
     */
     mapLinear: function (x, a1, a2, b1, b2) {
+
         return b1 + ( x - a1 ) * ( b2 - b1 ) / ( a2 - a1 );
+
     },
 
     /**
@@ -992,8 +1128,11 @@ Phaser.Math = {
     * @return {float} A value between 0 and 1.
     */
     smootherstep: function (x, min, max) {
+
         x = Math.max(0, Math.min(1, (x - min) / (max - min)));
+
         return x * x * x * (x * (x * 6 - 15) + 10);
+
     },
 
     /**
@@ -1006,7 +1145,9 @@ Phaser.Math = {
     * @return {integer} An integer in {-1, 0, 1}
     */
     sign: function (x) {
+
         return ( x < 0 ) ? -1 : ( ( x > 0 ) ? 1 : 0 );
+
     },
 
     /**

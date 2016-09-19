@@ -263,7 +263,7 @@ Phaser.TilemapLayer.ensureSharedCopyCanvas = function () {
 
     if (!this.sharedCopyCanvas)
     {
-        this.sharedCopyCanvas = Phaser.Canvas.create(2, 2);
+        this.sharedCopyCanvas = PIXI.CanvasPool.create(this, 2, 2);
     }
 
     return this.sharedCopyCanvas;
@@ -289,15 +289,62 @@ Phaser.TilemapLayer.prototype.preUpdate = function() {
 */
 Phaser.TilemapLayer.prototype.postUpdate = function () {
 
-    Phaser.Component.FixedToCamera.postUpdate.call(this);
+    if (this.fixedToCamera)
+    {
+        this.position.x = (this.game.camera.view.x + this.cameraOffset.x) / this.game.camera.scale.x;
+        this.position.y = (this.game.camera.view.y + this.cameraOffset.y) / this.game.camera.scale.y;
+    }
 
-    //  Stops you being able to auto-scroll the camera if it's not following a sprite
-    var camera = this.game.camera;
+    this._scrollX = this.game.camera.view.x * this.scrollFactorX / this.scale.x;
+    this._scrollY = this.game.camera.view.y * this.scrollFactorY / this.scale.y;
 
-    this.scrollX = camera.x * this.scrollFactorX / this.scale.x;
-    this.scrollY = camera.y * this.scrollFactorY / this.scale.y;
+};
+
+/**
+* Automatically called by the Canvas Renderer.
+* Overrides the Sprite._renderCanvas function.
+*
+* @method Phaser.TilemapLayer#_renderCanvas
+* @private
+*/
+Phaser.TilemapLayer.prototype._renderCanvas = function (renderSession) {
+
+    if (this.fixedToCamera)
+    {
+        this.position.x = (this.game.camera.view.x + this.cameraOffset.x) / this.game.camera.scale.x;
+        this.position.y = (this.game.camera.view.y + this.cameraOffset.y) / this.game.camera.scale.y;
+    }
+
+    this._scrollX = this.game.camera.view.x * this.scrollFactorX / this.scale.x;
+    this._scrollY = this.game.camera.view.y * this.scrollFactorY / this.scale.y;
 
     this.render();
+
+    PIXI.Sprite.prototype._renderCanvas.call(this, renderSession);
+
+};
+
+/**
+* Automatically called by the Canvas Renderer.
+* Overrides the Sprite._renderWebGL function.
+*
+* @method Phaser.TilemapLayer#_renderWebGL
+* @private
+*/
+Phaser.TilemapLayer.prototype._renderWebGL = function (renderSession) {
+
+    if (this.fixedToCamera)
+    {
+        this.position.x = (this.game.camera.view.x + this.cameraOffset.x) / this.game.camera.scale.x;
+        this.position.y = (this.game.camera.view.y + this.cameraOffset.y) / this.game.camera.scale.y;
+    }
+    
+    this._scrollX = this.game.camera.view.x * this.scrollFactorX / this.scale.x;
+    this._scrollY = this.game.camera.view.y * this.scrollFactorY / this.scale.y;
+
+    this.render();
+
+    PIXI.Sprite.prototype._renderWebGL.call(this, renderSession);
 
 };
 
@@ -374,14 +421,15 @@ Phaser.TilemapLayer.prototype.resizeWorld = function () {
 */
 Phaser.TilemapLayer.prototype._fixX = function (x) {
 
-    if (x < 0)
-    {
-        x = 0;
-    }
-
-    if (this.scrollFactorX === 1)
+    if (this.scrollFactorX === 1 || (this.scrollFactorX === 0 && this.position.x === 0))
     {
         return x;
+    }
+    
+    //  This executes if the scrollFactorX is 0 and the x position of the tilemap is off from standard.
+    if (this.scrollFactorX === 0 && this.position.x !== 0)
+    {
+        return x - this.position.x;
     }
 
     return this._scrollX + (x - (this._scrollX / this.scrollFactorX));
@@ -417,16 +465,17 @@ Phaser.TilemapLayer.prototype._unfixX = function (x) {
 */
 Phaser.TilemapLayer.prototype._fixY = function (y) {
 
-    if (y < 0)
-    {
-        y = 0;
-    }
-
-    if (this.scrollFactorY === 1)
+    if (this.scrollFactorY === 1 || (this.scrollFactorY === 0 && this.position.y === 0))
     {
         return y;
     }
-
+    
+    //  This executes if the scrollFactorY is 0 and the y position of the tilemap is off from standard.
+    if (this.scrollFactorY === 0 && this.position.y !== 0)
+    {
+        return y - this.position.y;
+    }
+    
     return this._scrollY + (y - (this._scrollY / this.scrollFactorY));
 
 };
@@ -627,7 +676,7 @@ Phaser.TilemapLayer.prototype.resolveTileset = function (tileIndex) {
 
     var setIndex = this.map.tiles[tileIndex] && this.map.tiles[tileIndex][2];
 
-    if (setIndex != null) // number: not null or undefined
+    if (setIndex !== null)
     {
         var tileset = this.map.tilesets[setIndex];
 
@@ -810,23 +859,21 @@ Phaser.TilemapLayer.prototype.renderRegion = function (scrollX, scrollY, left, t
     // xmax/ymax - remaining cells to render on column/row
     var tx, ty, x, y, xmax, ymax;
 
-    context.fillStyle = this.tileColor;
-
-    for (y = normStartY, ymax = bottom - top, ty = baseY;
-        ymax >= 0;
-        y++, ymax--, ty += th)
+    for (y = normStartY, ymax = bottom - top, ty = baseY; ymax >= 0; y++, ymax--, ty += th)
     {
-
-        if (y >= height) { y -= height; }
+        if (y >= height)
+        {
+            y -= height;
+        }
 
         var row = this.layer.data[y];
 
-        for (x = normStartX, xmax = right - left, tx = baseX;
-            xmax >= 0;
-            x++, xmax--, tx += tw)
+        for (x = normStartX, xmax = right - left, tx = baseX; xmax >= 0; x++, xmax--, tx += tw)
         {
-
-            if (x >= width) { x -= width; }
+            if (x >= width)
+            {
+                x -= width;
+            }
 
             var tile = row[x];
 
@@ -1122,21 +1169,21 @@ Phaser.TilemapLayer.prototype.renderDebug = function () {
 
     context.strokeStyle = this.debugSettings.facingEdgeStroke;
 
-    for (y = normStartY, ymax = bottom - top, ty = baseY;
-        ymax >= 0;
-        y++, ymax--, ty += th)
+    for (y = normStartY, ymax = bottom - top, ty = baseY; ymax >= 0; y++, ymax--, ty += th)
     {
-
-        if (y >= height) { y -= height; }
+        if (y >= height)
+        {
+            y -= height;
+        }
 
         var row = this.layer.data[y];
 
-        for (x = normStartX, xmax = right - left, tx = baseX;
-            xmax >= 0;
-            x++, xmax--, tx += tw)
+        for (x = normStartX, xmax = right - left, tx = baseX; xmax >= 0; x++, xmax--, tx += tw)
         {
-
-            if (x >= width) { x -= width; }
+            if (x >= width)
+            {
+                x -= width;
+            }
 
             var tile = row[x];
             if (!tile || tile.index < 0 || !tile.collides)
@@ -1177,6 +1224,8 @@ Phaser.TilemapLayer.prototype.renderDebug = function () {
                     context.moveTo(tx + this._mc.cw, ty);
                     context.lineTo(tx + this._mc.cw, ty + this._mc.ch);
                 }
+
+                context.closePath();
 
                 context.stroke();
             }

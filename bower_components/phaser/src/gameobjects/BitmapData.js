@@ -19,11 +19,13 @@
 * @param {string} key - Internal Phaser reference key for the BitmapData.
 * @param {number} [width=256] - The width of the BitmapData in pixels. If undefined or zero it's set to a default value.
 * @param {number} [height=256] - The height of the BitmapData in pixels. If undefined or zero it's set to a default value.
+* @param {boolean} [skipPool=false] - When this BitmapData generates its internal canvas to use for rendering, it will get the canvas from the CanvasPool if false, or create its own if true.
 */
-Phaser.BitmapData = function (game, key, width, height) {
+Phaser.BitmapData = function (game, key, width, height, skipPool) {
 
     if (width === undefined || width === 0) { width = 256; }
     if (height === undefined || height === 0) { height = 256; }
+    if (skipPool === undefined) { skipPool = false; }
 
     /**
     * @property {Phaser.Game} game - A reference to the currently running game.
@@ -49,7 +51,7 @@ Phaser.BitmapData = function (game, key, width, height) {
     * @property {HTMLCanvasElement} canvas - The canvas to which this BitmapData draws.
     * @default
     */
-    this.canvas = PIXI.CanvasPool.create(this, width, height);
+    this.canvas = Phaser.Canvas.create(this, width, height, null, skipPool);
 
     /**
     * @property {CanvasRenderingContext2D} context - The 2d context of the canvas.
@@ -61,6 +63,11 @@ Phaser.BitmapData = function (game, key, width, height) {
     * @property {CanvasRenderingContext2D} ctx - A reference to BitmapData.context.
     */
     this.ctx = this.context;
+
+    /**
+    * @property {string} smoothProperty - The context property needed for smoothing this Canvas.
+    */
+    this.smoothProperty = (game.renderType === Phaser.CANVAS) ? game.renderer.renderSession.smoothProperty : Phaser.Canvas.getSmoothingPrefix(this.context);
 
     /**
     * @property {ImageData} imageData - The context image data.
@@ -1197,12 +1204,18 @@ Phaser.BitmapData.prototype = {
 
     /**
      * Copies a rectangular area from the source object to this BitmapData. If you give `null` as the source it will copy from itself.
+     * 
      * You can optionally resize, translate, rotate, scale, alpha or blend as it's drawn.
+     * 
      * All rotation, scaling and drawing takes place around the regions center point by default, but can be changed with the anchor parameters.
+     * 
      * Note that the source image can also be this BitmapData, which can create some interesting effects.
      * 
      * This method has a lot of parameters for maximum control.
      * You can use the more friendly methods like `copyRect` and `draw` to avoid having to remember them all.
+     * 
+     * You may prefer to use `copyTransform` if you're simply trying to draw a Sprite to this BitmapData,
+     * and don't wish to translate, scale or rotate it from its original values.
      *
      * @method Phaser.BitmapData#copy
      * @param {Phaser.Sprite|Phaser.Image|Phaser.Text|Phaser.BitmapData|Phaser.RenderTexture|Image|HTMLCanvasElement|string} [source] - The source to copy from. If you give a string it will try and find the Image in the Game.Cache first. This is quite expensive so try to provide the image itself.
@@ -1389,6 +1402,7 @@ Phaser.BitmapData.prototype = {
             ty |= 0;
         }
 
+        //  Doesn't work fully with children, or nested scale + rotation transforms (see copyTransform)
         ctx.translate(tx, ty);
 
         ctx.scale(this._scale.x, this._scale.y);
@@ -1396,6 +1410,116 @@ Phaser.BitmapData.prototype = {
         ctx.rotate(this._rotate);
 
         ctx.drawImage(this._image, this._pos.x + x, this._pos.y + y, this._size.x, this._size.y, -newWidth * this._anchor.x, -newHeight * this._anchor.y, newWidth, newHeight);
+
+        //  Carry on ...
+
+        ctx.restore();
+
+        ctx.globalAlpha = this._alpha.prev;
+
+        this.dirty = true;
+
+        return this;
+
+    },
+
+    /**
+    * Draws the given `source` Game Object to this BitmapData, using its `worldTransform` property to set the
+    * position, scale and rotation of where it is drawn. This function is used internally by `drawGroup`.
+    * It takes the objects tint and scale mode into consideration before drawing.
+    *
+    * You can optionally specify Blend Mode and Round Pixels arguments.
+    * 
+    * @method Phaser.BitmapData#copyTransform
+    * @param {Phaser.Sprite|Phaser.Image|Phaser.Text|Phaser.BitmapData|Phaser.BitmapText} [source] - The Game Object to draw.
+    * @param {string} [blendMode=null] - The composite blend mode that will be used when drawing. The default is no blend mode at all. This is a Canvas globalCompositeOperation value such as 'lighter' or 'xor'.
+    * @param {boolean} [roundPx=false] - Should the x and y values be rounded to integers before drawing? This prevents anti-aliasing in some instances.
+    * @return {Phaser.BitmapData} This BitmapData object for method chaining.
+    */
+    copyTransform: function (source, blendMode, roundPx) {
+
+        if (blendMode === undefined) { blendMode = null; }
+        if (roundPx === undefined) { roundPx = false; }
+
+        if (!source.hasOwnProperty('worldTransform') || !source.worldVisible || source.worldAlpha === 0)
+        {
+            return this;
+        }
+
+        var wt = source.worldTransform;
+
+        this._pos.set(source.texture.crop.x, source.texture.crop.y);
+        this._size.set(source.texture.crop.width, source.texture.crop.height);
+
+        if (wt.a === 0 || wt.d === 0 || this._size.x === 0 || this._size.y === 0)
+        {
+             // Why bother wasting CPU cycles drawing something you can't see?
+            return this;
+        }
+
+        if (source.texture instanceof Phaser.RenderTexture || source.texture instanceof PIXI.RenderTexture)
+        {
+            this._image = source.texture.getCanvas();
+        }
+        else
+        {
+            this._image = source.texture.baseTexture.source;
+        }
+
+        var tx = wt.tx;
+        var ty = wt.ty;
+
+        if (source.texture.trim)
+        {
+            //  Offset the translation coordinates by the trim amount
+            tx += source.texture.trim.x - source.anchor.x * source.texture.trim.width;
+            ty += source.texture.trim.y - source.anchor.y * source.texture.trim.height;
+        }
+
+        if (source.tint !== 0xFFFFFF)
+        {
+            if (source.cachedTint !== source.tint)
+            {
+                source.cachedTint = source.tint;
+                source.tintedTexture = PIXI.CanvasTinter.getTintedTexture(source, source.tint);
+            }
+
+            this._image = source.tintedTexture;
+            this._pos.set(0);
+        }
+
+        if (roundPx)
+        {
+            tx |= 0;
+            ty |= 0;
+        }
+
+        var ctx = this.context;
+
+        this._alpha.prev = ctx.globalAlpha;
+
+        ctx.save();
+
+        ctx.globalAlpha = this._alpha.current;
+
+        if (blendMode)
+        {
+            this.op = blendMode;
+        }
+
+        ctx[this.smoothProperty] = (source.texture.baseTexture.scaleMode === PIXI.scaleModes.LINEAR);
+
+        ctx.setTransform(wt.a, wt.b, wt.c, wt.d, tx, ty);
+
+        ctx.drawImage(this._image,
+            this._pos.x,
+            this._pos.y,
+            this._size.x,
+            this._size.y,
+            -this._size.x * source.anchor.x,
+            -this._size.y * source.anchor.y,
+            this._size.x,
+            this._size.y);
 
         ctx.restore();
 
@@ -1429,7 +1553,13 @@ Phaser.BitmapData.prototype = {
     /**
     * Draws the given Phaser.Sprite, Phaser.Image or Phaser.Text to this BitmapData at the coordinates specified.
     * You can use the optional width and height values to 'stretch' the sprite as it is drawn. This uses drawImage stretching, not scaling.
-    * When drawing it will take into account the Sprites rotation, scale and alpha values.
+    * 
+    * The children will be drawn at their `x` and `y` world space coordinates. If this is outside the bounds of the BitmapData they won't be visible.
+    * When drawing it will take into account the rotation, scale, scaleMode, alpha and tint values.
+    * 
+    * Note: You should ensure that at least 1 full update has taken place before calling this, 
+    * otherwise the objects are likely to render incorrectly, if at all.
+    * You can trigger an update yourself by calling `stage.updateTransform()` before calling `draw`.
     *
     * @method Phaser.BitmapData#draw
     * @param {Phaser.Sprite|Phaser.Image|Phaser.Text|Phaser.RenderTexture} source - The Sprite, Image or Text object to draw onto this BitmapData.
@@ -1450,13 +1580,20 @@ Phaser.BitmapData.prototype = {
 
     /**
     * Draws the immediate children of a Phaser.Group to this BitmapData.
-    * Children are only drawn if they have their `exists` property set to `true` and have image based Textures.
-    * The children will be drawn at their `x` and `y` world space coordinates. If this is outside the bounds of the BitmapData they won't be drawn.
-    * When drawing it will take into account the child's rotation, scale and alpha values.
-    * No iteration takes place. Groups nested inside other Groups will not be iterated through.
+    * 
+    * It's perfectly valid to pass in `game.world` as the Group, and it will iterate through the entire display list.
+    * 
+    * Children are drawn _only_ if they have their `exists` property set to `true`, and have image, or RenderTexture, based Textures.
+    * 
+    * The children will be drawn at their `x` and `y` world space coordinates. If this is outside the bounds of the BitmapData they won't be visible.
+    * When drawing it will take into account the rotation, scale, scaleMode, alpha and tint values.
+    * 
+    * Note: You should ensure that at least 1 full update has taken place before calling this, 
+    * otherwise the objects are likely to render incorrectly, if at all.
+    * You can trigger an update yourself by calling `stage.updateTransform()` before calling `drawGroup`.
     *
     * @method Phaser.BitmapData#drawGroup
-    * @param {Phaser.Group} group - The Group to draw onto this BitmapData.
+    * @param {Phaser.Group} group - The Group to draw onto this BitmapData. Can also be Phaser.World.
     * @param {string} [blendMode=null] - The composite blend mode that will be used when drawing. The default is no blend mode at all. This is a Canvas globalCompositeOperation value such as 'lighter' or 'xor'.
     * @param {boolean} [roundPx=false] - Should the x and y values be rounded to integers before drawing? This prevents anti-aliasing in some instances.
     * @return {Phaser.BitmapData} This BitmapData object for method chaining.
@@ -1483,20 +1620,26 @@ Phaser.BitmapData.prototype = {
     */
     drawGroupProxy: function (child, blendMode, roundPx) {
 
-        //  Draw base Object
         if (child.hasOwnProperty('texture'))
         {
-            this.copy(child, null, null, null, null, child.worldPosition.x, child.worldPosition.y, null, null, child.worldRotation, null, null, child.worldScale.x, child.worldScale.y, child.worldAlpha, blendMode, roundPx);
+            this.copyTransform(child, blendMode, roundPx);
         }
 
-        if (child.hasOwnProperty('children') && child.children.length > 0)
+        if (child.type === Phaser.GROUP && child.exists)
         {
-            var c;
-
-            for (var i = 0; i < child.children.length; i++)
+            this.drawGroup(child, blendMode, roundPx);
+        }
+        else
+        {
+            if (child.hasOwnProperty('children') && child.children.length > 0)
             {
-                c = child.children[i];
-                this.copy(c, null, null, null, null, c.worldPosition.x, c.worldPosition.y, null, null, c.worldRotation, null, null, c.worldScale.x, c.worldScale.y, child.worldAlpha, blendMode, roundPx);
+                for (var i = 0; i < child.children.length; i++)
+                {
+                    if (child.children[i].exists)
+                    {
+                        this.copyTransform(child.children[i], blendMode, roundPx);
+                    }
+                }
             }
         }
 
@@ -1587,6 +1730,8 @@ Phaser.BitmapData.prototype = {
             ctx.shadowOffsetX = x || 10;
             ctx.shadowOffsetY = y || 10;
         }
+        
+        return this;
 
     },
 
@@ -1738,6 +1883,8 @@ Phaser.BitmapData.prototype = {
         ctx.fillText(text, x, y);
 
         ctx.font = prevFont;
+        
+        return this;
 
     },
 

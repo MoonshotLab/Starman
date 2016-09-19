@@ -224,8 +224,6 @@ Phaser.Text.prototype.destroy = function (destroyChildren) {
 
     this.texture.destroy(true);
 
-    PIXI.CanvasPool.remove(this);
-
     Phaser.Component.Destroy.prototype.destroy.call(this, destroyChildren);
 
 };
@@ -390,12 +388,23 @@ Phaser.Text.prototype.updateText = function () {
         drawnLines = this.style.maxLines;
     }
 
+    this._charCount = 0;
+
     for (var i = 0; i < drawnLines; i++)
     {
         if (tabs === 0)
         {
             //  Simple layout (no tabs)
-            var lineWidth = this.context.measureText(lines[i]).width + this.style.strokeThickness + this.padding.x;
+            var lineWidth =  this.style.strokeThickness + this.padding.x;
+
+            if (this.colors.length > 0 || this.strokeColors.length > 0 || this.fontWeights.length > 0 || this.fontStyles.length > 0)
+            {
+                lineWidth += this.measureLine(lines[i]);
+            }
+            else
+            {
+                lineWidth += this.context.measureText(lines[i]).width;
+            }
 
             // Adjust for wrapped text
             if (this.style.wordWrap)
@@ -415,7 +424,16 @@ Phaser.Text.prototype.updateText = function () {
 
                 for (var c = 0; c < line.length; c++)
                 {
-                    var section = Math.ceil(this.context.measureText(line[c]).width);
+                    var section = 0;
+
+                    if (this.colors.length > 0 || this.strokeColors.length > 0 || this.fontWeights.length > 0 || this.fontStyles.length > 0)
+                    {
+                        section = this.measureLine(line[c]);
+                    }
+                    else
+                    {
+                        section = Math.ceil(this.context.measureText(line[c]).width);
+                    }
 
                     if (c > 0)
                     {
@@ -430,7 +448,14 @@ Phaser.Text.prototype.updateText = function () {
                 for (var c = 0; c < line.length; c++)
                 {
                     //  How far to the next tab?
-                    lineWidth += Math.ceil(this.context.measureText(line[c]).width);
+                    if (this.colors.length > 0 || this.strokeColors.length > 0 || this.fontWeights.length > 0 || this.fontStyles.length > 0)
+                    {
+                        lineWidth += this.measureLine(line[c]);
+                    }
+                    else
+                    {
+                        lineWidth += Math.ceil(this.context.measureText(line[c]).width);
+                    }
 
                     var diff = this.game.math.snapToCeil(lineWidth, tabs) - lineWidth;
 
@@ -556,6 +581,8 @@ Phaser.Text.prototype.updateText = function () {
 
     this.updateTexture();
 
+    this.dirty = false;
+
 };
 
 /**
@@ -646,6 +673,67 @@ Phaser.Text.prototype.updateShadow = function (state) {
         this.context.shadowBlur = 0;
     }
 
+};
+
+/**
+* Measures a line of text character by character taking into the account the specified character styles.
+*
+* @method Phaser.Text#measureLine
+* @private
+* @param {string} line - The line of text to measure.
+* @return {integer} length of the line.
+*/
+Phaser.Text.prototype.measureLine = function (line) {
+
+    var lineLength = 0;
+
+    for (var i = 0; i < line.length; i++)
+    {
+        var letter = line[i];
+
+        if (this.fontWeights.length > 0 || this.fontStyles.length > 0)
+        {
+            var components = this.fontToComponents(this.context.font);
+
+            if (this.fontStyles[this._charCount])
+            {
+                components.fontStyle = this.fontStyles[this._charCount];
+            }
+
+            if (this.fontWeights[this._charCount])
+            {
+                components.fontWeight = this.fontWeights[this._charCount];
+            }
+
+            this.context.font = this.componentsToFont(components);
+        }
+
+        if (this.style.stroke && this.style.strokeThickness)
+        {
+            if (this.strokeColors[this._charCount])
+            {
+                this.context.strokeStyle = this.strokeColors[this._charCount];
+            }
+
+            this.updateShadow(this.style.shadowStroke);
+        }
+
+        if (this.style.fill)
+        {
+            if (this.colors[this._charCount])
+            {
+                this.context.fillStyle = this.colors[this._charCount];
+            }
+
+            this.updateShadow(this.style.shadowFill);
+        }
+
+        lineLength += this.context.measureText(letter).width;
+
+        this._charCount++;
+    }
+
+    return Math.ceil(lineLength);
 };
 
 /**
@@ -1162,18 +1250,34 @@ Phaser.Text.prototype.componentsToFont = function (components) {
 };
 
 /**
- * The text to be displayed by this Text object.
- * Use a \n to insert a carriage return and split the text.
- * The text will be rendered with any style currently set.
- *
- * @method Phaser.Text#setText
- * @param {string} [text] - The text to be displayed. Set to an empty string to clear text that is already present.
- * @return {Phaser.Text} This Text instance.
- */
-Phaser.Text.prototype.setText = function (text) {
+* The text to be displayed by this Text object.
+* Use a \n to insert a carriage return and split the text.
+* The text will be rendered with any style currently set.
+*
+* Use the optional `immediate` argument if you need the Text display to update immediately.
+* 
+* If not it will re-create the texture of this Text object during the next time the render
+* loop is called.
+*
+* @method Phaser.Text#setText
+* @param {string} [text] - The text to be displayed. Set to an empty string to clear text that is already present.
+* @param {boolean} [immediate=false] - Update the texture used by this Text object immediately (true) or automatically during the next render loop (false).
+* @return {Phaser.Text} This Text instance.
+*/
+Phaser.Text.prototype.setText = function (text, immediate) {
+
+    if (immediate === undefined) { immediate = false; }
 
     this.text = text.toString() || '';
-    this.dirty = true;
+
+    if (immediate)
+    {
+        this.updateText();
+    }
+    else
+    {
+        this.dirty = true;
+    }
 
     return this;
 
@@ -1338,20 +1442,20 @@ Phaser.Text.prototype.updateTexture = function () {
         //  Align the canvas based on the bounds
         if (this.style.boundsAlignH === 'right')
         {
-            x += this.textBounds.width - this.canvas.width;
+            x += this.textBounds.width - this.canvas.width / this.resolution;
         }
         else if (this.style.boundsAlignH === 'center')
         {
-            x += this.textBounds.halfWidth - (this.canvas.width / 2);
+            x += this.textBounds.halfWidth - (this.canvas.width / this.resolution / 2);
         }
 
         if (this.style.boundsAlignV === 'bottom')
         {
-            y += this.textBounds.height - this.canvas.height;
+            y += this.textBounds.height - this.canvas.height / this.resolution;
         }
         else if (this.style.boundsAlignV === 'middle')
         {
-            y += this.textBounds.halfHeight - (this.canvas.height / 2);
+            y += this.textBounds.halfHeight - (this.canvas.height / this.resolution / 2);
         }
 
         this.pivot.x = -x;
@@ -2184,5 +2288,5 @@ Object.defineProperty(Phaser.Text.prototype, 'height', {
 
 Phaser.Text.fontPropertiesCache = {};
 
-Phaser.Text.fontPropertiesCanvas = PIXI.CanvasPool.create(Phaser.Text.fontPropertiesCanvas);
+Phaser.Text.fontPropertiesCanvas = document.createElement('canvas');
 Phaser.Text.fontPropertiesContext = Phaser.Text.fontPropertiesCanvas.getContext('2d');

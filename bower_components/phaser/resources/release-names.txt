@@ -15,12 +15,12 @@ Amadicia *
 
 Capital: Amador *
 Cities: Abila, Bellon, Jeramel, Mardecin, Sienda *
-POI: Mountains of Mist, River Eldar, River Sharia, Shadow Coast * (2.5.0)
+POI: Mountains of Mist, River Eldar, River Sharia, Shadow Coast *
 
 Andor
 
-Capital: Caemlyn
-Cities: Arien, Aringill, Baerlon *, Breen's Spring, Buryhill, Carysford, Comfrey, Cullen's Crossing, Damelien, Danabar *, Deven Ride, Emond's Field, Forel Market, Four Kings, Harlon Bridge, Jornhill *, Kore Springs, Market Sheran, New Braem, Sheldyn, Taren Ferry, Watch Hill *, Whitebridge *
+Capital: Caemlyn *
+Cities: Arien, Aringill, Baerlon *, Breen's Spring, Buryhill, Carysford, Comfrey, Cullen's Crossing, Damelien, Danabar *, Deven Ride, Emond's Field, Forel Market, Four Kings *, Harlon Bridge, Jornhill *, Kore Springs *, Market Sheran, New Braem, Sheldyn, Taren Ferry, Watch Hill *, Whitebridge *
 POI: Mountains of Mist, Tower of Ghenjei, Two Rivers, Whitebridge *
 
 Arad Doman
@@ -70,7 +70,7 @@ POI: Plain of Lances, World's End, Banikhan Mountains
 
 Shienar *
 
-Capital: Fal Moran
+Capital: Fal Moran *
 Cities: Ankor Dail, Camron Caan, Fal Dara, Fal Eisen, Fal Sion, Medo, Mos Shirare *
 
 Tarabon
@@ -91,3 +91,14 @@ Also used so far:
 Aes Sedai
 Lyrelle
 Allorallen
+
+
+Readme.md
+---------
+
+> In Development
+
+This is the development branch, where we are building Phaser 2.6.2.
+
+Check the [Change Log](#change-log) to see what we've done so far. Or switch to the master branch for the current stable release.
+

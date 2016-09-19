@@ -102,6 +102,7 @@ Phaser.Component.Destroy.prototype = {
         if (this._crop)
         {
             this._crop = null;
+            this.cropRect = null;
         }
 
         if (this._frame)
@@ -126,6 +127,8 @@ Phaser.Component.Destroy.prototype = {
         this.filters = null;
         this.mask = null;
         this.game = null;
+
+        this.data = {};
 
         //  In case Pixi is still going to try and render it even though destroyed
         this.renderable = false;

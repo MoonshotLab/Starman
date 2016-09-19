@@ -42,11 +42,6 @@ Phaser.Sound = function (game, key, volume, loop, connect) {
     this.loop = loop;
 
     /**
-    * @property {number} volume - The sound or sound marker volume. A value between 0 (silence) and 1 (full volume).
-    */
-    this.volume = volume;
-
-    /**
     * @property {object} markers - The sound markers.
     */
     this.markers = {};
@@ -250,7 +245,7 @@ Phaser.Sound = function (game, key, volume, loop, connect) {
     this.onStop = new Phaser.Signal();
 
     /**
-    * @property {Phaser.Signal} onMute - The onMouse event is dispatched when this sound is muted.
+    * @property {Phaser.Signal} onMute - The onMute event is dispatched when this sound is muted.
     */
     this.onMute = new Phaser.Signal();
 
@@ -357,12 +352,13 @@ Phaser.Sound.prototype = {
     * @method Phaser.Sound#addMarker
     * @param {string} name - A unique name for this marker, i.e. 'explosion', 'gunshot', etc.
     * @param {number} start - The start point of this marker in the audio file, given in seconds. 2.5 = 2500ms, 0.5 = 500ms, etc.
-    * @param {number} duration - The duration of the marker in seconds. 2.5 = 2500ms, 0.5 = 500ms, etc.
+    * @param {number} [duration=1] - The duration of the marker in seconds. 2.5 = 2500ms, 0.5 = 500ms, etc.
     * @param {number} [volume=1] - The volume the sound will play back at, between 0 (silent) and 1 (full volume).
     * @param {boolean} [loop=false] - Sets if the sound will loop or not.
     */
     addMarker: function (name, start, duration, volume, loop) {
 
+        if (duration === undefined || duration === null) { duration = 1; }
         if (volume === undefined || volume === null) { volume = 1; }
         if (loop === undefined) { loop = false; }
 
@@ -450,6 +446,7 @@ Phaser.Sound.prototype = {
                         {
                             this.currentTime = 0;
                             this.startTime = this.game.time.time;
+                            this.isPlaying = true; // play not called again in this case
                         }
                         else
                         {
@@ -501,7 +498,7 @@ Phaser.Sound.prototype = {
      */
     loopFull: function (volume) {
 
-        this.play(null, 0, volume, true);
+        return this.play(null, 0, volume, true);
 
     },
 
@@ -548,7 +545,7 @@ Phaser.Sound.prototype = {
                 {
                     this._sound.disconnect(this.externalNode);
                 }
-                else
+                else if (this.gainNode)
                 {
                     this._sound.disconnect(this.gainNode);
                 }
@@ -558,6 +555,8 @@ Phaser.Sound.prototype = {
                 this._sound.pause();
                 this._sound.currentTime = 0;
             }
+
+            this.isPlaying = false;
         }
 
         if (marker === '' && Object.keys(this.markers).length > 0)
@@ -569,10 +568,10 @@ Phaser.Sound.prototype = {
 
         if (marker !== '')
         {
-            this.currentMarker = marker;
-
             if (this.markers[marker])
             {
+                this.currentMarker = marker;
+
                 //  Playing a marker? Then we default to the marker values
                 this.position = this.markers[marker].start;
                 this.volume = this.markers[marker].volume;
@@ -597,7 +596,7 @@ Phaser.Sound.prototype = {
             }
             else
             {
-                // console.warn("Phaser.Sound.play: audio marker " + marker + " doesn't exist");
+                console.warn("Phaser.Sound.play: audio marker " + marker + " doesn't exist");
                 return this;
             }
         }
@@ -886,7 +885,7 @@ Phaser.Sound.prototype = {
                 {
                     this._sound.disconnect(this.externalNode);
                 }
-                else
+                else if (this.gainNode)
                 {
                     this._sound.disconnect(this.gainNode);
                 }
@@ -1155,8 +1154,7 @@ Object.defineProperty(Phaser.Sound.prototype, "mute", {
 
 /**
 * @name Phaser.Sound#volume
-* @property {number} volume - Gets or sets the volume of this sound, a value between 0 and 1.
-* @readonly
+* @property {number} volume - Gets or sets the volume of this sound, a value between 0 and 1. The value given is clamped to the range 0 to 1.
 */
 Object.defineProperty(Phaser.Sound.prototype, "volume", {
 

@@ -56,7 +56,7 @@ Phaser.Gamepad = function (game) {
     * @property {boolean} _gamepadSupportAvailable - Are gamepads supported in this browser or not?
     * @private
     */
-    this._gamepadSupportAvailable = !!navigator.webkitGetGamepads || !!navigator.webkitGamepads || (navigator.userAgent.indexOf('Firefox/') != -1) || !!navigator.getGamepads;
+    this._gamepadSupportAvailable = !!navigator.webkitGetGamepads || !!navigator.webkitGamepads || (navigator.userAgent.indexOf('Firefox/') !== -1) || !!navigator.getGamepads;
 
     /**
     * Used to check for differences between earlier polls and current state of gamepads.
@@ -252,6 +252,11 @@ Phaser.Gamepad.prototype = {
     */
     _pollGamepads: function () {
 
+        if (!this._active)
+        {
+            return;
+        }
+
         if (navigator['getGamepads'])
         {
             var rawGamepads = navigator.getGamepads();
@@ -289,6 +294,11 @@ Phaser.Gamepad.prototype = {
                 {
                     break;
                 }
+            }
+
+            for (var g = 0; g < this._gamepads.length; g++)
+            {
+                this._gamepads[g]._rawPad = this._rawPads[g];
             }
 
             if (gamepadsChanged)

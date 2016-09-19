@@ -711,12 +711,12 @@ Phaser.Physics.P2.prototype = {
                 this.walls[wall] = new p2.Body({ mass: 0, position: [ this.pxmi(x), this.pxmi(y) ], angle: angle });
                 this.walls[wall].addShape(new p2.Plane());
 
-                if (setCollisionGroup)
-                {
-                    this.walls[wall].shapes[0].collisionGroup = this.boundsCollisionGroup.mask;
-                }
-
                 this.world.addBody(this.walls[wall]);
+            }
+
+            if (setCollisionGroup)
+            {
+                this.walls[wall].shapes[0].collisionGroup = this.boundsCollisionGroup.mask;
             }
         }
         else
@@ -866,6 +866,9 @@ Phaser.Physics.P2.prototype = {
         this._toRemove = [];
         this.boundsCollidesWith = [];
 
+        //  Remove the world bounds
+        this.walls = { left: null, right: null, top: null, bottom: null };
+
     },
 
     /**
@@ -914,7 +917,7 @@ Phaser.Physics.P2.prototype = {
     */
     removeBody: function (body) {
 
-        if (body.data.world == this.world)
+        if (body.data.world === this.world)
         {
             this.world.removeBody(body.data);
 
