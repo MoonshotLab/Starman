@@ -26,7 +26,7 @@ class ToneListener{
     });
 
     // get the volume from the sound capture instance
-    soundCapture.emitter.addListener('sound', function(vol, freq){
+    soundCapture.emitter.addListener('sound', (vol, freq) => {
       this.volume = vol;
       this.frequency = freq;
     });
