@@ -1,13 +1,16 @@
 {
-  "name": "Scream5",
-  "homepage": "https://github.com/MoonshotLab/Scream5",
+  "name": "starman",
+  "homepage": "https://github.com/MoonshotLab/Starman",
   "authors": [
-    "Joe Longstreet <joelongstreet@gmail.com>"
+    "Joe Longstreet <joelongstreet@gmail.com>",
+    "Preston Richey <prestonleerichey@gmail.com>"
   ],
-  "description": "The 5th and final installment of the popular Scream movie franchise",
+  "description": "A series of video games which are controlled via sound input.",
   "main": "",
   "keywords": [
-    "scream"
+    "starman",
+    "moonshot",
+    "barkley"
   ],
   "license": "MIT",
   "ignore": [
