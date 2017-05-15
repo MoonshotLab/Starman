@@ -6,10 +6,10 @@
 
 /* Configure the Button Screen */
 .button-screen{
-  background-image: url('./img/background.png');
+  background-image: url('/moonshooter/img/background.png');
 }
 .button-screen h1.title{
-  background-image: url('./img/title.png');
+  background-image: url('/moonshooter/img/title.png');
 }
 
 
@@ -34,7 +34,7 @@
   top: 0;
   margin: 0;
   width: 100%;
-  background: url('./img/blast-off.svg') no-repeat center center;
+  background: url('/moonshooter/img/blast-off.svg') no-repeat center center;
   background-size: 30%;
   height: 100%;
 }

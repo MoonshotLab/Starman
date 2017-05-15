@@ -52,28 +52,28 @@ video{
   height: 7.5%;
 }
 #demo-button{
-  background-image: url('../img/demo.png');
+  background-image: url('/common/img/demo.png');
 }
 #demo-button:hover{
-  background-image: url('../img/demo-hover.png');
+  background-image: url('/common/img/demo-hover.png');
 }
 #play-button{
-  background-image: url('../img/play.png');
+  background-image: url('/common/img/play.png');
 }
 #play-button:hover{
-  background-image: url('../img/play-hover.png');
+  background-image: url('/common/img/play-hover.png');
 }
 #next-game-button{
-  background-image: url('../img/next-game.png');
+  background-image: url('/common/img/next-game.png');
 }
 #next-game-button:hover{
-  background-image: url('../img/next-game-hover.png');
+  background-image: url('/common/img/next-game-hover.png');
 }
 #replay-button{
-  background-image: url('../img/replay.png');
+  background-image: url('/common/img/replay.png');
 }
 #replay-button:hover{
-  background-image: url('../img/replay-hover.png');
+  background-image: url('/common/img/replay-hover.png');
 }
 #replay.button-screen{
   background: none;
@@ -108,7 +108,7 @@ video{
 }
 .meter .top{
   height: 15px;
-  background-image: url('../img/squiggle.svg');
+  background-image: url('/common/img/squiggle.svg');
   background-position: center center;
   transform: scaleX(-1) scaleY(-1);
   background-size: contain;
@@ -145,7 +145,7 @@ video{
   width: 105%;
   left: -2.5%;
   height: 15px;
-  background-image: url('../img/squiggle.svg');
+  background-image: url('/common/img/squiggle.svg');
   background-position: center center;
   background-size: contain;
   background-repeat: no-repeat;
@@ -155,7 +155,7 @@ video{
 }
 
 .meter .value{
-  background-image: url('../img/meter.svg');
+  background-image: url('/common/img/meter.svg');
   background-size: 15%;
   background-position: bottom left;
   position: absolute;
@@ -166,7 +166,7 @@ video{
 
 
 #by-moonshot{
-  background-image: url('../img/by-moonshot.png');
+  background-image: url('/common/img/by-moonshot.png');
   background-repeat: no-repeat;
   background-position: bottom right;
   position: absolute;

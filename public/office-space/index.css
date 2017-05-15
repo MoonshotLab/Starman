@@ -5,10 +5,10 @@
 
 /* Configure the Button Screen */
 .button-screen{
-  background-image: url('./img/background.jpg');
+  background-image: url('/office-space/img/background.jpg');
 }
 .button-screen h1.title{
-  background-image: url('./img/title.png');
+  background-image: url('/office-space/img/title.png');
 }
 
 
@@ -20,7 +20,7 @@
   margin: 0;
   width: 100%;
   font-size: 500%;
-  background: url('./img/success.svg') no-repeat center center;
+  background: url('/office-space/img/success.svg') no-repeat center center;
   height: 100%;
   z-index: 3;
 }

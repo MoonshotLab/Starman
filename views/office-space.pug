@@ -1,0 +1,44 @@
+doctype html
+html
+  head
+    title Office Space
+    link(rel='stylesheet', href='/common/utils.css')
+    link(rel='stylesheet', href='/office-space/index.css')
+  body
+    audio#music(autoplay, repeat)
+      source(src='/common/music.mp3', type='audio/mp3')
+    audio#select
+      source(src='/common/select.m4a', type='audio/mp4')
+    video#intro.screen(autoplay)
+      source(src='/office-space/intro.mp4', type='video/mp4')
+    #play.screen.button-screen
+      h1.title Office Space
+      a#demo-button(href='#') demo
+      a#play-button(href='#') play
+    video#instructions.screen
+      source(src='/office-space/instructions.mp4', type='video/mp4')
+    #gameplay.screen
+      h1#winner
+      audio#audio-win
+        source(src='/office-space/win.m4a', type='audio/mpeg')
+      #game
+      // volume indicators
+      #volume.meter.left
+        .top
+        .volume.value
+    video#outro.screen
+      source(src='/office-space/outro.mp4', type='video/mp4')
+    #replay.button-screen.screen
+      h1.title Office Space
+      a#next-game-button(href='#') next-game
+      a#replay-button(href='#') replay
+    a#by-moonshot(href='https://www.barkleyus.com/partners/moonshot-2/')
+    script(src='/bower_components/eventEmitter/EventEmitter.min.js')
+    script(src='/bower_components/zepto/zepto.min.js')
+    script(src='/bower_components/phaser/build/phaser.min.js')
+    script(src='/common/utils.js')
+    script(src='/common/sound-capture.js')
+    script(src='/office-space/player.js')
+    script(src='/office-space/obstacle.js')
+    script(src='/office-space/game.js')
+    script(src='/office-space/index.js')

@@ -1,0 +1,50 @@
+doctype html
+html
+  head
+    title Moonshooter
+    link(rel='stylesheet', href='/common/utils.css')
+    link(rel='stylesheet', href='/moonshooter/index.css')
+  body
+    audio#music(autoplay, repeat)
+      source(src='/common/music.mp3', type='audio/mp3')
+    audio#select
+      source(src='/common/select.m4a', type='audio/mp4')
+    video#intro.screen(autoplay)
+      source(src='/moonshooter/intro.mp4', type='video/mp4')
+    #play.screen.button-screen
+      h1.title Moonshooter
+      a#demo-button(href='#') demo
+      a#play-button(href='#') play
+    video#instructions.screen
+      source(src='/moonshooter/instructions.mp4', type='video/mp4')
+    video#build-up.screen
+      source(src='/moonshooter/build-up.mp4', type='video/mp4')
+    #game.screen
+      #frame-wrapper
+        img#framed(src='/moonshooter/img/game_frame_1.jpg')
+      audio#audio-win
+        source(src='/moonshooter/win.m4a', type='audio/mpeg')
+      audio#audio-launch
+        source(src='/moonshooter/blastoff.m4a', type='audio/mpeg')
+      h1#winner
+      #volume-container.meter.left.with-targets
+        #target-hi.target.hi
+          .squiggle
+        #target-lo.target.lo
+          .squiggle
+        #volume.value
+      #power-container.meter.right
+        .top
+        #power.value
+    video#outro.screen
+      source(src='/moonshooter/outro.mp4', type='video/mp4')
+    #replay.button-screen.screen
+      h1.title Moonshooter
+      a#next-game-button(href='#') next-game
+      a#replay-button(href='#') replay
+    a#by-moonshot(href='https://www.barkleyus.com/partners/moonshot-2/')
+    script(src='/bower_components/eventEmitter/EventEmitter.min.js')
+    script(src='/bower_components/zepto/zepto.min.js')
+    script(src='/common/utils.js')
+    script(src='/common/sound-capture.js')
+    script(src='/moonshooter/index.js')

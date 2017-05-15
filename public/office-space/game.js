@@ -35,13 +35,13 @@ class Game {
 
 
   preload(self){
-    self.game.load.image('background', './img/background.jpg');
-    self.game.load.image('parallax', './img/parallax-background.png');
-    self.game.load.spritesheet('rocket', './img/rocket-sprite.png', 250, 457);
+    self.game.load.image('background', '/office-space/img/background.jpg');
+    self.game.load.image('parallax', '/office-space/img/parallax-background.png');
+    self.game.load.spritesheet('rocket', '/office-space/img/rocket-sprite.png', 250, 457);
 
     // preload all the obstacle images
     self.obstacleMap.forEach(function(obstacle){
-      var path = './img/obstacles/' + obstacle.name + '.png';
+      var path = '/office-space/img/obstacles/' + obstacle.name + '.png';
       self.game.load.image(obstacle.name, path);
     });
   }

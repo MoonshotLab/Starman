@@ -6,10 +6,10 @@
 
 /* Configure the Button Screen */
 .button-screen{
-  background-image: url('./img/background.png');
+  background-image: url('/star-twerk/img/background.png');
 }
 .button-screen h1.title{
-  background-image: url('./img/title.png');
+  background-image: url('/star-twerk/img/title.png');
 }
 
 
@@ -36,22 +36,22 @@
   animation-duration: .5s;
 }
 .beat.l{
-  background-image: url('./img/boom.svg');
+  background-image: url('/star-twerk/img/boom.svg');
 }
 .beat.l.miss{
-  background-image: url('./img/boom-miss.svg');
+  background-image: url('/star-twerk/img/boom-miss.svg');
 }
 .beat.h{
-  background-image: url('./img/woo.svg');
+  background-image: url('/star-twerk/img/woo.svg');
 }
 .beat.h.miss{
-  background-image: url('./img/woo-miss.svg');
+  background-image: url('/star-twerk/img/woo-miss.svg');
 }
 .beat.c{
-  background-image: url('./img/clap.svg');
+  background-image: url('/star-twerk/img/clap.svg');
 }
 .beat.c.miss{
-  background-image: url('./img/clap-miss.svg');
+  background-image: url('/star-twerk/img/clap-miss.svg');
 }
 
 #now{
@@ -65,7 +65,7 @@
   width: 105%;
   left: -2.5%;
   height: 15px;
-  background-image: url('../img/squiggle.svg');
+  background-image: url('/common/img/squiggle.svg');
   background-position: center center;
   background-size: contain;
   background-repeat: no-repeat;
@@ -83,7 +83,7 @@
 
 
 #queue-container.miss .squiggle{
-  background-image: url('../img/squiggle-miss.svg');
+  background-image: url('/common/img/squiggle-miss.svg');
 }
 #queue-container.miss .top, #queue-container.miss .bottom{
   border-color: #e2243c;

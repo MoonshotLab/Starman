@@ -1,0 +1,51 @@
+doctype html
+html
+  head
+    title Star Twerk - The Y Generation
+    link(rel='stylesheet', href='/common/utils.css')
+    link(rel='stylesheet', href='/star-twerk/index.css')
+  body
+    audio#music(autoplay, repeat)
+      source(src='/common/music.mp3', type='audio/mp3')
+    audio#select
+      source(src='/common/select.m4a', type='audio/mp4')
+    video#intro.screen(autoplay)
+      source(src='/star-twerk/intro.mp4', type='video/mp4')
+    #play.screen.button-screen
+      h1.title Star Twerk
+      a#demo-button(href='#') demo
+      a#play-button(href='#') play
+    video#instructions.screen
+      source(src='/star-twerk/instructions.mp4', type='video/mp4')
+    video#build-up.screen
+      source(src='/star-twerk/build-up.mp4', type='video/mp4')
+    #game.screen
+      #score-container.meter.right
+        #score-top.top
+        #score.value
+      #queue-container
+        .top
+        .bottom
+        #queue
+        #now
+          .squiggle.squiggle-top
+          .squiggle.squiggle-bottom
+      #fail
+      video#dancer(loop)
+        source(src='/star-twerk/game.mp4', type='video/mp4')
+    video#outro
+      source(src='/star-twerk/outro.mp4', type='video/mp4')
+    #replay.button-screen.screen
+      h1.title Star Twerk
+      a#next-game-button(href='#') next-game
+      a#replay-button(href='#') replay
+    a#by-moonshot(href='https://www.barkleyus.com/partners/moonshot-2/')
+    script(src='/bower_components/zepto/zepto.min.js')
+    script(src='/bower_components/eventEmitter/EventEmitter.min.js')
+    script(src='/common/utils.js')
+    script(src='/common/sound-capture.js')
+    script(src='/star-twerk/dancer.js')
+    script(src='/star-twerk/toneListener.js')
+    script(src='/star-twerk/queue.js')
+    script(src='/star-twerk/game.js')
+    script(src='/star-twerk/index.js')

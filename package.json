@@ -1,0 +1,26 @@
+{
+  "name": "Starman",
+  "version": "1.0.0",
+  "description": "A series of video games which are controlled via sound input.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MoonshotLab/Starman.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MoonshotLab/Starman/issues"
+  },
+  "homepage": "https://github.com/MoonshotLab/Starman#readme",
+  "dependencies": {
+    "dotenv": "^4.0.0",
+    "express": "^4.15.2",
+    "path": "^0.12.7",
+    "pug": "^2.0.0-rc.1"
+  }
+}

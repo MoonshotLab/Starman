@@ -84,10 +84,10 @@
 
   // preload all the images
   for(var i = 1; i < numGameFrames; i++) {
-    new Image().src = './img/game_frame_' + i + '.jpg';
+    new Image().src = './moonshooter/img/game_frame_' + i + '.jpg';
   }
   for(var j = 1; j < numWinFrames; j++) {
-    new Image().src = './img/win_frame_' + j + '.jpg';
+    new Image().src = './moonshooter/img/win_frame_' + j + '.jpg';
   }
 
 
@@ -127,7 +127,7 @@
     if(videoFrame <= 0) videoFrame = 1;
     if(videoFrame >= numGameFrames) videoFrame = numGameFrames;
 
-    $el.framed[0].src = './img/game_frame_' + videoFrame + '.jpg';
+    $el.framed[0].src = './moonshooter/img/game_frame_' + videoFrame + '.jpg';
 
     if(powerLevel >= 100){
       powerLevel = 0;
@@ -150,7 +150,7 @@
     var activeFrame = 1;
     var frameInterval = setInterval(function(){
       if(activeFrame <= numWinFrames){
-        $el.framed[0].src = './img/win_frame_' + activeFrame + '.jpg';
+        $el.framed[0].src = './moonshooter/img/win_frame_' + activeFrame + '.jpg';
         activeFrame++;
       }
 
