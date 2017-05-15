@@ -23,7 +23,7 @@ app.get('/star-twerk', function (req, res) {
 });
 
 app.get('*', function (req, res) {
-  res.render('moonshooter');
+  res.redirect('/moonshooter');
 });
 
 const port = process.env.PORT || 3000;
