@@ -50,6 +50,7 @@ class Game {
   create(self, opts){
     var worlScaleFactor = 20;
 
+
     // setup background, world bounds and physics system
     var background = self.game.add.tileSprite(0, 0, opts.width*worlScaleFactor, opts.height, 'background');
     background.fixedToCamera = true;
@@ -96,7 +97,7 @@ class Game {
       // stop moving!
       self.player.stop();
       self.game.paused = true;
-      self.emitter.emitEvent('done', []);
+      this.emitter.emitEvent('done', []);
     }
 
     // follow player with camera
